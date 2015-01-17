@@ -1,6 +1,3 @@
-/**/*.asta
-/**/*.asta.bak
-/**/*.txt
-/**/*.pptx
 /**/*.log
 .metadata/
+docs/
