@@ -1,4 +1,4 @@
-package android.account;
+package android.account.recorder;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;

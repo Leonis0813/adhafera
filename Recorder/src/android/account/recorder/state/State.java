@@ -1,4 +1,4 @@
-package android.account.state;
+package android.account.recorder.state;
 
 import java.util.HashMap;
 

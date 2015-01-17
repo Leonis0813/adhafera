@@ -3,7 +3,6 @@
 	<name>Recorder</name>
 	<comment></comment>
 	<projects>
-		<project>KeepingAccount</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

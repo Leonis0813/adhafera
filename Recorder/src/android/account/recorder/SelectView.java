@@ -1,11 +1,11 @@
-package android.account;
+package android.account.recorder;
 
 import java.util.HashMap;
 import java.util.Iterator;
 
-import android.account.state.Delete;
-import android.account.state.Edit;
-import android.account.state.State;
+import android.account.recorder.state.Delete;
+import android.account.recorder.state.Edit;
+import android.account.recorder.state.State;
 import android.content.Context;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;

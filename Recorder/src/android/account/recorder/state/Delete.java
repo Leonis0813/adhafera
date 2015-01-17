@@ -1,8 +1,8 @@
-package android.account.state;
+package android.account.recorder.state;
 
 import java.util.HashMap;
 
-import android.account.MainActivity;
+import android.account.recorder.MainActivity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
