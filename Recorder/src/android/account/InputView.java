@@ -213,7 +213,7 @@ public class InputView extends RelativeLayout implements OnClickListener, RadioG
 
 	@Override
 	public void onDateSet(DatePicker view, int year, int month, int day) {
-		String monthOfStr = month < 10 ? "0"+(++month) : ""+(++month);
+		String monthOfStr = month < 9 ? "0"+(++month) : ""+(++month);
 		String dayOfStr = day < 10 ? "0"+day : ""+day;
 		fields[0].setText(year + "-" + monthOfStr + "-" + dayOfStr);
 	}
