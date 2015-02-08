@@ -143,6 +143,7 @@ public class MainActivity extends ActionBarActivity {
 		if(currentState == INPUT){
 			accountMap.put(accountMap.size(), format(inputs));
 			writeAccount();
+			inputView.setup();
 			return "•Û‘¶‚µ‚Ü‚µ‚½";
 		}else if(currentState == EDIT){
 			accountMap.put(selected, format(inputs));
