@@ -74,7 +74,7 @@ public class InputView extends RelativeLayout implements OnClickListener, RadioG
 		LinearLayout.LayoutParams linearParam;
 		
 		labels[ID] = new TextView(context);
-		labels[ID].setTextSize(25);
+		labels[ID].setTextSize(20);
 		labels[ID].setTextColor(Color.BLACK);
 		labels[ID].setText(label);
 		linearParam = new LinearLayout.LayoutParams(MainActivity.WC, MainActivity.WC);
@@ -83,7 +83,7 @@ public class InputView extends RelativeLayout implements OnClickListener, RadioG
 		fields[ID] = new EditText(context);
 		fields[ID].setWidth(400);
 		fields[ID].setEnabled(true);
-		fields[ID].setTextSize(25);
+		fields[ID].setTextSize(20);
 		fields[ID].setTextColor(Color.BLACK);
 		if(ID==0){
 			fields[ID].setClickable(true);
