@@ -10,9 +10,11 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 public class DeleteView extends AccountView implements DialogInterface.OnClickListener, View.OnClickListener{
+	private RelativeLayout relativeLayout;
 	private ArrayList<CheckBox> checkBoxs;
 	private ArrayList<TextView> textViews;
 	private Button deleteButton;
@@ -22,12 +24,22 @@ public class DeleteView extends AccountView implements DialogInterface.OnClickLi
 	
 	public DeleteView(Context context, Controller ctrl) {
 		super(context, ctrl);
+		
 		viewGroup = new RelativeLayout(context);
+		
+		createRemoveButton();
+		
+		ScrollView scrollView = new ScrollView(context);
+		relativeLayout = new RelativeLayout(context);
+		scrollView.addView(relativeLayout);
+		RelativeLayout.LayoutParams relativeParams = new RelativeLayout.LayoutParams(MainActivity.MP, MainActivity.WC);
+		relativeParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+		relativeParams.addRule(RelativeLayout.ABOVE, 100);
+		viewGroup.addView(scrollView, relativeParams);
+
 		checkBoxs = new ArrayList<CheckBox>();
 		textViews = new ArrayList<TextView>();
 		
-		createRemoveButton();
-        
         alertDialogBuilder = new AlertDialog.Builder(context);
 		alertDialogBuilder.setTitle("â∆åvïÎÇÃçÌèú");
         alertDialogBuilder.setMessage("ñ{ìñÇ…ÇÊÇÎÇµÇ¢Ç≈Ç∑Ç©ÅH");
@@ -40,6 +52,7 @@ public class DeleteView extends AccountView implements DialogInterface.OnClickLi
 		RelativeLayout.LayoutParams relativeParams = new RelativeLayout.LayoutParams(MainActivity.MP, MainActivity.WC);
         relativeParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
         deleteButton = new Button(context);
+        deleteButton.setId(100);
 		deleteButton.setText("çÌèú");
 		deleteButton.setOnClickListener(this);
 		viewGroup.addView(deleteButton, relativeParams);
@@ -69,15 +82,14 @@ public class DeleteView extends AccountView implements DialogInterface.OnClickLi
 		}
 		checkBoxs.add(checkBox);
 		textViews.add(textView);
-		viewGroup.addView(linearLayout, relativeParams);
+		relativeLayout.addView(linearLayout, relativeParams);
 	}
 	
 	public void initialize() {
-		viewGroup.removeAllViews();
+		relativeLayout.removeAllViews();
 		checkBoxs.clear();
 		textViews.clear();
 		ctrl.getAllAccount();
-		createRemoveButton();
 	}
 	
 	public void show(String[] infos) {
@@ -98,11 +110,13 @@ public class DeleteView extends AccountView implements DialogInterface.OnClickLi
 	public void onClick(DialogInterface dialog, int which) {
 		switch (which){
 		case DialogInterface.BUTTON_POSITIVE:{
+			ArrayList<String> deleteList = new ArrayList<String>();
 			for(int i=0;i<checkBoxs.size();i++) {
 				if(checkBoxs.get(i).isChecked()) {
-					ctrl.deleteAccount(textViews.get(i).getText().toString());
+					deleteList.add(textViews.get(i).getText().toString());
 				}
 			}
+			ctrl.deleteAccount(deleteList);
 			break;
 		}
 		case DialogInterface.BUTTON_NEGATIVE:{

@@ -7,6 +7,7 @@ import java.util.regex.Pattern;
 
 public class AccountController {
 	private ArrayList<Account> accountList;
+	private Account updatedAccount;
 	
 	public AccountController() {
 		accountList = new ArrayList<Account>();
@@ -30,18 +31,11 @@ public class AccountController {
 	}
 	
 	public void update(String[] inputs) {
-		Account newAccount = new Account(inputs);
-		Iterator<Account> it = accountList.iterator();
-		Account account = null;
-		while(it.hasNext()) {
-			account = it.next();
-			if(account.toString().equals(newAccount.toString())) break;
-		}
-		account.setType(newAccount.getType());
-		account.setDate(newAccount.getDate());
-		account.setContent(newAccount.getContent());
-		account.setCategory(newAccount.getCategory());
-		account.setPrice(newAccount.getPrice());
+		updatedAccount.setType(inputs[Account.TYPE]);
+		updatedAccount.setDate(inputs[Account.DATE]);
+		updatedAccount.setContent(inputs[Account.CONTENT]);
+		updatedAccount.setCategory(inputs[Account.CATEGORY]);
+		updatedAccount.setPrice(Integer.parseInt(inputs[Account.PRICE]));
 	}
 
 	public void delete(String item) {
@@ -53,6 +47,16 @@ public class AccountController {
 				return;
 			}
 		}
+	}
+	
+	public void keepAccountInfo(String item) {
+		Iterator<Account> it = accountList.iterator();
+		Account account = null;
+		while(it.hasNext()) {
+			account = it.next();
+			if(account.toString().equals(item)) break;
+		}
+		updatedAccount = account;
 	}
 	
 	public ArrayList<Integer> checkEmpty(String[] inputs) {

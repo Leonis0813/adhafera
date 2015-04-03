@@ -38,18 +38,19 @@ public class Controller {
 			return;
 		}
 		if(!ac.checkDate(inputs[Account.DATE])) {
-			errors.add(Account.DATE);
+			errors.add(Account.DATE-1);
 			ma.noteInputError("日付が不正です", errors);
 			return;
 		}
 		if(!ac.checkPrice(inputs[Account.PRICE])) {
-			errors.add(Account.PRICE);
+			errors.add(Account.PRICE-1);
 			ma.noteInputError("金額が不正です", errors);
 			return;
 		}
 		ac.create(inputs);
 		this.writeToFile();
 		ma.sendMessage("保存しました");
+		ma.updateView();
 	}
 	
 	public void getAccount(String item) {
@@ -65,19 +66,40 @@ public class Controller {
 	}
 	
 	public void updateAccount(String[] inputs) {
-		ac.checkEmpty(inputs);
-		ac.checkDate(inputs[Account.DATE]);
-		ac.checkPrice(inputs[Account.PRICE]);
+		ArrayList<Integer> errors = ac.checkEmpty(inputs);
+		if(!errors.isEmpty()) {
+			ma.noteInputError("全ての項目を入力してください", errors);
+			return;
+		}
+		if(!ac.checkDate(inputs[Account.DATE])) {
+			errors.add(Account.DATE-1);
+			ma.noteInputError("日付が不正です", errors);
+			return;
+		}
+		if(!ac.checkPrice(inputs[Account.PRICE])) {
+			errors.add(Account.PRICE-1);
+			ma.noteInputError("金額が不正です", errors);
+			return;
+		}
 		ac.update(inputs);
+		this.writeToFile();
+		ma.sendMessage("更新しました");
+		ma.switchView(MainActivity.EDIT);
+		ma.updateView();
 	}
 	
-	public void deleteAccount(String item) {
-		ac.delete(item);
+	public void deleteAccount(ArrayList<String> item) {
+		Iterator<String> it = item.iterator();
+		while(it.hasNext()) {
+			ac.delete(it.next());
+		}
+		this.writeToFile();
 		ma.updateView();
 		ma.sendMessage("削除しました");
 	}
 	
 	public void editAccount(String item) {
+		ac.keepAccountInfo(item);
 		ma.switchView(MainActivity.INPUT);
 		ma.showAccount(ac.read(item).toArray());
 		ma.changeState(InputView.UPDATE);

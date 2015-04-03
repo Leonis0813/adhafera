@@ -1,6 +1,7 @@
 package android.account.recorder;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import android.support.v7.app.ActionBarActivity;
 import android.annotation.SuppressLint;
@@ -48,6 +49,9 @@ public class MainActivity extends ActionBarActivity {
 		int operation = item.getItemId();
 		currentView = operation;
 		accountViews[operation].initialize();
+		if(operation == INPUT) {
+			accountViews[operation].setState(InputView.CREATE);
+		}
 		setContentView(accountViews[operation].getViewGroup());
 		return true;
 	}
@@ -74,6 +78,10 @@ public class MainActivity extends ActionBarActivity {
 	}
 	
 	public void noteInputError(String note, ArrayList<Integer> ids) {
-		
+		Iterator<Integer> it = ids.iterator();
+		while(it.hasNext()) {
+			((InputView)accountViews[currentView]).noticeError(it.next());
+		}
+		accountViews[currentView].notice(note);
 	}
 }
