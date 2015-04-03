@@ -18,12 +18,9 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 import application.view.table.AccountTable;
 
-public class InputView extends RelativeLayout implements OnClickListener, RadioGroup.OnCheckedChangeListener, OnDateSetListener {
-
-	private Context context;
+public class InputView extends AccountView implements OnClickListener, RadioGroup.OnCheckedChangeListener, OnDateSetListener {	
 	private static final String[] COLUMN_NAMES = {"　　日付：", "　　内容：", "カテゴリ：", "　　金額："};
 	private static final String[] TABLE = {"収入", "支出"};
 	private TextView[] labels;
@@ -35,13 +32,19 @@ public class InputView extends RelativeLayout implements OnClickListener, RadioG
 	
 	private Button OK, cancel;
 	
+	private State[] states;
+	public static final int CREATE = 0;
+	public static final int UPDATE = 1;
+	public static final int NUM_STATE = 2;
+	private State currentState;
+	
 	public static final int SUCCESS = 0;
 	public static final int ERROR_EMPTY = 1;
 	public static final int ERROR_FORMAT = 2;
 	
-	public InputView(Context context) {
-		super(context);
-		this.context = context;
+	public InputView(Context context, Controller ctrl) {
+		super(context, ctrl);
+		viewGroup = new RelativeLayout(context);
 		
 		labels = new TextView[DBHandler.NUM_COLUMN];
         fields = new EditText[DBHandler.NUM_COLUMN];
@@ -63,7 +66,12 @@ public class InputView extends RelativeLayout implements OnClickListener, RadioG
 		cancel = new Button(context);
 		cancel.setText("取消");
 		cancel.setOnClickListener(this);
-		createButtons();        
+		createButtons();
+		
+		states = new State[NUM_STATE];
+		states[CREATE] = new Create(ctrl);
+		states[UPDATE] = new Update(ctrl);
+		currentState = states[CREATE];
 	}
 	
 	private void createColumn(String label, int ID) {
@@ -79,7 +87,7 @@ public class InputView extends RelativeLayout implements OnClickListener, RadioG
 		labels[ID].setText(label);
 		linearParam = new LinearLayout.LayoutParams(MainActivity.WC, MainActivity.WC);
 		linearLayout.addView(labels[ID], linearParam);
-		
+
 		fields[ID] = new EditText(context);
 		fields[ID].setWidth(400);
 		fields[ID].setEnabled(true);
@@ -103,7 +111,7 @@ public class InputView extends RelativeLayout implements OnClickListener, RadioG
 		relativeParam.setMargins(20, ID==0 ? 50 : 20, 0, 0);
 		relativeParam.addRule(RelativeLayout.BELOW, ID);
 		
-		addView(linearLayout, relativeParam);
+		viewGroup.addView(linearLayout, relativeParam);
 	}
 
 	private void createRadioButtons() {
@@ -126,7 +134,7 @@ public class InputView extends RelativeLayout implements OnClickListener, RadioG
         relativeParam.addRule(RelativeLayout.BELOW, 4);
         relativeParam.addRule(RelativeLayout.CENTER_HORIZONTAL);
         relativeParam.setMargins(0, 50, 0, 0);
-		addView(radioGroup, relativeParam);
+		viewGroup.addView(radioGroup, relativeParam);
 	}
 	
 	private void createButtons() {
@@ -146,28 +154,32 @@ public class InputView extends RelativeLayout implements OnClickListener, RadioG
 		
 		relativeParam.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
 		relativeParam.setMargins(0, 50, 0, 0);
-		addView(linearLayout, relativeParam);
+		viewGroup.addView(linearLayout, relativeParam);
 	}
-
-	public void setup() {
+	
+	public void initialize() {
 		for(int i=0;i<DBHandler.NUM_COLUMN;i++) {
 			fields[i].setText("");
 			checker[i].setVisibility(INVISIBLE);
 		}
 	}
 
-	public void setup(String[] columns) {
-		if(columns[0].equals("収入")){
+	public void show(String[] infos) {
+		if(infos[Account.TYPE].equals("収入")) {
 			radioButtons[0].setChecked(true);
 			radioButtons[1].setChecked(false);
-		}else{
+		}else if(infos[Account.TYPE].equals("支出")) {
 			radioButtons[0].setChecked(false);
 			radioButtons[1].setChecked(true);
-		}
-		for(int i=1;i<columns.length;i++) {
-			fields[i-1].setText(columns[i]);
+		}else{}
+		for(int i=1;i<infos.length;i++) {
+			fields[i-1].setText(infos[i]);
 			checker[i-1].setVisibility(INVISIBLE);
 		}
+	}
+
+	public void setState(int stateID) {
+		currentState = states[stateID];
 	}
 	
 	public void noticeError(int column) {
@@ -176,7 +188,7 @@ public class InputView extends RelativeLayout implements OnClickListener, RadioG
 	
 	@Override
 	public void onClick(View view) {
-		if(view == fields[0]) {
+		if(view == fields[AccountTable.DATE]) {
 			Calendar calendar = Calendar.getInstance();
 	        int year = calendar.get(Calendar.YEAR); // 年
 	        int month = calendar.get(Calendar.MONTH); // 月
@@ -194,10 +206,9 @@ public class InputView extends RelativeLayout implements OnClickListener, RadioG
 						fields[AccountTable.DATE].getText().toString(),
 						fields[AccountTable.CONTENT].getText().toString(),
 						fields[AccountTable.CATEGORY].getText().toString(),
-						fields[AccountTable.PRICE].getText().toString()
+						fields[AccountTable.PRICE].getText().toString(),
 				};
-				String result = ((MainActivity) context).addAccount(column);
-				Toast.makeText(context, result, Toast.LENGTH_LONG).show();
+				currentState.putAccount(column);
 			}else{
 				for(int i=0;i<fields.length;i++) {
 					fields[i].setText("");
@@ -206,15 +217,15 @@ public class InputView extends RelativeLayout implements OnClickListener, RadioG
 		}
 	}
 
-	@Override
 	public void onCheckedChanged(RadioGroup group, int checkedId) {
 		
 	}
 
-	@Override
 	public void onDateSet(DatePicker view, int year, int month, int day) {
 		String monthOfStr = month < 9 ? "0"+(++month) : ""+(++month);
 		String dayOfStr = day < 10 ? "0"+day : ""+day;
 		fields[0].setText(year + "-" + monthOfStr + "-" + dayOfStr);
 	}
+
+	protected void onLayout(boolean changed, int l, int t, int r, int b) {}
 }
