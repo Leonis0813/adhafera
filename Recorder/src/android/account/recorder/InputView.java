@@ -38,10 +38,6 @@ public class InputView extends AccountView implements OnClickListener, RadioGrou
 	public static final int NUM_STATE = 2;
 	private State currentState;
 	
-	public static final int SUCCESS = 0;
-	public static final int ERROR_EMPTY = 1;
-	public static final int ERROR_FORMAT = 2;
-	
 	public InputView(Context context, Controller ctrl) {
 		super(context, ctrl);
 		viewGroup = new RelativeLayout(context);
@@ -217,9 +213,7 @@ public class InputView extends AccountView implements OnClickListener, RadioGrou
 		}
 	}
 
-	public void onCheckedChanged(RadioGroup group, int checkedId) {
-		
-	}
+	public void onCheckedChanged(RadioGroup group, int checkedId) {}
 
 	public void onDateSet(DatePicker view, int year, int month, int day) {
 		String monthOfStr = month < 9 ? "0"+(++month) : ""+(++month);

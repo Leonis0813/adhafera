@@ -88,8 +88,8 @@ public class Controller {
 		ma.updateView();
 	}
 	
-	public void deleteAccount(ArrayList<String> item) {
-		Iterator<String> it = item.iterator();
+	public void deleteAccount(ArrayList<String> itemList) {
+		Iterator<String> it = itemList.iterator();
 		while(it.hasNext()) {
 			ac.delete(it.next());
 		}
