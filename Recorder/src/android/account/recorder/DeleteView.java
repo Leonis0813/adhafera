@@ -14,8 +14,8 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 public class DeleteView extends AccountView implements DialogInterface.OnClickListener, View.OnClickListener{
-	private RelativeLayout relativeLayout;
-	private ArrayList<CheckBox> checkBoxs;
+	private RelativeLayout accountViewGroup;
+	private ArrayList<CheckBox> checkBoxes;
 	private ArrayList<TextView> textViews;
 	private Button deleteButton;
 	
@@ -30,14 +30,14 @@ public class DeleteView extends AccountView implements DialogInterface.OnClickLi
 		createRemoveButton();
 		
 		ScrollView scrollView = new ScrollView(context);
-		relativeLayout = new RelativeLayout(context);
-		scrollView.addView(relativeLayout);
+		accountViewGroup = new RelativeLayout(context);
+		scrollView.addView(accountViewGroup);
 		RelativeLayout.LayoutParams relativeParams = new RelativeLayout.LayoutParams(MainActivity.MP, MainActivity.WC);
 		relativeParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
 		relativeParams.addRule(RelativeLayout.ABOVE, 100);
 		viewGroup.addView(scrollView, relativeParams);
 
-		checkBoxs = new ArrayList<CheckBox>();
+		checkBoxes = new ArrayList<CheckBox>();
 		textViews = new ArrayList<TextView>();
 		
         alertDialogBuilder = new AlertDialog.Builder(context);
@@ -60,7 +60,7 @@ public class DeleteView extends AccountView implements DialogInterface.OnClickLi
 	
 	private void addComponent(String item) {
 		LinearLayout linearLayout = new LinearLayout(context);
-		linearLayout.setId(checkBoxs.size()+1);
+		linearLayout.setId(checkBoxes.size()+1);
 		
 		LinearLayout.LayoutParams linearParams = new LinearLayout.LayoutParams(MainActivity.MP, MainActivity.WC);
 		CheckBox checkBox = new CheckBox(context);
@@ -75,19 +75,19 @@ public class DeleteView extends AccountView implements DialogInterface.OnClickLi
 		linearLayout.addView(textView);
 		
 		RelativeLayout.LayoutParams relativeParams = new RelativeLayout.LayoutParams(MainActivity.MP, MainActivity.WC);
-		if(checkBoxs.isEmpty()){
+		if(checkBoxes.isEmpty()){
 			relativeParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
 		}else{
-			relativeParams.addRule(RelativeLayout.BELOW, checkBoxs.size());
+			relativeParams.addRule(RelativeLayout.BELOW, checkBoxes.size());
 		}
-		checkBoxs.add(checkBox);
+		checkBoxes.add(checkBox);
 		textViews.add(textView);
-		relativeLayout.addView(linearLayout, relativeParams);
+		accountViewGroup.addView(linearLayout, relativeParams);
 	}
 	
 	public void initialize() {
-		relativeLayout.removeAllViews();
-		checkBoxs.clear();
+		accountViewGroup.removeAllViews();
+		checkBoxes.clear();
 		textViews.clear();
 		ctrl.getAllAccount();
 	}
@@ -111,8 +111,8 @@ public class DeleteView extends AccountView implements DialogInterface.OnClickLi
 		switch (which){
 		case DialogInterface.BUTTON_POSITIVE:{
 			ArrayList<String> deleteList = new ArrayList<String>();
-			for(int i=0;i<checkBoxs.size();i++) {
-				if(checkBoxs.get(i).isChecked()) {
+			for(int i=0;i<checkBoxes.size();i++) {
+				if(checkBoxes.get(i).isChecked()) {
 					deleteList.add(textViews.get(i).getText().toString());
 				}
 			}
