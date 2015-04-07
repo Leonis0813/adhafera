@@ -18,6 +18,8 @@ public class DeleteView extends AccountView implements DialogInterface.OnClickLi
 	private ArrayList<CheckBox> checkBoxes;
 	private ArrayList<TextView> textViews;
 	private Button deleteButton;
+	private Button deleteAllButton;
+	private ArrayList<String> deleteList;
 	
 	private AlertDialog.Builder alertDialogBuilder;
 	private AlertDialog alertDialog;
@@ -27,7 +29,7 @@ public class DeleteView extends AccountView implements DialogInterface.OnClickLi
 		
 		viewGroup = new RelativeLayout(context);
 		
-		createRemoveButton();
+		createRemoveButtons();
 		
 		ScrollView scrollView = new ScrollView(context);
 		accountViewGroup = new RelativeLayout(context);
@@ -46,16 +48,35 @@ public class DeleteView extends AccountView implements DialogInterface.OnClickLi
         alertDialogBuilder.setPositiveButton("OK", this);
         alertDialogBuilder.setNegativeButton("Cancel", this);
         alertDialog = alertDialogBuilder.create();
+        
+        deleteList = new ArrayList<String>();
 	}
 	
-	private void createRemoveButton() {
-		RelativeLayout.LayoutParams relativeParams = new RelativeLayout.LayoutParams(MainActivity.MP, MainActivity.WC);
-        relativeParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-        deleteButton = new Button(context);
-        deleteButton.setId(100);
+	private void createRemoveButtons() {		
+		RelativeLayout.LayoutParams relativeParam = new RelativeLayout.LayoutParams(MainActivity.MP, MainActivity.WC);
+		
+		LinearLayout linearLayout = new LinearLayout(context);
+		linearLayout.setId(100);
+		LinearLayout.LayoutParams linearParam;
+		linearParam = new LinearLayout.LayoutParams(MainActivity.MP, MainActivity.WC);
+		linearParam.weight = 1;
+		linearParam.setMargins(50, 0, 20, 0);
+		deleteButton = new Button(context);
 		deleteButton.setText("çÌèú");
 		deleteButton.setOnClickListener(this);
-		viewGroup.addView(deleteButton, relativeParams);
+		linearLayout.addView(deleteButton, linearParam);
+		
+		linearParam = new LinearLayout.LayoutParams(MainActivity.MP, MainActivity.WC);
+		linearParam.weight = 1;
+		linearParam.setMargins(20, 0, 50, 0);
+		deleteAllButton = new Button(context);
+		deleteAllButton.setText("ëSçÌèú");
+		deleteAllButton.setOnClickListener(this);
+		linearLayout.addView(deleteAllButton, linearParam);
+		
+		relativeParam.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+		relativeParam.setMargins(0, 50, 0, 0);
+		viewGroup.addView(linearLayout, relativeParam);
 	}
 	
 	private void addComponent(String item) {
@@ -103,6 +124,18 @@ public class DeleteView extends AccountView implements DialogInterface.OnClickLi
 	public void setState(int stateID){}
 	
 	public void onClick(View view) {
+		deleteList.clear();
+		if(view == deleteButton) {
+			for(int i=0;i<checkBoxes.size();i++) {
+				if(checkBoxes.get(i).isChecked()) {
+					deleteList.add(textViews.get(i).getText().toString());
+				}
+			}
+		} else if(view == deleteAllButton) {
+			for(int i=0;i<checkBoxes.size();i++) {
+				deleteList.add(textViews.get(i).getText().toString());
+			}
+		}
 		alertDialogBuilder.setCancelable(true);
         alertDialog.show();		
 	}
@@ -110,12 +143,6 @@ public class DeleteView extends AccountView implements DialogInterface.OnClickLi
 	public void onClick(DialogInterface dialog, int which) {
 		switch (which){
 		case DialogInterface.BUTTON_POSITIVE:{
-			ArrayList<String> deleteList = new ArrayList<String>();
-			for(int i=0;i<checkBoxes.size();i++) {
-				if(checkBoxes.get(i).isChecked()) {
-					deleteList.add(textViews.get(i).getText().toString());
-				}
-			}
 			ctrl.deleteAccount(deleteList);
 			break;
 		}
