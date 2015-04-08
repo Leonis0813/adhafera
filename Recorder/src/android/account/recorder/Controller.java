@@ -105,6 +105,14 @@ public class Controller {
 		ma.changeState(InputView.UPDATE);
 	}
 
+	public void cancelInput() {
+		ma.updateView();
+	}
+	
+	public void cancelEdit() {
+		ma.switchView(MainActivity.EDIT);
+	}
+	
 	public void readFile() {
 		try {
 			in = ma.openFileInput(FILE_NAME);

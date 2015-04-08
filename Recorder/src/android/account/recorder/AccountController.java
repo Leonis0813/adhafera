@@ -86,7 +86,7 @@ public class AccountController {
 	}
 	
 	public boolean checkPrice(String price) {
-		Pattern p = Pattern.compile("^[0-9]*$");
+		Pattern p = Pattern.compile("^[1-9][0-9]*$");
 		Matcher m = p.matcher(price);
 		return m.find();
 	}

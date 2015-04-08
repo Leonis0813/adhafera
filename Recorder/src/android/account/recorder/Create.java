@@ -9,4 +9,8 @@ public class Create extends State {
 	public void putAccount(String[] column) {
 		ctrl.createAccount(column);
 	}
+	
+	public void clickCancel() {
+		ctrl.cancelInput();
+	}
 }

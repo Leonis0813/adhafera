@@ -131,6 +131,10 @@ public class DeleteView extends AccountView implements DialogInterface.OnClickLi
 					deleteList.add(textViews.get(i).getText().toString());
 				}
 			}
+			if(deleteList.isEmpty()){
+				this.notice("‰½‚à‘I‘ð‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ");
+				return;
+			}
 		} else if(view == deleteAllButton) {
 			for(int i=0;i<checkBoxes.size();i++) {
 				deleteList.add(textViews.get(i).getText().toString());
