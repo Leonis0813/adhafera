@@ -9,4 +9,8 @@ public class Update extends State {
 	public void putAccount(String[] column) {
 		ctrl.updateAccount(column);
 	}
+	
+	public void clickCancel() {
+		ctrl.cancelEdit();
+	}
 }

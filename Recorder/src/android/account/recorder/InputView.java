@@ -205,10 +205,8 @@ public class InputView extends AccountView implements OnClickListener, RadioGrou
 						fields[AccountTable.PRICE].getText().toString(),
 				};
 				currentState.putAccount(column);
-			}else{
-				for(int i=0;i<fields.length;i++) {
-					fields[i].setText("");
-				}
+			} else if(view == cancel) {
+				currentState.clickCancel();
 			}
 		}
 	}

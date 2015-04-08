@@ -8,4 +8,5 @@ public abstract class State {
 	}
 	
 	public abstract void putAccount(String[] column);
+	public abstract void clickCancel();
 }
