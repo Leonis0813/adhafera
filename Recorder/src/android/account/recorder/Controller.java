@@ -32,25 +32,12 @@ public class Controller {
 	}
 	
 	public void createAccount(String[] inputs) {
-		ArrayList<Integer> errors = ac.checkEmpty(inputs);
-		if(!errors.isEmpty()) {
-			ma.noteInputError("全ての項目を入力してください", errors);
-			return;
+		if(this.checkInputError(inputs)) {
+			ac.create(inputs);
+			this.writeToFile();
+			ma.sendMessage("保存しました");
+			ma.updateView();
 		}
-		if(!ac.checkDate(inputs[Account.DATE])) {
-			errors.add(Account.DATE-1);
-			ma.noteInputError("日付が不正です", errors);
-			return;
-		}
-		if(!ac.checkPrice(inputs[Account.PRICE])) {
-			errors.add(Account.PRICE-1);
-			ma.noteInputError("金額が不正です", errors);
-			return;
-		}
-		ac.create(inputs);
-		this.writeToFile();
-		ma.sendMessage("保存しました");
-		ma.updateView();
 	}
 	
 	public void getAccount(String item) {
@@ -58,34 +45,21 @@ public class Controller {
 		ma.showAccount(account.toArray());
 	}
 	
-	public void getAllAccount() {
-		Iterator<Account> it = ac.readAll().iterator();
+	public void getAccount() {
+		Iterator<Account> it = ac.read().iterator();
 		while(it.hasNext()) {
 			ma.showAccount(it.next().toArray());
 		}
 	}
 	
 	public void updateAccount(String[] inputs) {
-		ArrayList<Integer> errors = ac.checkEmpty(inputs);
-		if(!errors.isEmpty()) {
-			ma.noteInputError("全ての項目を入力してください", errors);
-			return;
+		if(this.checkInputError(inputs)) {
+			ac.update(inputs);
+			this.writeToFile();
+			ma.sendMessage("更新しました");
+			ma.switchView(MainActivity.EDIT);
+			ma.updateView();
 		}
-		if(!ac.checkDate(inputs[Account.DATE])) {
-			errors.add(Account.DATE-1);
-			ma.noteInputError("日付が不正です", errors);
-			return;
-		}
-		if(!ac.checkPrice(inputs[Account.PRICE])) {
-			errors.add(Account.PRICE-1);
-			ma.noteInputError("金額が不正です", errors);
-			return;
-		}
-		ac.update(inputs);
-		this.writeToFile();
-		ma.sendMessage("更新しました");
-		ma.switchView(MainActivity.EDIT);
-		ma.updateView();
 	}
 	
 	public void deleteAccount(ArrayList<String> itemList) {
@@ -113,7 +87,7 @@ public class Controller {
 		ma.switchView(MainActivity.EDIT);
 	}
 	
-	public void readFile() {
+	private void readFile() {
 		try {
 			in = ma.openFileInput(FILE_NAME);
 			reader = new BufferedReader(new InputStreamReader(in,"UTF-8"));
@@ -134,11 +108,11 @@ public class Controller {
 		}
 	}
 	
-	public void writeToFile() {
+	private void writeToFile() {
 		try {
 			out = ma.openFileOutput(FILE_NAME, Context.MODE_PRIVATE);
 			writer = new PrintWriter(new OutputStreamWriter(out,"UTF-8"));
-			Iterator<Account> it = ac.readAll().iterator();
+			Iterator<Account> it = ac.read().iterator();
 			while(it.hasNext()){
 				writer.println(it.next());
 			}
@@ -151,5 +125,24 @@ public class Controller {
 		} catch (IOException e) {
 			Toast.makeText(ma, "保存に失敗しました(" + e.toString() + ")", Toast.LENGTH_LONG).show();
 		}
+	}
+	
+	private boolean checkInputError(String[] inputs) {
+		ArrayList<Integer> errors = ac.checkEmpty(inputs);
+		if(!errors.isEmpty()) {
+			ma.noteInputError("全ての項目を入力してください", errors);
+			return false;
+		}
+		if(!ac.checkDate(inputs[Account.DATE])) {
+			errors.add(Account.DATE-1);
+			ma.noteInputError("日付が不正です", errors);
+			return false;
+		}
+		if(!ac.checkPrice(inputs[Account.PRICE])) {
+			errors.add(Account.PRICE-1);
+			ma.noteInputError("金額が不正です", errors);
+			return false;
+		}
+		return true;
 	}
 }

@@ -26,7 +26,7 @@ public class AccountController {
 		return null;
 	}
 	
-	public ArrayList<Account> readAll() {
+	public ArrayList<Account> read() {
 		return accountList;
 	}
 	
