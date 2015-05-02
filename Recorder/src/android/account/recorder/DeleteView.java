@@ -30,25 +30,11 @@ public class DeleteView extends AccountView implements DialogInterface.OnClickLi
 		viewGroup = new RelativeLayout(context);
 		
 		createRemoveButtons();
-		
-		ScrollView scrollView = new ScrollView(context);
-		accountViewGroup = new RelativeLayout(context);
-		scrollView.addView(accountViewGroup);
-		RelativeLayout.LayoutParams relativeParams = new RelativeLayout.LayoutParams(MainActivity.MP, MainActivity.WC);
-		relativeParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
-		relativeParams.addRule(RelativeLayout.ABOVE, 100);
-		viewGroup.addView(scrollView, relativeParams);
+		createScrollView();
+		createDialog();
 
 		checkBoxes = new ArrayList<CheckBox>();
 		textViews = new ArrayList<TextView>();
-		
-        alertDialogBuilder = new AlertDialog.Builder(context);
-		alertDialogBuilder.setTitle("家計簿の削除");
-        alertDialogBuilder.setMessage("本当によろしいですか？");
-        alertDialogBuilder.setPositiveButton("OK", this);
-        alertDialogBuilder.setNegativeButton("Cancel", this);
-        alertDialog = alertDialogBuilder.create();
-        
         deleteList = new ArrayList<String>();
 	}
 	
@@ -77,6 +63,25 @@ public class DeleteView extends AccountView implements DialogInterface.OnClickLi
 		relativeParam.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
 		relativeParam.setMargins(0, 50, 0, 0);
 		viewGroup.addView(linearLayout, relativeParam);
+	}
+	
+	private void createScrollView() {
+		ScrollView scrollView = new ScrollView(context);
+		accountViewGroup = new RelativeLayout(context);
+		scrollView.addView(accountViewGroup);
+		RelativeLayout.LayoutParams relativeParams = new RelativeLayout.LayoutParams(MainActivity.MP, MainActivity.WC);
+		relativeParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+		relativeParams.addRule(RelativeLayout.ABOVE, 100);
+		viewGroup.addView(scrollView, relativeParams);
+	}
+	
+	private void createDialog() {
+		alertDialogBuilder = new AlertDialog.Builder(context);
+		alertDialogBuilder.setTitle("家計簿の削除");
+        alertDialogBuilder.setMessage("本当によろしいですか？");
+        alertDialogBuilder.setPositiveButton("OK", this);
+        alertDialogBuilder.setNegativeButton("Cancel", this);
+        alertDialog = alertDialogBuilder.create();
 	}
 	
 	private void addComponent(String item) {
@@ -110,7 +115,7 @@ public class DeleteView extends AccountView implements DialogInterface.OnClickLi
 		accountViewGroup.removeAllViews();
 		checkBoxes.clear();
 		textViews.clear();
-		ctrl.getAllAccount();
+		ctrl.getAccount();
 	}
 	
 	public void show(String[] infos) {

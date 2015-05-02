@@ -46,13 +46,12 @@ public class MainActivity extends ActionBarActivity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		int operation = item.getItemId();
-		currentView = operation;
-		accountViews[operation].initialize();
-		if(operation == INPUT) {
-			accountViews[operation].setState(InputView.CREATE);
+		currentView = item.getItemId();
+		accountViews[currentView].initialize();
+		if(currentView == INPUT) {
+			accountViews[currentView].setState(InputView.CREATE);
 		}
-		setContentView(accountViews[operation].getViewGroup());
+		setContentView(accountViews[currentView].getViewGroup());
 		return true;
 	}
 	

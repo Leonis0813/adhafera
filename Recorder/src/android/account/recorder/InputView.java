@@ -2,7 +2,6 @@ package android.account.recorder;
 
 import java.util.Calendar;
 
-import database.DBHandler;
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.content.Context;
@@ -37,31 +36,18 @@ public class InputView extends AccountView implements OnClickListener, RadioGrou
 	public static final int UPDATE = 1;
 	public static final int NUM_STATE = 2;
 	private State currentState;
-	
+
 	public InputView(Context context, Controller ctrl) {
 		super(context, ctrl);
 		viewGroup = new RelativeLayout(context);
-		
-		labels = new TextView[DBHandler.NUM_COLUMN];
-        fields = new EditText[DBHandler.NUM_COLUMN];
-        checker = new TextView[DBHandler.NUM_COLUMN];
-        for(int i=0;i<DBHandler.NUM_COLUMN;i++) {
+
+		labels = new TextView[COLUMN_NAMES.length];
+        fields = new EditText[COLUMN_NAMES.length];
+        checker = new TextView[COLUMN_NAMES.length];
+        for(int i=0;i<COLUMN_NAMES.length;i++) {
         	createColumn(COLUMN_NAMES[i], i);
         }
-        
-        radioGroup = new RadioGroup(context);
-        radioGroup.setOnCheckedChangeListener(this);
-        radioGroup.setOrientation(LinearLayout.HORIZONTAL);
-        radioGroup.setGravity(Gravity.CENTER_HORIZONTAL);
-        radioButtons = new RadioButton[DBHandler.NUM_TABLE];
         createRadioButtons();
-        
-        OK = new Button(context);
-		OK.setText("•Û‘¶");
-		OK.setOnClickListener(this);
-		cancel = new Button(context);
-		cancel.setText("ŽæÁ");
-		cancel.setOnClickListener(this);
 		createButtons();
 		
 		states = new State[NUM_STATE];
@@ -111,8 +97,13 @@ public class InputView extends AccountView implements OnClickListener, RadioGrou
 	}
 
 	private void createRadioButtons() {
+		radioGroup = new RadioGroup(context);
+        radioGroup.setOnCheckedChangeListener(this);
+        radioGroup.setOrientation(LinearLayout.HORIZONTAL);
+        radioGroup.setGravity(Gravity.CENTER_HORIZONTAL);
+        radioButtons = new RadioButton[TABLE.length];
+        
 		RelativeLayout.LayoutParams relativeParam = new RelativeLayout.LayoutParams(MainActivity.MP, MainActivity.WC);
-
 		LinearLayout.LayoutParams linearParam;
 		
 		for(int i=0;i<TABLE.length;i++){
@@ -134,6 +125,13 @@ public class InputView extends AccountView implements OnClickListener, RadioGrou
 	}
 	
 	private void createButtons() {
+		OK = new Button(context);
+		OK.setText("•Û‘¶");
+		OK.setOnClickListener(this);
+		cancel = new Button(context);
+		cancel.setText("ŽæÁ");
+		cancel.setOnClickListener(this);
+		
 		RelativeLayout.LayoutParams relativeParam = new RelativeLayout.LayoutParams(MainActivity.MP, MainActivity.WC);
 		
 		LinearLayout linearLayout = new LinearLayout(context);
@@ -154,7 +152,7 @@ public class InputView extends AccountView implements OnClickListener, RadioGrou
 	}
 	
 	public void initialize() {
-		for(int i=0;i<DBHandler.NUM_COLUMN;i++) {
+		for(int i=0;i<COLUMN_NAMES.length;i++) {
 			fields[i].setText("");
 			checker[i].setVisibility(INVISIBLE);
 		}
@@ -199,10 +197,10 @@ public class InputView extends AccountView implements OnClickListener, RadioGrou
 			if(view == OK) {
 				String[] column = {
 						TABLE[radioGroup.getCheckedRadioButtonId()],
-						fields[AccountTable.DATE].getText().toString(),
-						fields[AccountTable.CONTENT].getText().toString(),
-						fields[AccountTable.CATEGORY].getText().toString(),
-						fields[AccountTable.PRICE].getText().toString(),
+						fields[Account.DATE-1].getText().toString(),
+						fields[Account.CONTENT-1].getText().toString(),
+						fields[Account.CATEGORY-1].getText().toString(),
+						fields[Account.PRICE-1].getText().toString(),
 				};
 				currentState.putAccount(column);
 			} else if(view == cancel) {

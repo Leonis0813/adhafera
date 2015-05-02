@@ -20,7 +20,7 @@ public class SelectView extends AccountView implements AdapterView.OnItemClickLi
 	
 	public void initialize() {
 		adapter.clear();
-		ctrl.getAllAccount();
+		ctrl.getAccount();
 	}
 	
 	public void show(String[] infos) {
