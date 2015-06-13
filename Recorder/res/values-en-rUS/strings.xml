@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-
-    <string name="app_name">Accounts</string>
-    <string name="action_settings">Settings</string>
-    <string name="menu_input">Input</string>
-    <string name="menu_edit">Edit</string>
-	<string name="menu_delete">Delete</string>
-</resources>
