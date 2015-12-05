@@ -1,5 +1,7 @@
 package com.register.android;
 
+import java.util.ArrayList;
+
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -30,5 +32,13 @@ public class MainActivity extends ActionBarActivity {
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+	
+	public void noticeError(String errorMessage, ArrayList<Integer> ids) {
+		
+	}
+	
+	public void noticeResult(String result) {
+		
 	}
 }
