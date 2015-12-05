@@ -6,6 +6,10 @@ import java.util.regex.Pattern;
 public class InputChecker {
 	private Pattern datePattern, pricePattern;
 	
+	public InputChecker() {
+		
+	}
+	
 	public ArrayList<Integer> checkEmpty(String[] inputs) {
 		return null;
 	}

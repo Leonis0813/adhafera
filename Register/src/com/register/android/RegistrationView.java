@@ -2,23 +2,24 @@ package com.register.android;
 
 import java.util.ArrayList;
 
-import android.content.Context;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
-public class RegistrationView {
+public class RegistrationView implements OnClickListener{
 	private TextView[] labels;
 	private EditText[] fields;
 	private RadioButton[] tableButton;
 	private RadioGroup radioGroup;
 	private Button OK, cancel;
 	
-	private Context context;
+	private ApplicationController ac;
 	
-	public void onClick() {
+	public RegistrationView(ApplicationController ac) {
 		
 	}
 	
@@ -27,6 +28,11 @@ public class RegistrationView {
 	}
 	
 	public void showWrongInput(ArrayList<Integer> ids) {
+		
+	}
+
+	@Override
+	public void onClick(View v) {
 		
 	}
 }
