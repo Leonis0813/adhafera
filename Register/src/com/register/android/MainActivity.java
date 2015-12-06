@@ -8,11 +8,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 public class MainActivity extends ActionBarActivity {
+	private RegistrationView rv;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
+//		setContentView(R.layout.activity_main);
+
+		rv = new RegistrationView(new ApplicationController(this), this);
+		setContentView(rv);
 	}
 
 	@Override
