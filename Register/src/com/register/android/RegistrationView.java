@@ -1,6 +1,7 @@
 package com.register.android;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -14,6 +15,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class RegistrationView extends RelativeLayout implements OnClickListener{
 	private static final String[] LABELS = {"　　日付：", "　　内容：", "カテゴリ：", "　　金額："};
@@ -26,11 +28,13 @@ public class RegistrationView extends RelativeLayout implements OnClickListener{
 	private Button OK, cancel;
 	
 	private ApplicationController ac;
+	private Context context;
 	
 	public RegistrationView(ApplicationController ac, Context context) {
 		super(context);
 		
 		this.ac = ac;
+		this.context = context;
 
 		final int WC = ViewGroup.LayoutParams.WRAP_CONTENT;
 		final int MP = ViewGroup.LayoutParams.MATCH_PARENT;
@@ -52,7 +56,7 @@ public class RegistrationView extends RelativeLayout implements OnClickListener{
 			errorCheckers[i].setText("*");
 			errorCheckers[i].setTextSize(25);
 			errorCheckers[i].setTextColor(Color.RED);
-			errorCheckers[i].setVisibility(View.INVISIBLE);
+			errorCheckers[i].setVisibility(INVISIBLE);
 			
 			ll = new LinearLayout(context);
 			llp = new LinearLayout.LayoutParams(MP, WC);
@@ -118,15 +122,30 @@ public class RegistrationView extends RelativeLayout implements OnClickListener{
 	}
 	
 	public void showMessage(String message) {
-		
+		Toast.makeText(context, message, Toast.LENGTH_LONG).show();
 	}
 	
 	public void showWrongInput(ArrayList<Integer> ids) {
-		
+		Iterator<Integer> it = ids.iterator();
+		while(it.hasNext()) {
+			errorCheckers[it.next()].setVisibility(VISIBLE);
+		}
 	}
 
 	@Override
 	public void onClick(View v) {
-		
+		if(v == OK) {
+			String[] inputs = new String[ApplicationController.INPUT_SIZE];
+			for(int i=0;i<inputs.length;i++) {
+				String input = fields[i].getText().toString();
+				inputs[i] = input.equals("") ? null : input;
+			}
+			ac.registAccount(inputs);
+		} else if(v == cancel) {
+			for(int i=0;i<labels.length;i++) {
+				fields[i].setText("");
+				errorCheckers[i].setVisibility(INVISIBLE);
+			}
+		}
 	}
 }
