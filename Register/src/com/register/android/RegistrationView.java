@@ -20,7 +20,7 @@ public class RegistrationView extends RelativeLayout implements OnClickListener{
 	private static final String[] ACCOUNT_TYPES = {"é˚ì¸", "éxèo"};
 	private TextView[] labels;
 	private EditText[] fields;
-	private TextView[] errorChecker;
+	private TextView[] errorCheckers;
 	private RadioButton[] tableButtons;
 	private RadioGroup radioGroup;
 	private Button OK, cancel;
@@ -40,19 +40,19 @@ public class RegistrationView extends RelativeLayout implements OnClickListener{
 
 		labels = new TextView[LABELS.length];
 		fields = new EditText[LABELS.length];
-		errorChecker = new TextView[LABELS.length];
+		errorCheckers = new TextView[LABELS.length];
 		for(int i=0, j=1;i<labels.length;i++) {
 			labels[i] = new TextView(context);
 			fields[i] = new EditText(context);
-			errorChecker[i] = new TextView(context);
+			errorCheckers[i] = new TextView(context);
 			labels[i].setText(LABELS[i]);
 			labels[i].setTextSize(25);
 			labels[i].setId(j++);
 			fields[i].setId(j++);
-			errorChecker[i].setText("*");
-			errorChecker[i].setTextSize(25);
-			errorChecker[i].setTextColor(Color.RED);
-			errorChecker[i].setVisibility(View.INVISIBLE);
+			errorCheckers[i].setText("*");
+			errorCheckers[i].setTextSize(25);
+			errorCheckers[i].setTextColor(Color.RED);
+			errorCheckers[i].setVisibility(View.INVISIBLE);
 			
 			ll = new LinearLayout(context);
 			llp = new LinearLayout.LayoutParams(MP, WC);
@@ -61,7 +61,7 @@ public class RegistrationView extends RelativeLayout implements OnClickListener{
 			llp = new LinearLayout.LayoutParams(MP, WC);
 			llp.weight = 1;
 			ll.addView(fields[i], llp);
-			ll.addView(errorChecker[i]);
+			ll.addView(errorCheckers[i]);
 			ll.setId(i+1);
 			rlp = new RelativeLayout.LayoutParams(MP, WC);
 			if(i==0) {
