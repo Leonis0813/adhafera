@@ -18,7 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class RegistrationView extends RelativeLayout implements OnClickListener{
-	private static final String[] LABELS = {"　　日付：", "　　内容：", "カテゴリ：", "　　金額："};
+	public static final String[] LABELS = {"日付：", "内容：", "カテゴリ：", "金額："};
 	private static final String[] ACCOUNT_TYPES = {"収入", "支出"};
 	private TextView[] labels;
 	private EditText[] fields;
@@ -49,7 +49,7 @@ public class RegistrationView extends RelativeLayout implements OnClickListener{
 			labels[i] = new TextView(context);
 			fields[i] = new EditText(context);
 			errorCheckers[i] = new TextView(context);
-			labels[i].setText(LABELS[i]);
+			labels[i].setText(i==2 ? LABELS[i] + "：" : "　　" + LABELS[i] + "：");
 			labels[i].setTextSize(25);
 			labels[i].setId(j++);
 			fields[i].setId(j++);

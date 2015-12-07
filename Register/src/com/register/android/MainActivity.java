@@ -13,7 +13,6 @@ public class MainActivity extends ActionBarActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-//		setContentView(R.layout.activity_main);
 
 		rv = new RegistrationView(new ApplicationController(this), this);
 		setContentView(rv);
@@ -39,10 +38,11 @@ public class MainActivity extends ActionBarActivity {
 	}
 	
 	public void noticeError(String errorMessage, ArrayList<Integer> ids) {
-		
+		rv.showMessage(errorMessage);
+		rv.showWrongInput(ids);
 	}
 	
 	public void noticeResult(String result) {
-		
+		rv.showMessage(result);
 	}
 }
