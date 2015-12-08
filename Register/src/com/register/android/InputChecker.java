@@ -7,18 +7,25 @@ public class InputChecker {
 	private Pattern datePattern, pricePattern;
 	
 	public InputChecker() {
-		
+		datePattern = Pattern.compile("^\\d{4}-\\d{2}-\\d{2}$");
+		pricePattern = Pattern.compile("^[1-9]\\d*$");
 	}
-	
+
 	public ArrayList<Integer> checkEmpty(String[] inputs) {
-		return null;
+		ArrayList<Integer> ids = new ArrayList<Integer>();
+		for(int i=0;i<inputs.length;i++) {
+			if(inputs[i] == null || inputs[i].equals("")) {
+				ids.add(i);
+			}
+		}
+		return ids;
 	}
-	
+
 	public boolean checkDate(String date) {
-		return false;
+		return datePattern.matcher(date).find();
 	}
-	
+
 	public boolean checkPrice(String price) {
-		return false;
+		return pricePattern.matcher(price).find();
 	}
 }
