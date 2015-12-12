@@ -1,20 +1,24 @@
 package com.register.android;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import android.support.v7.app.ActionBarActivity;
+import android.app.LoaderManager.LoaderCallbacks;
+import android.content.Loader;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends ActionBarActivity implements LoaderCallbacks<HashMap<String, Object> >{
+	public static final int INPUT_SIZE = 5;
 	private RegistrationView rv;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		rv = new RegistrationView(new ApplicationController(this), this);
+		rv = new RegistrationView(this);
 		setContentView(rv);
 	}
 
@@ -37,6 +41,12 @@ public class MainActivity extends ActionBarActivity {
 		return super.onOptionsItemSelected(item);
 	}
 	
+	public void registAccount(String[] inputs) {
+		Bundle args = new Bundle();
+		args.putStringArray("inputs", inputs);
+	    getLoaderManager().initLoader(0, args, this);
+	}
+	
 	public void noticeError(String errorMessage, ArrayList<Integer> ids) {
 		rv.showMessage(errorMessage);
 		rv.showWrongInput(ids);
@@ -44,5 +54,26 @@ public class MainActivity extends ActionBarActivity {
 	
 	public void noticeResult(String result) {
 		rv.showMessage(result);
+	}
+
+	@Override
+	public Loader<HashMap<String, Object>> onCreateLoader(int id, Bundle args) {
+		String[] inputs = args.getStringArray("inputs");
+		return new HTTPClient(this, inputs);
+	}
+
+	@Override
+	public void onLoadFinished(Loader<HashMap<String, Object>> loader, HashMap<String, Object> data) {
+		int code = Integer.parseInt(data.get("statusCode").toString());
+		if(code == 201) {
+			rv.showMessage("‰ÆŒv•ë‚ð“o˜^‚µ‚Ü‚µ‚½");
+		} else if (code == 400) {
+			rv.showMessage("‰ÆŒv•ë‚Ì“o˜^‚ÉŽ¸”s‚µ‚Ü‚µ‚½");
+		}
+	}
+
+	@Override
+	public void onLoaderReset(Loader<HashMap<String, Object>> loader) {
+		
 	}
 }

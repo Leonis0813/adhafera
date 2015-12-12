@@ -18,7 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class RegistrationView extends RelativeLayout implements OnClickListener{
-	public static final String[] LABELS = {"日付：", "内容：", "カテゴリ：", "金額："};
+	public static final String[] LABELS = {"日付", "内容", "カテゴリ", "金額"};
 	private static final String[] ACCOUNT_TYPES = {"収入", "支出"};
 	private TextView[] labels;
 	private EditText[] fields;
@@ -27,13 +27,11 @@ public class RegistrationView extends RelativeLayout implements OnClickListener{
 	private RadioGroup radioGroup;
 	private Button OK, cancel;
 	
-	private ApplicationController ac;
 	private Context context;
 	
-	public RegistrationView(ApplicationController ac, Context context) {
+	public RegistrationView(Context context) {
 		super(context);
 		
-		this.ac = ac;
 		this.context = context;
 
 		final int WC = ViewGroup.LayoutParams.WRAP_CONTENT;
@@ -135,12 +133,13 @@ public class RegistrationView extends RelativeLayout implements OnClickListener{
 	@Override
 	public void onClick(View v) {
 		if(v == OK) {
-			String[] inputs = new String[ApplicationController.INPUT_SIZE];
-			for(int i=0;i<inputs.length;i++) {
+			String[] inputs = new String[MainActivity.INPUT_SIZE];
+			for(int i=0;i<LABELS.length;i++) {
 				String input = fields[i].getText().toString();
 				inputs[i] = input.equals("") ? null : input;
 			}
-			ac.registAccount(inputs);
+			inputs[4] = tableButtons[radioGroup.getCheckedRadioButtonId()-1].getText().toString();
+			((MainActivity)context).registAccount(inputs);
 		} else if(v == cancel) {
 			for(int i=0;i<labels.length;i++) {
 				fields[i].setText("");
