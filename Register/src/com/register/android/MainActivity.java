@@ -2,6 +2,7 @@ package com.register.android;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 
 import android.support.v7.app.ActionBarActivity;
 import android.app.LoaderManager.LoaderCallbacks;
@@ -13,6 +14,7 @@ import android.view.MenuItem;
 public class MainActivity extends ActionBarActivity implements LoaderCallbacks<HashMap<String, Object> >{
 	public static final int INPUT_SIZE = 5;
 	private RegistrationView rv;
+	private InputChecker inputChecker;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -20,6 +22,7 @@ public class MainActivity extends ActionBarActivity implements LoaderCallbacks<H
 
 		rv = new RegistrationView(this);
 		setContentView(rv);
+		inputChecker = new InputChecker();
 	}
 
 	@Override
@@ -42,6 +45,34 @@ public class MainActivity extends ActionBarActivity implements LoaderCallbacks<H
 	}
 	
 	public void registAccount(String[] inputs) {
+		ArrayList<Integer> ids = inputChecker.checkEmpty(inputs);
+		if(!ids.isEmpty()) {
+			Iterator<Integer> it = ids.iterator();
+			String errorMessage = RegistrationView.LABELS[it.next()];
+			while(it.hasNext()) {
+				errorMessage += "," + RegistrationView.LABELS[it.next()];
+			}
+			errorMessage += "Ç™ì¸óÕÇ≥ÇÍÇƒÇ¢Ç‹ÇπÇÒ";
+			noticeError(errorMessage, ids);
+			return;
+		}
+		if(inputChecker.checkDate(inputs[0])) {
+			ids.add(0);
+		}
+		if(inputChecker.checkPrice(inputs[3])) {
+			ids.add(3);
+		}
+		if(!ids.isEmpty()) {
+			Iterator<Integer> it = ids.iterator();
+			String errorMessage = RegistrationView.LABELS[it.next()];
+			while(it.hasNext()) {
+				errorMessage += "," + RegistrationView.LABELS[it.next()];
+			}
+			errorMessage += "Ç™ïsê≥Ç≈Ç∑";
+			noticeError(errorMessage, ids);
+			return;
+		}
+			
 		Bundle args = new Bundle();
 		args.putStringArray("inputs", inputs);
 	    getLoaderManager().initLoader(0, args, this);

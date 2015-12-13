@@ -20,6 +20,8 @@ import android.widget.Toast;
 public class RegistrationView extends RelativeLayout implements OnClickListener{
 	public static final String[] LABELS = {"ì˙ït", "ì‡óe", "ÉJÉeÉSÉä", "ã‡äz"};
 	private static final String[] ACCOUNT_TYPES = {"é˚ì¸", "éxèo"};
+	private static final String[] ACCOUNT_TYPES_EN = {"income", "expense"};
+	
 	private TextView[] labels;
 	private EditText[] fields;
 	private TextView[] errorCheckers;
@@ -138,7 +140,7 @@ public class RegistrationView extends RelativeLayout implements OnClickListener{
 				String input = fields[i].getText().toString();
 				inputs[i] = input.equals("") ? null : input;
 			}
-			inputs[4] = tableButtons[radioGroup.getCheckedRadioButtonId()-1].getText().toString();
+			inputs[4] = ACCOUNT_TYPES_EN[radioGroup.getCheckedRadioButtonId()-1];
 			((MainActivity)context).registAccount(inputs);
 		} else if(v == cancel) {
 			for(int i=0;i<labels.length;i++) {
