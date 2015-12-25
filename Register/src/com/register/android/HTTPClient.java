@@ -21,6 +21,7 @@ public class HTTPClient extends AsyncTaskLoader<HashMap<String, Object> >{
 	private static final String host = "160.16.66.112";
 	private static final String path = "accounts";
 	
+	private HttpURLConnection con;
 	private JSONObject param;
 	private HashMap<String, Object> response;
 
@@ -41,10 +42,7 @@ public class HTTPClient extends AsyncTaskLoader<HashMap<String, Object> >{
 		response = new HashMap<String, Object>();
 	}
 
-	@Override
-	public HashMap<String, Object> loadInBackground() {
-		HttpURLConnection con = null;
-		 
+	public HashMap<String, Object> sendAccount() {
 		URL url;
 		try {
 			url = new URL("http://" + host + "/" + path);
@@ -102,8 +100,12 @@ public class HTTPClient extends AsyncTaskLoader<HashMap<String, Object> >{
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-
-        return response;
+		return response;
+	}
+	
+	@Override
+	public HashMap<String, Object> loadInBackground() {
+        return sendAccount();
 	}
 	
 	@Override
