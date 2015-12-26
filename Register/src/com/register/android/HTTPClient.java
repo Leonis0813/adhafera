@@ -19,7 +19,8 @@ import android.content.Context;
 
 public class HTTPClient extends AsyncTaskLoader<HashMap<String, Object> >{
 	private static final String host = "160.16.66.112";
-	private static final String path = "accounts";
+	private static final String port = "80";
+	private static final String path = "/accounts";
 	
 	private HttpURLConnection con;
 	private JSONObject param;
@@ -43,10 +44,8 @@ public class HTTPClient extends AsyncTaskLoader<HashMap<String, Object> >{
 	}
 
 	public HashMap<String, Object> sendAccount() {
-		URL url;
 		try {
-			url = new URL("http://" + host + "/" + path);
-			con = (HttpURLConnection)url.openConnection();
+			con = (HttpURLConnection) new URL("http://" + host + ":" + port + path).openConnection();
 			con.setRequestMethod("POST");
 			con.setRequestProperty("Content-Type", "application/json");
 			con.setDoInput(true);
@@ -54,7 +53,7 @@ public class HTTPClient extends AsyncTaskLoader<HashMap<String, Object> >{
 			
 			JSONObject account = new JSONObject();
 			account.put("accounts", param);
-			
+
 			OutputStreamWriter out = new OutputStreamWriter(con.getOutputStream());
 			out.write(account.toString());
 			out.flush();
@@ -72,7 +71,7 @@ public class HTTPClient extends AsyncTaskLoader<HashMap<String, Object> >{
 	        while((st = br.readLine()) != null){
 	            sb.append(st);
 	        }
-	        
+
 	        response.put("statusCode", con.getResponseCode());
 	        if(con.getResponseCode() == 201) {
 	        	JSONObject responseBody = new JSONObject(sb.toString());
