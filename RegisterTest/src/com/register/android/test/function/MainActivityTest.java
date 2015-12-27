@@ -5,10 +5,13 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.register.android.MainActivity;
+import com.robotium.solo.Solo;
 
 import android.test.ActivityInstrumentationTestCase2;
 
 public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActivity>{
+	private MainActivity mainActivity;
+	private Solo solo;
 
 	public MainActivityTest() {
 		super(MainActivity.class);
@@ -16,30 +19,29 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
 
 	@Before
 	public void setUp() throws Exception {
+		mainActivity = getActivity();
+		solo = new Solo(getInstrumentation(), mainActivity);
 	}
 
 	@After
 	public void tearDown() throws Exception {
-	}
-
-	@Test
-	public void testOnCreateBundle() {
-		fail("Not yet implemented");
+		solo.finishOpenedActivities();
 	}
 
 	@Test
 	public void testRegistAccount() {
-		fail("Not yet implemented");
+		String[] inputs = {};
+		mainActivity.registAccount(inputs);
 	}
 
 	@Test
 	public void testNoticeError() {
-		fail("Not yet implemented");
+		mainActivity.noticeError("", null);
 	}
 
 	@Test
 	public void testNoticeResult() {
-		fail("Not yet implemented");
+		mainActivity.noticeResult("");
 	}
 
 }
