@@ -1,4 +1,4 @@
-package com.register.android.test;
+package com.register.android.test.module;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
