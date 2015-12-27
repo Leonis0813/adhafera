@@ -19,8 +19,8 @@ import android.content.Context;
 
 public class HTTPClient extends AsyncTaskLoader<HashMap<String, Object> >{
 	private static final String host = "160.16.66.112";
-	private static final String port = "80";
-	private static final String path = "/accounts";
+	private String port = "80";
+	private String path = "/accounts";
 	
 	private HttpURLConnection con;
 	private JSONObject param;

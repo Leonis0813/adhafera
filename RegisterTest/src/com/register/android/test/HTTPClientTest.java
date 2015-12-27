@@ -4,15 +4,15 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import junit.framework.TestCase;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import android.test.AndroidTestCase;
+
 import com.register.android.HTTPClient;
 
-public class HTTPClientTest extends TestCase{
+public class HTTPClientTest extends AndroidTestCase{
 	public HTTPClientTest() {}
 
 	@Before
@@ -37,7 +37,7 @@ public class HTTPClientTest extends TestCase{
     	a.put("price", "100");
 		expected_response.put("body", a);
 
-		assertEquals(httpClient.sendAccount(), expected_response);
+		assertEquals(expected_response, httpClient.sendAccount());
 	}
 
 	@Test
@@ -54,7 +54,7 @@ public class HTTPClientTest extends TestCase{
 		errors.add(e);
     	expected_response.put("body", errors);
 
-		assertEquals(httpClient.sendAccount(), expected_response);
+		assertEquals(expected_response, httpClient.sendAccount());
 	}
 
 	@Test
@@ -67,11 +67,11 @@ public class HTTPClientTest extends TestCase{
 
 		ArrayList<HashMap<String, String> > errors = new ArrayList<HashMap<String, String> >();
 		HashMap<String, String> e = new HashMap<String, String>();
-		e.put("errorCode", "invalid_param_date");
+		e.put("errorCode", "invalid_value_date");
 		errors.add(e);
     	expected_response.put("body", errors);
 
-		assertEquals(httpClient.sendAccount(), expected_response);
+		assertEquals(expected_response, httpClient.sendAccount());
 	}
 
 	@Test
@@ -91,7 +91,7 @@ public class HTTPClientTest extends TestCase{
 		errors.add(e2);
     	expected_response.put("body", errors);
 
-		assertEquals(httpClient.sendAccount(), expected_response);
+		assertEquals(expected_response, httpClient.sendAccount());
 	}
 
 	@Test
@@ -104,18 +104,18 @@ public class HTTPClientTest extends TestCase{
 
 		ArrayList<HashMap<String, String> > errors = new ArrayList<HashMap<String, String> >();
 		HashMap<String, String> e1 = new HashMap<String, String>();
-		e1.put("errorCode", "invalid_param_date");
+		e1.put("errorCode", "invalid_value_date");
 		errors.add(e1);
 		HashMap<String, String> e2 = new HashMap<String, String>();
-		e2.put("errorCode", "invalid_param_price");
+		e2.put("errorCode", "invalid_value_price");
 		errors.add(e2);
     	expected_response.put("body", errors);
 
-		assertEquals(httpClient.sendAccount(), expected_response);
+		assertEquals(expected_response, httpClient.sendAccount());
 	}
 
 	private HTTPClient setupMock(String[] inputs) {
-		HTTPClient httpClient = new HTTPClient(null, inputs);
+		HTTPClient httpClient = new HTTPClient(getContext(), inputs);
 
 		Class<? extends HTTPClient> c = httpClient.getClass();
 		Field f;
