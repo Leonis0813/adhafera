@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import com.register.android.lib.HTTPClient;
+import com.register.android.service.InputChecker;
+import com.register.android.view.RegistrationView;
+
 import android.support.v7.app.ActionBarActivity;
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.Loader;

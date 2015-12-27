@@ -1,7 +1,9 @@
-package com.register.android;
+package com.register.android.view;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+
+import com.register.android.MainActivity;
 
 import android.content.Context;
 import android.graphics.Color;

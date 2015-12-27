@@ -7,7 +7,7 @@ import org.junit.Test;
 import android.test.ActivityInstrumentationTestCase2;
 
 import com.register.android.MainActivity;
-import com.register.android.RegistrationView;
+import com.register.android.view.RegistrationView;
 import com.robotium.solo.Solo;
 
 public class RegistrationViewTest extends ActivityInstrumentationTestCase2<MainActivity>{

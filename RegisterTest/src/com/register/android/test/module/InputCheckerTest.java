@@ -8,7 +8,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.register.android.InputChecker;
+import com.register.android.service.InputChecker;
 
 public class InputCheckerTest extends TestCase{
 	private InputChecker inputChecker;

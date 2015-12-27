@@ -1,4 +1,4 @@
-package com.register.android;
+package com.register.android.service;
 
 import java.util.ArrayList;
 import java.util.regex.Pattern;

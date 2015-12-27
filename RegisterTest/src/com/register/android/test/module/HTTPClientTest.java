@@ -10,7 +10,7 @@ import org.junit.Test;
 
 import android.test.AndroidTestCase;
 
-import com.register.android.HTTPClient;
+import com.register.android.lib.HTTPClient;
 
 public class HTTPClientTest extends AndroidTestCase{
 	public HTTPClientTest() {}
