@@ -4,15 +4,16 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import com.register.android.MainActivity;
+import com.register.android.R;
 
 import android.content.Context;
-import android.graphics.Color;
+import android.util.AttributeSet;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
@@ -24,105 +25,41 @@ public class RegistrationView extends RelativeLayout implements OnClickListener{
 	private static final String[] ACCOUNT_TYPES = {"é˚ì¸", "éxèo"};
 	private static final String[] ACCOUNT_TYPES_EN = {"income", "expense"};
 	
-	private TextView[] labels;
 	private EditText[] fields;
 	private TextView[] errorCheckers;
-	private RadioButton[] tableButtons;
 	private RadioGroup radioGroup;
 	private Button OK, cancel;
 	
 	private Context context;
 	
-	public RegistrationView(Context context) {
-		super(context);
-		
+	public RegistrationView(Context context, AttributeSet attributeSet) {
+		super(context, attributeSet);
 		this.context = context;
 
-		final int WC = ViewGroup.LayoutParams.WRAP_CONTENT;
-		final int MP = ViewGroup.LayoutParams.MATCH_PARENT;
-		LinearLayout ll;
-		RelativeLayout.LayoutParams rlp;
-		LinearLayout.LayoutParams llp;
+		View layout = LayoutInflater.from(context).inflate(R.layout.registration_view, this);
 
-		labels = new TextView[LABELS.length];
 		fields = new EditText[LABELS.length];
-		errorCheckers = new TextView[LABELS.length];
-		for(int i=0, j=1;i<labels.length;i++) {
-			labels[i] = new TextView(context);
-			fields[i] = new EditText(context);
-			errorCheckers[i] = new TextView(context);
-			labels[i].setText(i==2 ? LABELS[i] + "ÅF" : "Å@Å@" + LABELS[i] + "ÅF");
-			labels[i].setTextSize(25);
-			labels[i].setId(j++);
-			fields[i].setId(j++);
-			errorCheckers[i].setText("*");
-			errorCheckers[i].setTextSize(25);
-			errorCheckers[i].setTextColor(Color.RED);
-			errorCheckers[i].setVisibility(INVISIBLE);
-			
-			ll = new LinearLayout(context);
-			llp = new LinearLayout.LayoutParams(MP, WC);
-			llp.weight = 1;
-			ll.addView(labels[i], llp);
-			llp = new LinearLayout.LayoutParams(MP, WC);
-			llp.weight = 1;
-			ll.addView(fields[i], llp);
-			ll.addView(errorCheckers[i]);
-			ll.setId(i+1);
-			rlp = new RelativeLayout.LayoutParams(MP, WC);
-			if(i==0) {
-				rlp.addRule(RelativeLayout.ALIGN_PARENT_TOP);
-				rlp.topMargin = 50;
-			} else {
-				rlp.addRule(RelativeLayout.BELOW, i);
-			}
-			rlp.leftMargin = 50;
-			rlp.rightMargin = 50;
-			addView(ll, rlp);
-		}
+		fields[0] = (EditText) layout.findViewById(R.id.field_date);
+		fields[1] = (EditText) layout.findViewById(R.id.field_content);
+		fields[2] = (EditText) layout.findViewById(R.id.field_category);
+		fields[3] = (EditText) layout.findViewById(R.id.field_price);
 
-		tableButtons = new RadioButton[ACCOUNT_TYPES.length];
-		radioGroup = new RadioGroup(context);
-		radioGroup.setOrientation(LinearLayout.HORIZONTAL);
-		ll = new LinearLayout(context);
-		for(int i=0;i<tableButtons.length;i++) {
-			tableButtons[i] = new RadioButton(context);
-			tableButtons[i].setText(ACCOUNT_TYPES[i]);
-			tableButtons[i].setTextSize(20);
-			radioGroup.addView(tableButtons[i]);
-		}
-		ll.addView(radioGroup);
-		rlp = new RelativeLayout.LayoutParams(WC, WC);
-		rlp.addRule(RelativeLayout.BELOW, 4);
-		rlp.addRule(RelativeLayout.CENTER_HORIZONTAL);
-		rlp.topMargin = 30;
-		addView(ll, rlp);
-		tableButtons[1].setChecked(true);
-		
-		ll = new LinearLayout(context);
-		OK = new Button(context);
-		OK.setText("ìoò^");
+		errorCheckers = new TextView[LABELS.length];
+		errorCheckers[0] = (TextView) layout.findViewById(R.id.check_date);
+		errorCheckers[1] = (TextView) layout.findViewById(R.id.check_content);
+		errorCheckers[2] = (TextView) layout.findViewById(R.id.check_category);
+		errorCheckers[3] = (TextView) layout.findViewById(R.id.check_price);
+
+		radioGroup = (RadioGroup) layout.findViewById(R.id.radiogroup);
+//		radioGroup.addView((RadioButton) layout.findViewById(R.id.income));
+//		radioGroup.addView((RadioButton) layout.findViewById(R.id.expense));
+
+		OK = (Button) layout.findViewById(R.id.OK);
 		OK.setOnClickListener(this);
-		llp = new LinearLayout.LayoutParams(WC, WC);
-		llp.leftMargin = 50;
-		llp.rightMargin = 25;
-		llp.weight = 1;
-		ll.addView(OK, llp);
-		
-		cancel = new Button(context);
-		cancel.setText("éÊè¡");
+		cancel = (Button) layout.findViewById(R.id.cancel);
 		cancel.setOnClickListener(this);
-		rlp = new RelativeLayout.LayoutParams(MP, WC);
-		rlp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-		rlp.bottomMargin = 50;
-		llp = new LinearLayout.LayoutParams(WC, WC);
-		llp.leftMargin = 25;
-		llp.rightMargin = 50;
-		llp.weight = 1;
-		ll.addView(cancel, llp);
-		addView(ll, rlp);
 	}
-	
+
 	public void showMessage(String message) {
 		Toast.makeText(context, message, Toast.LENGTH_LONG).show();
 	}
@@ -142,10 +79,12 @@ public class RegistrationView extends RelativeLayout implements OnClickListener{
 				String input = fields[i].getText().toString();
 				inputs[i] = input.equals("") ? null : input;
 			}
-			inputs[4] = ACCOUNT_TYPES_EN[radioGroup.getCheckedRadioButtonId()-1];
+			int id = radioGroup.getCheckedRadioButtonId();
+			RadioButton radioButton = (RadioButton) findViewById(id);
+			inputs[4] = radioButton.getText().toString().equals("é˚ì¸") ? "income" : "expense";
 			((MainActivity)context).registAccount(inputs);
 		} else if(v == cancel) {
-			for(int i=0;i<labels.length;i++) {
+			for(int i=0;i<LABELS.length;i++) {
 				fields[i].setText("");
 				errorCheckers[i].setVisibility(INVISIBLE);
 			}
