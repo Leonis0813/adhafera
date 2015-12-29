@@ -1,7 +1,5 @@
 package com.register.android.test;
 
-import java.util.ArrayList;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -11,7 +9,6 @@ import com.register.android.R;
 import com.robotium.solo.Solo;
 
 import android.test.ActivityInstrumentationTestCase2;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -19,6 +16,7 @@ import android.widget.TextView;
 
 public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActivity>{
 	private Solo solo;
+	private int[] fieldIDs, checkIDs;
 
 	public MainActivityTest() {
 		super(MainActivity.class);
@@ -27,6 +25,8 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
 	@Before
 	public void setUp() throws Exception {
 		solo = new Solo(getInstrumentation(), getActivity());
+		fieldIDs = new int[]{R.id.field_date, R.id.field_content, R.id.field_category, R.id.field_price};
+		checkIDs = new int[]{R.id.check_date, R.id.check_content, R.id.check_category, R.id.check_price};
 	}
 
 	@After
@@ -37,110 +37,47 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
 	@Test
 	public void testRegistration_normal() {
 		assertStartApplication();
-		
-		EditText editText;
-		editText = (EditText) solo.getView(R.id.field_date);
-		solo.typeText(editText, "2015-01-01");
-		editText = (EditText) solo.getView(R.id.field_content);
-		solo.typeText(editText, "data for system test");
-		editText = (EditText) solo.getView(R.id.field_category);
-		solo.typeText(editText, "test");
-		editText = (EditText) solo.getView(R.id.field_price);
-		solo.typeText(editText, "100");
+
+		String[] texts = {"2015-01-01", "data for system test", "test", "100"};
+		inputAccountInfo(texts);
 		solo.clickOnView(solo.getView(R.id.income));
-		
+
 		solo.clickOnView(solo.getView(R.id.OK));
-		
-		assertToast("‰ÆŒv•ë‚ð“o˜^‚µ‚Ü‚µ‚½");
-
-		int[] fieldIds = {R.id.field_date, R.id.field_content, R.id.field_category , R.id.field_price};
-		for(int i=0;i<fieldIds.length;i++) {
-			assertTextInField(fieldIds[i], "");
-		}
-
-		assertTableButton("Žû“ü");
-
-		int[] checkIds = {R.id.check_date, R.id.check_content, R.id.check_category, R.id.check_price};
-		for(int i=0;i<checkIds.length;i++) {
-			assertVisibility(checkIds[i], TextView.INVISIBLE);
-		}
+		int[] visibilities = {TextView.INVISIBLE, TextView.INVISIBLE, TextView.INVISIBLE, TextView.INVISIBLE};
+		assertRegistration("‰ÆŒv•ë‚ð“o˜^‚µ‚Ü‚µ‚½", new String[]{"", "", "", ""}, "Žû“ü", visibilities);
 	}
 
 	@Test
 	public void testRegistration_exception_includeEmpty() {
 		assertStartApplication();
-		
-		EditText editText;
-		editText = (EditText) solo.getView(R.id.field_date);
-		solo.typeText(editText, "2015-01-01");
-		editText = (EditText) solo.getView(R.id.field_category);
-		solo.typeText(editText, "test");
-		editText = (EditText) solo.getView(R.id.field_price);
-		solo.typeText(editText, "100");
+
+		String[] texts = {"2015-01-01", "", "test", "100"};
+		inputAccountInfo(texts);
 		solo.clickOnView(solo.getView(R.id.income));
-		
+
 		solo.clickOnView(solo.getView(R.id.OK));
-		
-		assertToast("“à—e‚ª“ü—Í‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ");
-
-		assertTextInField(R.id.field_date, "2015-01-01");
-		assertTextInField(R.id.field_content, "");
-		assertTextInField(R.id.field_category, "test");
-		assertTextInField(R.id.field_price, "100");
-
-		assertTableButton("Žû“ü");
-
-		assertVisibility(R.id.check_date, TextView.INVISIBLE);
-		assertVisibility(R.id.check_content, TextView.VISIBLE);
-		assertVisibility(R.id.check_category, TextView.INVISIBLE);
-		assertVisibility(R.id.check_price, TextView.INVISIBLE);
+		int[] visibilities = {TextView.INVISIBLE, TextView.VISIBLE, TextView.INVISIBLE, TextView.INVISIBLE};
+		assertRegistration("“à—e‚ª“ü—Í‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ", texts, "Žû“ü", visibilities);
 	}
 
 	@Test
 	public void testRegistration_exception_includeInvalidValue() {
 		assertStartApplication();
-		
-		EditText editText;
-		editText = (EditText) solo.getView(R.id.field_date);
-		solo.typeText(editText, "invalid_date");
-		editText = (EditText) solo.getView(R.id.field_content);
-		solo.typeText(editText, "data for system test");
-		editText = (EditText) solo.getView(R.id.field_category);
-		solo.typeText(editText, "test");
-		editText = (EditText) solo.getView(R.id.field_price);
-		solo.typeText(editText, "100");
+
+		String[] texts = {"invalid_date", "data for system test", "test", "100"};
+		inputAccountInfo(texts);
 		solo.clickOnView(solo.getView(R.id.income));
-		
+
 		solo.clickOnView(solo.getView(R.id.OK));
-		
-		assertToast("“ú•t‚ª•s³‚Å‚·");
-
-		assertTextInField(R.id.field_date, "invalid_date");
-		assertTextInField(R.id.field_content, "data for system test");
-		assertTextInField(R.id.field_category, "test");
-		assertTextInField(R.id.field_price, "100");
-
-		assertTableButton("Žû“ü");
-
-		assertVisibility(R.id.check_date, TextView.VISIBLE);
-		assertVisibility(R.id.check_content, TextView.INVISIBLE);
-		assertVisibility(R.id.check_category, TextView.INVISIBLE);
-		assertVisibility(R.id.check_price, TextView.INVISIBLE);
+		int[] visibilities = {TextView.VISIBLE, TextView.INVISIBLE, TextView.INVISIBLE, TextView.INVISIBLE};
+		assertRegistration("“ú•t‚ª•s³‚Å‚·", texts, "Žû“ü", visibilities);
 	}
 
 	@Test
 	public void testCancelRegistration_normal() {
 		assertStartApplication();
 
-		EditText editText;
-		editText = (EditText) solo.getView(R.id.field_date);
-		solo.typeText(editText, "2015-01-01");
-		editText = (EditText) solo.getView(R.id.field_content);
-		solo.typeText(editText, "data for system test");
-		editText = (EditText) solo.getView(R.id.field_category);
-		solo.typeText(editText, "test");
-		editText = (EditText) solo.getView(R.id.field_price);
-		solo.typeText(editText, "100");
+		inputAccountInfo(new String[]{"2015-01-01", "data for system test", "test", "100"});
 		solo.clickOnView(solo.getView(R.id.income));
 
 		solo.clickOnView(solo.getView(R.id.cancel));
@@ -151,11 +88,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
 	public void testCancelRegistration_normal_includeEmpty() {
 		assertStartApplication();
 
-		EditText editText;
-		editText = (EditText) solo.getView(R.id.field_date);
-		solo.typeText(editText, "2015-01-01");
-		editText = (EditText) solo.getView(R.id.field_content);
-		solo.typeText(editText, "data for system test");
+		inputAccountInfo(new String[]{"2015-01-01", "data for system test", "", ""});
 		solo.clickOnView(solo.getView(R.id.income));
 
 		solo.clickOnView(solo.getView(R.id.cancel));
@@ -166,15 +99,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
 	public void testCancelRegistration_normal_includeInvalidValue() {
 		assertStartApplication();
 
-		EditText editText;
-		editText = (EditText) solo.getView(R.id.field_date);
-		solo.typeText(editText, "2015-01-01");
-		editText = (EditText) solo.getView(R.id.field_content);
-		solo.typeText(editText, "data for system test");
-		editText = (EditText) solo.getView(R.id.field_category);
-		solo.typeText(editText, "test");
-		editText = (EditText) solo.getView(R.id.field_price);
-		solo.typeText(editText, "invalid_value");
+		inputAccountInfo(new String[]{"2015-01-01", "data for system test", "test", "invalid_price"});
 		solo.clickOnView(solo.getView(R.id.income));
 
 		solo.clickOnView(solo.getView(R.id.cancel));
@@ -183,52 +108,46 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
 
 	private void assertStartApplication() {
 		assertTrue(solo.waitForActivity(MainActivity.class, 5 * 1000));
-
-		int[] fieldIds = {R.id.field_date, R.id.field_content, R.id.field_category , R.id.field_price};
-		for(int i=0;i<fieldIds.length;i++) {
-			assertTextInField(fieldIds[i], "");
-		}
-
+		assertTextInField(new String[]{"", "", "", ""});
 		assertTableButton("Žxo");
-
-		int[] checkIds = {R.id.check_date, R.id.check_content, R.id.check_category, R.id.check_price};
-		for(int i=0;i<checkIds.length;i++) {
-			assertVisibility(checkIds[i], TextView.INVISIBLE);
-		}
+		assertErrorChecker(new int[]{TextView.INVISIBLE, TextView.INVISIBLE, TextView.INVISIBLE, TextView.INVISIBLE});
 	}
 
+	private void assertRegistration(String toast, String[] inputTexts, String button, int[] visibilities) {
+		assertTrue(solo.waitForText(toast, 1, 5 * 1000));
+		assertTextInField(inputTexts);
+		assertTableButton(button);
+		assertErrorChecker(visibilities);
+	}
+	
 	private void assertCancel() {
-		int[] fieldIds = {R.id.field_date, R.id.field_content, R.id.field_category , R.id.field_price};
-		for(int i=0;i<fieldIds.length;i++) {
-			assertTextInField(fieldIds[i], "");
-		}
-
+		assertTextInField(new String[]{"", "", "", ""});
 		assertTableButton("Žû“ü");
+		assertErrorChecker(new int[]{TextView.INVISIBLE, TextView.INVISIBLE, TextView.INVISIBLE, TextView.INVISIBLE});
+	}
 
-		int[] checkIds = {R.id.check_date, R.id.check_content, R.id.check_category, R.id.check_price};
-		for(int i=0;i<checkIds.length;i++) {
-			assertVisibility(checkIds[i], TextView.INVISIBLE);
+	private void assertTextInField(String[] texts) {
+		for(int i=0;i<fieldIDs.length;i++) {
+			assertTrue(((EditText) solo.getView(fieldIDs[i])).getText().toString().equals(texts[i]));
 		}
 	}
 
-	private void assertTextInField(int id, String text) {
-		EditText editText = (EditText) solo.getView(id);
-		assertTrue(editText.getText().toString().equals(text));
-	}
-
-	private void assertVisibility(int id, int visibility) {
-		TextView textView = (TextView) solo.getView(id);
-		assertEquals(textView.getVisibility(), visibility);
+	private void assertErrorChecker(int[] visibilities) {
+		for(int i=0;i<checkIDs.length;i++) {
+			assertEquals(((TextView) solo.getView(checkIDs[i])).getVisibility(), visibilities[i]);
+		}
 	}
 
 	private void assertTableButton(String text) {
-		RadioGroup radioGroup = (RadioGroup) solo.getView(R.id.radiogroup);
-		int id = radioGroup.getCheckedRadioButtonId();
-		RadioButton radioButton = (RadioButton) solo.getView(id);
-		assertTrue(radioButton.getText().toString().equals(text));
+		int id = ((RadioGroup) solo.getView(R.id.radiogroup)).getCheckedRadioButtonId();
+		assertTrue(((RadioButton) solo.getView(id)).getText().toString().equals(text));
 	}
 
-	private void assertToast(String text) {
-		assertTrue(solo.waitForText(text, 1, 5 * 1000));
+	private void inputAccountInfo(String[] texts) {
+		for(int i=0;i<fieldIDs.length;i++) {
+			if(!texts[i].equals("")) {
+				solo.typeText((EditText) solo.getView(fieldIDs[i]), texts[i]);
+			}
+		}
 	}
 }
