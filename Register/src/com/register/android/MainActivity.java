@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import com.register.android.lib.HTTPClient;
+import com.register.android.service.InputChecker;
+import com.register.android.view.RegistrationView;
+
 import android.support.v7.app.ActionBarActivity;
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.Loader;
@@ -19,24 +23,20 @@ public class MainActivity extends ActionBarActivity implements LoaderCallbacks<H
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_main);
 
-		rv = new RegistrationView(this);
-		setContentView(rv);
+		rv = (RegistrationView) findViewById(R.id.registration);
 		inputChecker = new InputChecker();
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
 		if (id == R.id.action_settings) {
 			return true;
@@ -56,10 +56,10 @@ public class MainActivity extends ActionBarActivity implements LoaderCallbacks<H
 			noticeError(errorMessage, ids);
 			return;
 		}
-		if(inputChecker.checkDate(inputs[0])) {
+		if(!inputChecker.checkDate(inputs[0])) {
 			ids.add(0);
 		}
-		if(inputChecker.checkPrice(inputs[3])) {
+		if(!inputChecker.checkPrice(inputs[3])) {
 			ids.add(3);
 		}
 		if(!ids.isEmpty()) {
@@ -98,6 +98,7 @@ public class MainActivity extends ActionBarActivity implements LoaderCallbacks<H
 		int code = Integer.parseInt(data.get("statusCode").toString());
 		if(code == 201) {
 			rv.showMessage("‰ÆŒv•ë‚ð“o˜^‚µ‚Ü‚µ‚½");
+			rv.resetField();
 		} else if (code == 400) {
 			rv.showMessage("‰ÆŒv•ë‚Ì“o˜^‚ÉŽ¸”s‚µ‚Ü‚µ‚½");
 		}
