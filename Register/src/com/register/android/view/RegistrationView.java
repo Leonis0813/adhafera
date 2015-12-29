@@ -8,7 +8,6 @@ import com.register.android.R;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -22,9 +21,7 @@ import android.widget.Toast;
 
 public class RegistrationView extends RelativeLayout implements OnClickListener{
 	public static final String[] LABELS = {"ì˙ït", "ì‡óe", "ÉJÉeÉSÉä", "ã‡äz"};
-	private static final String[] ACCOUNT_TYPES = {"é˚ì¸", "éxèo"};
-	private static final String[] ACCOUNT_TYPES_EN = {"income", "expense"};
-	
+
 	private EditText[] fields;
 	private TextView[] errorCheckers;
 	private RadioGroup radioGroup;
@@ -51,8 +48,6 @@ public class RegistrationView extends RelativeLayout implements OnClickListener{
 		errorCheckers[3] = (TextView) layout.findViewById(R.id.check_price);
 
 		radioGroup = (RadioGroup) layout.findViewById(R.id.radiogroup);
-//		radioGroup.addView((RadioButton) layout.findViewById(R.id.income));
-//		radioGroup.addView((RadioButton) layout.findViewById(R.id.expense));
 
 		OK = (Button) layout.findViewById(R.id.OK);
 		OK.setOnClickListener(this);
@@ -68,6 +63,12 @@ public class RegistrationView extends RelativeLayout implements OnClickListener{
 		Iterator<Integer> it = ids.iterator();
 		while(it.hasNext()) {
 			errorCheckers[it.next()].setVisibility(VISIBLE);
+		}
+	}
+
+	public void resetField() {
+		for(int i=0;i<fields.length;i++) {
+			fields[i].setText("");
 		}
 	}
 

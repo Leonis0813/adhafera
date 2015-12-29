@@ -56,10 +56,10 @@ public class MainActivity extends ActionBarActivity implements LoaderCallbacks<H
 			noticeError(errorMessage, ids);
 			return;
 		}
-		if(inputChecker.checkDate(inputs[0])) {
+		if(!inputChecker.checkDate(inputs[0])) {
 			ids.add(0);
 		}
-		if(inputChecker.checkPrice(inputs[3])) {
+		if(!inputChecker.checkPrice(inputs[3])) {
 			ids.add(3);
 		}
 		if(!ids.isEmpty()) {
@@ -98,6 +98,7 @@ public class MainActivity extends ActionBarActivity implements LoaderCallbacks<H
 		int code = Integer.parseInt(data.get("statusCode").toString());
 		if(code == 201) {
 			rv.showMessage("‰ÆŒv•ë‚ð“o˜^‚µ‚Ü‚µ‚½");
+			rv.resetField();
 		} else if (code == 400) {
 			rv.showMessage("‰ÆŒv•ë‚Ì“o˜^‚ÉŽ¸”s‚µ‚Ü‚µ‚½");
 		}
