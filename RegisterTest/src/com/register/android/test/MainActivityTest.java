@@ -114,7 +114,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
 	}
 
 	private void assertRegistration(String toast, String[] inputTexts, String button, int[] visibilities) {
-		assertTrue(solo.waitForText(toast, 1, 5 * 1000));
+		assertTrue(solo.waitForText(toast, 1, 10 * 1000));
 		assertTextInField(inputTexts);
 		assertTableButton(button);
 		assertErrorChecker(visibilities);
