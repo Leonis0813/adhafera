@@ -14,7 +14,7 @@
     	    android:layout_height="wrap_content"
     	    android:layout_weight="1"
     	    android:id="@+id/label_date"
-    	    android:text="　　日付："
+    	    android:text="@string/date"
     	    android:textSize="25sp"
     	    />
     	<EditText
@@ -26,7 +26,7 @@
     	<TextView
     	    android:layout_width="wrap_content"
     	    android:layout_height="wrap_content"
-    	    android:text="*"
+    	    android:text="@string/error"
     	    android:textSize="25sp"
     	    android:textColor="#ff0000"
     	    android:visibility="invisible"
@@ -45,7 +45,7 @@
     	    android:layout_height="wrap_content"
         	android:layout_weight="1"
     	    android:id="@+id/label_content"
-    	    android:text="　　内容："
+    	    android:text="@string/content"
         	android:textSize="25sp"
         	/>
     	<EditText
@@ -57,7 +57,7 @@
     	<TextView
     	    android:layout_width="wrap_content"
         	android:layout_height="wrap_content"
-    	    android:text="*"
+    	    android:text="@string/error"
     	    android:textSize="25sp"
         	android:textColor="#ff0000"
     	    android:visibility="invisible"
@@ -76,7 +76,7 @@
         	android:layout_height="wrap_content"
         	android:layout_weight="1"
         	android:id="@+id/label_category"
-        	android:text="カテゴリ："
+        	android:text="@string/category"
         	android:textSize="25sp"
         	/>
     	<EditText
@@ -88,7 +88,7 @@
     	<TextView
     	    android:layout_width="wrap_content"
         	android:layout_height="wrap_content"
-        	android:text="*"
+        	android:text="@string/error"
         	android:textSize="25sp"
         	android:textColor="#ff0000"
         	android:visibility="invisible"
@@ -107,7 +107,7 @@
         	android:layout_height="wrap_content"
         	android:layout_weight="1"
         	android:id="@+id/label_price"
-        	android:text="　　金額："
+        	android:text="@string/price"
         	android:textSize="25sp"
         	/>
     	<EditText
@@ -119,7 +119,7 @@
     	<TextView
         	android:layout_width="wrap_content"
         	android:layout_height="wrap_content"
-        	android:text="*"
+        	android:text="@string/error"
         	android:textSize="25sp"
         	android:textColor="#ff0000"
         	android:visibility="invisible"
@@ -140,13 +140,13 @@
        		android:layout_width="wrap_content"
         	android:layout_height="wrap_content"
         	android:id="@+id/income"
-        	android:text="収入"
+        	android:text="@string/income"
         	android:textSize="20sp" />
     	<RadioButton
      		android:layout_width="wrap_content"
  	        android:layout_height="wrap_content"
  	        android:id="@+id/expense"
- 	        android:text="支出"
+ 	        android:text="@string/expense"
  	        android:textSize="20sp"
  	        android:checked="true" />
     </RadioGroup>
@@ -163,7 +163,7 @@
         	android:layout_marginLeft="25dip"
         	android:layout_marginRight="25dip"
         	android:id="@+id/OK"
-        	android:text="登録">
+        	android:text="@string/OK">
        	</Button>
        	<Button
         	android:layout_width="wrap_content"
@@ -172,7 +172,7 @@
         	android:layout_marginLeft="25dip"
         	android:layout_marginRight="25dip"
   	 		android:id="@+id/cancel"
-        	android:text="取消">
+        	android:text="@string/cancel">
    		</Button>
     </LinearLayout>
 </RelativeLayout>
