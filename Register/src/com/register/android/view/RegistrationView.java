@@ -1,6 +1,8 @@
 package com.register.android.view;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 
 import com.register.android.MainActivity;
@@ -40,6 +42,9 @@ public class RegistrationView extends RelativeLayout implements OnClickListener{
 		fields[1] = (EditText) layout.findViewById(R.id.field_content);
 		fields[2] = (EditText) layout.findViewById(R.id.field_category);
 		fields[3] = (EditText) layout.findViewById(R.id.field_price);
+		
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		fields[0].setText(simpleDateFormat.format(new Date()));
 
 		errorCheckers = new TextView[LABELS.length];
 		errorCheckers[0] = (TextView) layout.findViewById(R.id.check_date);
