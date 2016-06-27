@@ -67,7 +67,7 @@ public class HTTPClientTest extends AndroidTestCase{
 
 		ArrayList<HashMap<String, String> > errors = new ArrayList<HashMap<String, String> >();
 		HashMap<String, String> e = new HashMap<String, String>();
-		e.put("errorCode", "invalid_value_date");
+		e.put("errorCode", "invalid_param_date");
 		errors.add(e);
     	expected_response.put("body", errors);
 
@@ -104,10 +104,10 @@ public class HTTPClientTest extends AndroidTestCase{
 
 		ArrayList<HashMap<String, String> > errors = new ArrayList<HashMap<String, String> >();
 		HashMap<String, String> e1 = new HashMap<String, String>();
-		e1.put("errorCode", "invalid_value_date");
+		e1.put("errorCode", "invalid_param_date");
 		errors.add(e1);
 		HashMap<String, String> e2 = new HashMap<String, String>();
-		e2.put("errorCode", "invalid_value_price");
+		e2.put("errorCode", "invalid_param_price");
 		errors.add(e2);
     	expected_response.put("body", errors);
 

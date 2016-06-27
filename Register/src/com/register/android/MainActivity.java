@@ -17,6 +17,8 @@ import android.view.MenuItem;
 
 public class MainActivity extends ActionBarActivity implements LoaderCallbacks<HashMap<String, Object> >{
 	public static final int INPUT_SIZE = 5;
+	private static final int LOADER_ID = 0;
+
 	private RegistrationView rv;
 	private InputChecker inputChecker;
 
@@ -72,10 +74,10 @@ public class MainActivity extends ActionBarActivity implements LoaderCallbacks<H
 			noticeError(errorMessage, ids);
 			return;
 		}
-			
+
 		Bundle args = new Bundle();
 		args.putStringArray("inputs", inputs);
-	    getLoaderManager().initLoader(0, args, this);
+	    getLoaderManager().initLoader(LOADER_ID, args, this);
 	}
 	
 	public void noticeError(String errorMessage, ArrayList<Integer> ids) {
@@ -102,6 +104,7 @@ public class MainActivity extends ActionBarActivity implements LoaderCallbacks<H
 		} else if (code == 400) {
 			rv.showMessage("‰ÆŒv•ë‚Ì“o˜^‚ÉŽ¸”s‚µ‚Ü‚µ‚½");
 		}
+		getLoaderManager().destroyLoader(LOADER_ID);
 	}
 
 	@Override

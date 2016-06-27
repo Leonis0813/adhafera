@@ -1,5 +1,8 @@
 package com.register.android.test;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -108,7 +111,9 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
 
 	private void assertStartApplication() {
 		assertTrue(solo.waitForActivity(MainActivity.class, 5 * 1000));
-		assertTextInField(new String[]{"", "", "", ""});
+		
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		assertTextInField(new String[]{simpleDateFormat.format(new Date()), "", "", ""});
 		assertTableButton("Žxo");
 		assertErrorChecker(new int[]{TextView.INVISIBLE, TextView.INVISIBLE, TextView.INVISIBLE, TextView.INVISIBLE});
 	}
@@ -146,6 +151,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
 	private void inputAccountInfo(String[] texts) {
 		for(int i=0;i<fieldIDs.length;i++) {
 			if(!texts[i].equals("")) {
+				solo.clearEditText((EditText) solo.getView(fieldIDs[i]));
 				solo.typeText((EditText) solo.getView(fieldIDs[i]), texts[i]);
 			}
 		}
