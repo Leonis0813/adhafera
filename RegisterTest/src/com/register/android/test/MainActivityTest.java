@@ -47,7 +47,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
 
 		solo.clickOnView(solo.getView(R.id.OK));
 		int[] visibilities = {TextView.INVISIBLE, TextView.INVISIBLE, TextView.INVISIBLE, TextView.INVISIBLE};
-		assertRegistration("‰ÆŒv•ë‚ð“o˜^‚µ‚Ü‚µ‚½", new String[]{"", "", "", ""}, "Žû“ü", visibilities);
+		assertRegistration("å®¶è¨ˆç°¿ã‚’ç™»éŒ²ã—ã¾ã—ãŸ", new String[]{"", "", "", ""}, "åŽå…¥", visibilities);
 	}
 
 	@Test
@@ -60,7 +60,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
 
 		solo.clickOnView(solo.getView(R.id.OK));
 		int[] visibilities = {TextView.INVISIBLE, TextView.VISIBLE, TextView.INVISIBLE, TextView.INVISIBLE};
-		assertRegistration("“à—e‚ª“ü—Í‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ", texts, "Žû“ü", visibilities);
+		assertRegistration("å†…å®¹ãŒå…¥åŠ›ã•ã‚Œã¦ã„ã¾ã›ã‚“", texts, "åŽå…¥", visibilities);
 	}
 
 	@Test
@@ -73,7 +73,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
 
 		solo.clickOnView(solo.getView(R.id.OK));
 		int[] visibilities = {TextView.VISIBLE, TextView.INVISIBLE, TextView.INVISIBLE, TextView.INVISIBLE};
-		assertRegistration("“ú•t‚ª•s³‚Å‚·", texts, "Žû“ü", visibilities);
+		assertRegistration("æ—¥ä»˜ãŒä¸æ­£ã§ã™", texts, "åŽå…¥", visibilities);
 	}
 
 	@Test
@@ -114,7 +114,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
 		
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		assertTextInField(new String[]{simpleDateFormat.format(new Date()), "", "", ""});
-		assertTableButton("Žxo");
+		assertTableButton("æ”¯å‡º");
 		assertErrorChecker(new int[]{TextView.INVISIBLE, TextView.INVISIBLE, TextView.INVISIBLE, TextView.INVISIBLE});
 	}
 
@@ -127,7 +127,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
 	
 	private void assertCancel() {
 		assertTextInField(new String[]{"", "", "", ""});
-		assertTableButton("Žû“ü");
+		assertTableButton("åŽå…¥");
 		assertErrorChecker(new int[]{TextView.INVISIBLE, TextView.INVISIBLE, TextView.INVISIBLE, TextView.INVISIBLE});
 	}
 

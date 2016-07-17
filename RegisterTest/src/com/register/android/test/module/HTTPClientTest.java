@@ -23,7 +23,7 @@ public class HTTPClientTest extends AndroidTestCase{
 
 	@Test
 	public void testSendAccount_normal() {
-		String[] inputs = {"2015-01-01", "ƒeƒXƒg—pƒf[ƒ^", "ƒeƒXƒg", "100", "expense"};
+		String[] inputs = {"2015-01-01", "ãƒ†ã‚¹ãƒˆç”¨ãƒ‡ãƒ¼ã‚¿", "ãƒ†ã‚¹ãƒˆ", "100", "expense"};
 		HTTPClient httpClient = setupMock(inputs);
 
 		HashMap<String, Object> expected_response = new HashMap<String, Object>();
@@ -32,8 +32,8 @@ public class HTTPClientTest extends AndroidTestCase{
 		HashMap<String, String> a = new HashMap<String, String>();
     	a.put("account_type", "expense");
     	a.put("date", "2015-01-01");
-    	a.put("content", "ƒeƒXƒg—pƒf[ƒ^");
-    	a.put("category", "ƒeƒXƒg");
+    	a.put("content", "ãƒ†ã‚¹ãƒˆç”¨ãƒ‡ãƒ¼ã‚¿");
+    	a.put("category", "ãƒ†ã‚¹ãƒˆ");
     	a.put("price", "100");
 		expected_response.put("body", a);
 
@@ -42,7 +42,7 @@ public class HTTPClientTest extends AndroidTestCase{
 
 	@Test
 	public void testSendAccount_exception_categoryIsAbsent() {
-		String[] inputs = {"2015-01-01", "ƒeƒXƒg—pƒf[ƒ^", null, "100", "expense"};
+		String[] inputs = {"2015-01-01", "ãƒ†ã‚¹ãƒˆç”¨ãƒ‡ãƒ¼ã‚¿", null, "100", "expense"};
 		HTTPClient httpClient = setupMock(inputs);
 
 		HashMap<String, Object> expected_response = new HashMap<String, Object>();
@@ -59,7 +59,7 @@ public class HTTPClientTest extends AndroidTestCase{
 
 	@Test
 	public void testSendAccount_exception_dateIsInvalid() {
-		String[] inputs = {"01-01-2015", "ƒeƒXƒg—pƒf[ƒ^", "ƒeƒXƒg", "100", "expense"};
+		String[] inputs = {"01-01-2015", "ãƒ†ã‚¹ãƒˆç”¨ãƒ‡ãƒ¼ã‚¿", "ãƒ†ã‚¹ãƒˆ", "100", "expense"};
 		HTTPClient httpClient = setupMock(inputs);
 
 		HashMap<String, Object> expected_response = new HashMap<String, Object>();
@@ -76,7 +76,7 @@ public class HTTPClientTest extends AndroidTestCase{
 
 	@Test
 	public void testSendAccount_exception_multipleInputsIsAbsent() {
-		String[] inputs = {"2015-01-01", null, "ƒeƒXƒg", null, "expense"};
+		String[] inputs = {"2015-01-01", null, "ãƒ†ã‚¹ãƒˆ", null, "expense"};
 		HTTPClient httpClient = setupMock(inputs);
 
 		HashMap<String, Object> expected_response = new HashMap<String, Object>();
@@ -96,7 +96,7 @@ public class HTTPClientTest extends AndroidTestCase{
 
 	@Test
 	public void testSendAccount_exception_multipleInputsIsInvalid() {
-		String[] inputs = {"01-01-2015", "ƒeƒXƒg—pƒf[ƒ^", "ƒeƒXƒg", "-100", "expense"};
+		String[] inputs = {"01-01-2015", "ãƒ†ã‚¹ãƒˆç”¨ãƒ‡ãƒ¼ã‚¿", "ãƒ†ã‚¹ãƒˆ", "-100", "expense"};
 		HTTPClient httpClient = setupMock(inputs);
 
 		HashMap<String, Object> expected_response = new HashMap<String, Object>();

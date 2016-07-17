@@ -54,7 +54,7 @@ public class MainActivity extends ActionBarActivity implements LoaderCallbacks<H
 			while(it.hasNext()) {
 				errorMessage += "," + RegistrationView.LABELS[it.next()];
 			}
-			errorMessage += "‚ª“ü—Í‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ";
+			errorMessage += "ãŒå…¥åŠ›ã•ã‚Œã¦ã„ã¾ã›ã‚“";
 			noticeError(errorMessage, ids);
 			return;
 		}
@@ -70,7 +70,7 @@ public class MainActivity extends ActionBarActivity implements LoaderCallbacks<H
 			while(it.hasNext()) {
 				errorMessage += "," + RegistrationView.LABELS[it.next()];
 			}
-			errorMessage += "‚ª•s³‚Å‚·";
+			errorMessage += "ãŒä¸æ­£ã§ã™";
 			noticeError(errorMessage, ids);
 			return;
 		}
@@ -99,10 +99,10 @@ public class MainActivity extends ActionBarActivity implements LoaderCallbacks<H
 	public void onLoadFinished(Loader<HashMap<String, Object>> loader, HashMap<String, Object> data) {
 		int code = Integer.parseInt(data.get("statusCode").toString());
 		if(code == 201) {
-			rv.showMessage("‰ÆŒv•ë‚ğ“o˜^‚µ‚Ü‚µ‚½");
+			rv.showMessage("å®¶è¨ˆç°¿ã‚’ç™»éŒ²ã—ã¾ã—ãŸ");
 			rv.resetField();
 		} else if (code == 400) {
-			rv.showMessage("‰ÆŒv•ë‚Ì“o˜^‚É¸”s‚µ‚Ü‚µ‚½");
+			rv.showMessage("å®¶è¨ˆç°¿ã®ç™»éŒ²ã«å¤±æ•—ã—ã¾ã—ãŸ");
 		}
 		getLoaderManager().destroyLoader(LOADER_ID);
 	}

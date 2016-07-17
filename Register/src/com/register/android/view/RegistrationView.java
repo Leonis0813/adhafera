@@ -22,7 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class RegistrationView extends RelativeLayout implements OnClickListener{
-	public static final String[] LABELS = {"“ú•t", "“à—e", "ƒJƒeƒSƒŠ", "‹àŠz"};
+	public static final String[] LABELS = {"æ—¥ä»˜", "å†…å®¹", "ã‚«ãƒ†ã‚´ãƒª", "é‡‘é¡"};
 
 	private EditText[] fields;
 	private TextView[] errorCheckers;
@@ -87,7 +87,7 @@ public class RegistrationView extends RelativeLayout implements OnClickListener{
 			}
 			int id = radioGroup.getCheckedRadioButtonId();
 			RadioButton radioButton = (RadioButton) findViewById(id);
-			inputs[4] = radioButton.getText().toString().equals("û“ü") ? "income" : "expense";
+			inputs[4] = radioButton.getText().toString().equals("åå…¥") ? "income" : "expense";
 			((MainActivity)context).registAccount(inputs);
 		} else if(v == cancel) {
 			for(int i=0;i<LABELS.length;i++) {

@@ -25,13 +25,13 @@ public class InputCheckerTest extends TestCase{
 
 	@Test
 	public void testCheckEmpty_normal() {
-		String[] inputs = {"2015-01-01", "ƒeƒXƒg—pƒf[ƒ^", "ƒeƒXƒg", "100", "expense"};
+		String[] inputs = {"2015-01-01", "ãƒ†ã‚¹ãƒˆç”¨ãƒ‡ãƒ¼ã‚¿", "ãƒ†ã‚¹ãƒˆ", "100", "expense"};
 		assertTrue(inputChecker.checkEmpty(inputs).isEmpty());
 	}
 
 	@Test
 	public void testCheckEmpty_exception_priceIsNull() {
-		String[] inputs = {"2015-01-01", "ƒeƒXƒg—pƒf[ƒ^", "ƒeƒXƒg", null, "expense"};
+		String[] inputs = {"2015-01-01", "ãƒ†ã‚¹ãƒˆç”¨ãƒ‡ãƒ¼ã‚¿", "ãƒ†ã‚¹ãƒˆ", null, "expense"};
 		ArrayList<Integer> ids = new ArrayList<Integer>();
 		ids.add(3);
 		assertEquals(ids, inputChecker.checkEmpty(inputs));
