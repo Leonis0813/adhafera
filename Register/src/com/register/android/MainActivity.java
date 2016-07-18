@@ -101,6 +101,7 @@ public class MainActivity extends ActionBarActivity implements LoaderCallbacks<H
 		if(code == 201) {
 			rv.showMessage("家計簿を登録しました");
 			rv.resetField();
+			rv.setToday();
 		} else if (code == 400) {
 			rv.showMessage("家計簿の登録に失敗しました");
 		}

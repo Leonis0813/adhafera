@@ -42,9 +42,7 @@ public class RegistrationView extends RelativeLayout implements OnClickListener{
 		fields[1] = (EditText) layout.findViewById(R.id.field_content);
 		fields[2] = (EditText) layout.findViewById(R.id.field_category);
 		fields[3] = (EditText) layout.findViewById(R.id.field_price);
-		
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-		fields[0].setText(simpleDateFormat.format(new Date()));
+		setToday();
 
 		errorCheckers = new TextView[LABELS.length];
 		errorCheckers[0] = (TextView) layout.findViewById(R.id.check_date);
@@ -58,6 +56,11 @@ public class RegistrationView extends RelativeLayout implements OnClickListener{
 		OK.setOnClickListener(this);
 		cancel = (Button) layout.findViewById(R.id.cancel);
 		cancel.setOnClickListener(this);
+	}
+
+	public void setToday() {
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		fields[0].setText(simpleDateFormat.format(new Date()));
 	}
 
 	public void showMessage(String message) {
@@ -74,6 +77,7 @@ public class RegistrationView extends RelativeLayout implements OnClickListener{
 	public void resetField() {
 		for(int i=0;i<fields.length;i++) {
 			fields[i].setText("");
+			errorCheckers[i].setVisibility(INVISIBLE);
 		}
 	}
 
@@ -91,8 +95,7 @@ public class RegistrationView extends RelativeLayout implements OnClickListener{
 			((MainActivity)context).registAccount(inputs);
 		} else if(v == cancel) {
 			for(int i=0;i<LABELS.length;i++) {
-				fields[i].setText("");
-				errorCheckers[i].setVisibility(INVISIBLE);
+				resetField();
 			}
 		}
 	}
