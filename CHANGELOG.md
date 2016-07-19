@@ -1,6 +1,9 @@
 adhafera
 ========
 
+- 1.0.2:
+  - [ADD] today if success
+
 - 1.0.1:
   - [FIX] async task loader error
   - [ADD] today to date view on create
