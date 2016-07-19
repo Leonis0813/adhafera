@@ -20,6 +20,7 @@ import android.widget.TextView;
 public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActivity>{
 	private Solo solo;
 	private int[] fieldIDs, checkIDs;
+	private String today;
 
 	public MainActivityTest() {
 		super(MainActivity.class);
@@ -30,6 +31,9 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
 		solo = new Solo(getInstrumentation(), getActivity());
 		fieldIDs = new int[]{R.id.field_date, R.id.field_content, R.id.field_category, R.id.field_price};
 		checkIDs = new int[]{R.id.check_date, R.id.check_content, R.id.check_category, R.id.check_price};
+
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		today = simpleDateFormat.format(new Date());
 	}
 
 	@After
@@ -47,7 +51,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
 
 		solo.clickOnView(solo.getView(R.id.OK));
 		int[] visibilities = {TextView.INVISIBLE, TextView.INVISIBLE, TextView.INVISIBLE, TextView.INVISIBLE};
-		assertRegistration("家計簿を登録しました", new String[]{"", "", "", ""}, "収入", visibilities);
+		assertRegistration("家計簿を登録しました", new String[]{today, "", "", ""}, "収入", visibilities);
 	}
 
 	@Test
@@ -111,9 +115,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
 
 	private void assertStartApplication() {
 		assertTrue(solo.waitForActivity(MainActivity.class, 5 * 1000));
-		
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-		assertTextInField(new String[]{simpleDateFormat.format(new Date()), "", "", ""});
+		assertTextInField(new String[]{today, "", "", ""});
 		assertTableButton("支出");
 		assertErrorChecker(new int[]{TextView.INVISIBLE, TextView.INVISIBLE, TextView.INVISIBLE, TextView.INVISIBLE});
 	}
