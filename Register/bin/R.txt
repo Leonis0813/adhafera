@@ -236,7 +236,7 @@ int drawable abc_textfield_searchview_right_holo_dark 0x7f020055
 int drawable abc_textfield_searchview_right_holo_light 0x7f020056
 int drawable documents 0x7f020057
 int drawable ic_launcher 0x7f020058
-int id OK 0x7f090050
+int id OK 0x7f090053
 int id action_bar 0x7f09001c
 int id action_bar_activity_content 0x7f090001
 int id action_bar_container 0x7f09001b
@@ -248,11 +248,11 @@ int id action_context_bar 0x7f09001d
 int id action_menu_divider 0x7f090002
 int id action_menu_presenter 0x7f090003
 int id action_mode_close_button 0x7f090024
-int id action_settings 0x7f090052
+int id action_settings 0x7f090055
 int id activity_chooser_view_content 0x7f090025
 int id always 0x7f09000f
 int id beginning 0x7f090016
-int id cancel 0x7f090051
+int id cancel 0x7f090054
 int id category 0x7f090045
 int id check_category 0x7f090048
 int id check_content 0x7f090044
@@ -285,6 +285,7 @@ int id label_category 0x7f090046
 int id label_content 0x7f090042
 int id label_date 0x7f09003e
 int id label_price 0x7f09004a
+int id label_settle 0x7f090051
 int id listMode 0x7f090006
 int id list_item 0x7f090029
 int id middle 0x7f090018
@@ -297,6 +298,7 @@ int id progress_horizontal 0x7f090005
 int id radio 0x7f09002f
 int id radiogroup 0x7f09004d
 int id registration 0x7f09003c
+int id result_settle 0x7f090052
 int id search_badge 0x7f090032
 int id search_bar 0x7f090031
 int id search_button 0x7f090033
@@ -307,6 +309,7 @@ int id search_mag_icon 0x7f090035
 int id search_plate 0x7f090036
 int id search_src_text 0x7f090037
 int id search_voice_btn 0x7f09003b
+int id settle 0x7f090050
 int id shortcut 0x7f09002e
 int id showCustom 0x7f09000b
 int id showHome 0x7f09000c
@@ -372,6 +375,7 @@ int string error 0x7f0a0017
 int string expense 0x7f0a0014
 int string income 0x7f0a0013
 int string price 0x7f0a0012
+int string settle 0x7f0a0018
 int style AppBaseTheme 0x7f0b008b
 int style AppTheme 0x7f0b008c
 int style TextAppearance_AppCompat_Base_CompactMenu_Dialog 0x7f0b0063
