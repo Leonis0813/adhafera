@@ -16,7 +16,7 @@ import android.test.AndroidTestCase;
 import com.register.android.lib.HTTPClient;
 
 public class HTTPClientTest extends AndroidTestCase {
-  private final String[] attributes = {"date", "content", "category", "price", "account_type"};
+  private static final String[] attributes = {"date", "content", "category", "price", "account_type"};
   private HashMap<String, Object> ret;
 
   public HTTPClientTest() {}
@@ -96,9 +96,24 @@ public class HTTPClientTest extends AndroidTestCase {
     assertErrorCode(new String[]{"invalid_param_date", "invalid_param_price"});
   }
 
-  private HTTPClient setupMock(String[] inputs) {
-    HTTPClient httpClient = new HTTPClient(getContext(), inputs);
+  @Test
+  public void testGetSettlement_normal() {
+    HTTPClient httpClient = setupMock();
 
+    ret = httpClient.sendRequest();
+
+    assertStatusCode(200);
+  }
+
+  private HTTPClient setupMock(String[] inputs) {
+    return changePort(new HTTPClient(getContext(), inputs));
+  }
+  
+  private HTTPClient setupMock() {
+    return changePort(new HTTPClient(getContext()));
+  }
+
+  private HTTPClient changePort(HTTPClient httpClient) {
     Class<? extends HTTPClient> c = httpClient.getClass();
     try {
       Field f = c.getDeclaredField("port");
@@ -111,10 +126,9 @@ public class HTTPClientTest extends AndroidTestCase {
     } catch (IllegalAccessException e) {
       e.printStackTrace();
     }
-
     return httpClient;
   }
-  
+
   private void assertStatusCode(int expectedCode) {
     int actualCode = Integer.parseInt(ret.get("statusCode").toString());
     assertEquals(expectedCode, actualCode);
