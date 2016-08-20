@@ -59,7 +59,6 @@ public class RegistrationView extends RelativeLayout implements OnClickListener{
 		cancel.setOnClickListener(this);
 		
 		settleView = (TextView) layout.findViewById(R.id.result_settle);
-		((MainActivity) context).settle();
 	}
 
 	public void setToday() {
@@ -79,7 +78,7 @@ public class RegistrationView extends RelativeLayout implements OnClickListener{
 	}
 
 	public void showSettlement(String settlement) {
-	  settleView.setText(settlement);
+	  settleView.setText(settlement + " 円");
 	}
 
 	public void resetField() {
