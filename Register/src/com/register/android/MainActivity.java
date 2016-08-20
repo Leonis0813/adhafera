@@ -95,6 +95,7 @@ public class MainActivity extends ActionBarActivity {
 	              rv.showMessage("家計簿を登録しました");
 	              rv.resetField();
 	              rv.setToday();
+	              settle();
 	          } else if (code == 400) {
 	              rv.showMessage("家計簿の登録に失敗しました");
 	          }
@@ -116,7 +117,7 @@ public class MainActivity extends ActionBarActivity {
 	}
 
 	public void settle() {
-      getLoaderManager().initLoader(LOADER_ID, new Bundle(), new LoaderManager.LoaderCallbacks<HashMap<String, Object>>() {
+      getLoaderManager().initLoader(LOADER_ID + 1, new Bundle(), new LoaderManager.LoaderCallbacks<HashMap<String, Object>>() {
         @Override
         public Loader<HashMap<String, Object>> onCreateLoader(int id, Bundle args) {
           return new HTTPClient(activity);
@@ -136,7 +137,7 @@ public class MainActivity extends ActionBarActivity {
           } else if (code == 400) {
             rv.showMessage("収支の取得に失敗しました");
           }
-          getLoaderManager().destroyLoader(LOADER_ID);
+          getLoaderManager().destroyLoader(LOADER_ID + 1);
         }
 
         public void onLoaderReset(Loader<HashMap<String, Object>> loader) {}
