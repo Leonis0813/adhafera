@@ -37,7 +37,7 @@ public class HTTPClientTest extends AndroidTestCase{
     	a.put("price", "100");
 		expected_response.put("body", a);
 
-		assertEquals(expected_response, httpClient.sendAccount());
+		assertEquals(expected_response, httpClient.sendRequest());
 	}
 
 	@Test
@@ -54,7 +54,7 @@ public class HTTPClientTest extends AndroidTestCase{
 		errors.add(e);
     	expected_response.put("body", errors);
 
-		assertEquals(expected_response, httpClient.sendAccount());
+		assertEquals(expected_response, httpClient.sendRequest());
 	}
 
 	@Test
@@ -71,7 +71,7 @@ public class HTTPClientTest extends AndroidTestCase{
 		errors.add(e);
     	expected_response.put("body", errors);
 
-		assertEquals(expected_response, httpClient.sendAccount());
+		assertEquals(expected_response, httpClient.sendRequest());
 	}
 
 	@Test
@@ -91,7 +91,7 @@ public class HTTPClientTest extends AndroidTestCase{
 		errors.add(e2);
     	expected_response.put("body", errors);
 
-		assertEquals(expected_response, httpClient.sendAccount());
+		assertEquals(expected_response, httpClient.sendRequest());
 	}
 
 	@Test
@@ -111,7 +111,7 @@ public class HTTPClientTest extends AndroidTestCase{
 		errors.add(e2);
     	expected_response.put("body", errors);
 
-		assertEquals(expected_response, httpClient.sendAccount());
+		assertEquals(expected_response, httpClient.sendRequest());
 	}
 
 	private HTTPClient setupMock(String[] inputs) {

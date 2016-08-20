@@ -70,7 +70,7 @@ public class HTTPClient extends AsyncTaskLoader<HashMap<String, Object> >{
     }
   }
 
-  private HashMap<String, Object> sendRequest() {
+  public HashMap<String, Object> sendRequest() {
     try {
       con.connect();
 
