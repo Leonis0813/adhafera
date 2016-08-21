@@ -28,6 +28,7 @@ public class RegistrationView extends RelativeLayout implements OnClickListener{
 	private TextView[] errorCheckers;
 	private RadioGroup radioGroup;
 	private Button OK, cancel;
+	private TextView settleView;
 	
 	private Context context;
 	
@@ -56,6 +57,8 @@ public class RegistrationView extends RelativeLayout implements OnClickListener{
 		OK.setOnClickListener(this);
 		cancel = (Button) layout.findViewById(R.id.cancel);
 		cancel.setOnClickListener(this);
+		
+		settleView = (TextView) layout.findViewById(R.id.result_settle);
 	}
 
 	public void setToday() {
@@ -72,6 +75,10 @@ public class RegistrationView extends RelativeLayout implements OnClickListener{
 		while(it.hasNext()) {
 			errorCheckers[it.next()].setVisibility(VISIBLE);
 		}
+	}
+
+	public void showSettlement(String settlement) {
+	  settleView.setText(settlement + " 円");
 	}
 
 	public void resetField() {
