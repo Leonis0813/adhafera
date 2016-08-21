@@ -130,7 +130,12 @@ public class MainActivity extends ActionBarActivity {
             try {
               JSONObject body = new JSONObject(data.get("body").toString());
               SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
-              rv.showSettlement(body.getString(sdf.format(Calendar.getInstance().getTime())));
+              String yearmonth = sdf.format(Calendar.getInstance().getTime());
+              if(body.isNull(yearmonth)) {
+                rv.showSettlement("0");
+              } else {
+                rv.showSettlement(body.getString(yearmonth));
+              }
             } catch (JSONException e) {
               e.printStackTrace();
             }

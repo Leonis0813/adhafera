@@ -20,7 +20,7 @@ import android.widget.TextView;
 public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActivity> {
   private Solo solo;
   private int[] fieldIDs, checkIDs;
-  private String today;
+  private String today, settle_before;
 
   public MainActivityTest() {
     super(MainActivity.class);
@@ -45,13 +45,16 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
   public void testRegistration_normal() {
     assertStartApplication();
 
-    String[] texts = {"2015-01-01", "data for system test", "test", "100"};
+    String[] texts = {"", "data for system test", "test", "100"};
     inputAccountInfo(texts);
     solo.clickOnView(solo.getView(R.id.income));
 
     solo.clickOnView(solo.getView(R.id.OK));
     int[] visibilities = {TextView.INVISIBLE, TextView.INVISIBLE, TextView.INVISIBLE, TextView.INVISIBLE};
     assertRegistration("家計簿を登録しました", new String[]{today, "", "", ""}, "収入", visibilities);
+
+    int settle_after = Integer.parseInt(settle_before) + 100;
+    assertSettleView(String.valueOf(settle_after));
   }
 
   @Test
@@ -65,6 +68,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
     solo.clickOnView(solo.getView(R.id.OK));
     int[] visibilities = {TextView.INVISIBLE, TextView.VISIBLE, TextView.INVISIBLE, TextView.INVISIBLE};
     assertRegistration("内容が入力されていません", texts, "収入", visibilities);
+    assertSettleView(settle_before);
   }
 
   @Test
@@ -78,6 +82,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
     solo.clickOnView(solo.getView(R.id.OK));
     int[] visibilities = {TextView.VISIBLE, TextView.INVISIBLE, TextView.INVISIBLE, TextView.INVISIBLE};
     assertRegistration("日付が不正です", texts, "収入", visibilities);
+    assertSettleView(settle_before);
   }
 
   @Test
@@ -89,6 +94,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
 
     solo.clickOnView(solo.getView(R.id.cancel));
     assertCancel();
+    assertSettleView(settle_before);
   }
 
   @Test
@@ -100,6 +106,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
 
     solo.clickOnView(solo.getView(R.id.cancel));
     assertCancel();
+    assertSettleView(settle_before);
   }
 
   @Test
@@ -111,6 +118,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
 
     solo.clickOnView(solo.getView(R.id.cancel));
     assertCancel();
+    assertSettleView(settle_before);
   }
 
   private void assertStartApplication() {
@@ -118,6 +126,8 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
     assertTextInField(new String[]{today, "", "", ""});
     assertTableButton("支出");
     assertErrorChecker(new int[]{TextView.INVISIBLE, TextView.INVISIBLE, TextView.INVISIBLE, TextView.INVISIBLE});
+    assertSettleView("円");
+    settle_before = ((TextView) solo.getView(R.id.result_settle)).getText().toString().replaceAll(" 円", "");
   }
 
   private void assertRegistration(String toast, String[] inputTexts, String button, int[] visibilities) {
@@ -148,6 +158,10 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
   private void assertTableButton(String text) {
     int id = ((RadioGroup) solo.getView(R.id.radiogroup)).getCheckedRadioButtonId();
     assertTrue(((RadioButton) solo.getView(id)).getText().toString().equals(text));
+  }
+  
+  private void assertSettleView(String settlement) {
+    assertTrue(((TextView) solo.getView(R.id.result_settle)).getText().toString().contains(settlement));
   }
 
   private void inputAccountInfo(String[] texts) {
