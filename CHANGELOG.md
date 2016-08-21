@@ -1,6 +1,9 @@
 adhafera
 ========
 
+- 2.0.0:
+  - [ADD] settle view for this month
+
 - 1.1.0:
   - [ADD] today if success
 
