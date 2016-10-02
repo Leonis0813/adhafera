@@ -17,143 +17,159 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
-public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActivity>{
-	private Solo solo;
-	private int[] fieldIDs, checkIDs;
+public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActivity> {
+  private Solo solo;
+  private int[] fieldIDs, checkIDs;
+  private String today, settle_before;
 
-	public MainActivityTest() {
-		super(MainActivity.class);
-	}
+  public MainActivityTest() {
+    super(MainActivity.class);
+  }
 
-	@Before
-	public void setUp() throws Exception {
-		solo = new Solo(getInstrumentation(), getActivity());
-		fieldIDs = new int[]{R.id.field_date, R.id.field_content, R.id.field_category, R.id.field_price};
-		checkIDs = new int[]{R.id.check_date, R.id.check_content, R.id.check_category, R.id.check_price};
-	}
+  @Before
+  public void setUp() throws Exception {
+    solo = new Solo(getInstrumentation(), getActivity());
+    fieldIDs = new int[]{R.id.field_date, R.id.field_content, R.id.field_category, R.id.field_price};
+    checkIDs = new int[]{R.id.check_date, R.id.check_content, R.id.check_category, R.id.check_price};
 
-	@After
-	public void tearDown() throws Exception {
-		solo.finishOpenedActivities();
-	}
+    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    today = simpleDateFormat.format(new Date());
+  }
 
-	@Test
-	public void testRegistration_normal() {
-		assertStartApplication();
+  @After
+  public void tearDown() throws Exception {
+    solo.finishOpenedActivities();
+  }
 
-		String[] texts = {"2015-01-01", "data for system test", "test", "100"};
-		inputAccountInfo(texts);
-		solo.clickOnView(solo.getView(R.id.income));
+  @Test
+  public void testRegistration_normal() {
+    assertStartApplication();
 
-		solo.clickOnView(solo.getView(R.id.OK));
-		int[] visibilities = {TextView.INVISIBLE, TextView.INVISIBLE, TextView.INVISIBLE, TextView.INVISIBLE};
-		assertRegistration("â∆åvïÎÇìoò^ÇµÇ‹ÇµÇΩ", new String[]{"", "", "", ""}, "é˚ì¸", visibilities);
-	}
+    String[] texts = {"", "data for system test", "test", "100"};
+    inputAccountInfo(texts);
+    solo.clickOnView(solo.getView(R.id.income));
 
-	@Test
-	public void testRegistration_exception_includeEmpty() {
-		assertStartApplication();
+    solo.clickOnView(solo.getView(R.id.OK));
+    int[] visibilities = {TextView.INVISIBLE, TextView.INVISIBLE, TextView.INVISIBLE, TextView.INVISIBLE};
+    assertRegistration("ÂÆ∂Ë®àÁ∞ø„ÇíÁôªÈå≤„Åó„Åæ„Åó„Åü", new String[]{today, "", "", ""}, "ÂèéÂÖ•", visibilities);
 
-		String[] texts = {"2015-01-01", "", "test", "100"};
-		inputAccountInfo(texts);
-		solo.clickOnView(solo.getView(R.id.income));
+    int settle_after = Integer.parseInt(settle_before) + 100;
+    assertSettleView(String.valueOf(settle_after));
+  }
 
-		solo.clickOnView(solo.getView(R.id.OK));
-		int[] visibilities = {TextView.INVISIBLE, TextView.VISIBLE, TextView.INVISIBLE, TextView.INVISIBLE};
-		assertRegistration("ì‡óeÇ™ì¸óÕÇ≥ÇÍÇƒÇ¢Ç‹ÇπÇÒ", texts, "é˚ì¸", visibilities);
-	}
+  @Test
+  public void testRegistration_exception_includeEmpty() {
+    assertStartApplication();
 
-	@Test
-	public void testRegistration_exception_includeInvalidValue() {
-		assertStartApplication();
+    String[] texts = {"2015-01-01", "", "test", "100"};
+    inputAccountInfo(texts);
+    solo.clickOnView(solo.getView(R.id.income));
 
-		String[] texts = {"invalid_date", "data for system test", "test", "100"};
-		inputAccountInfo(texts);
-		solo.clickOnView(solo.getView(R.id.income));
+    solo.clickOnView(solo.getView(R.id.OK));
+    int[] visibilities = {TextView.INVISIBLE, TextView.VISIBLE, TextView.INVISIBLE, TextView.INVISIBLE};
+    assertRegistration("ÂÜÖÂÆπ„ÅåÂÖ•Âäõ„Åï„Çå„Å¶„ÅÑ„Åæ„Åõ„Çì", texts, "ÂèéÂÖ•", visibilities);
+    assertSettleView(settle_before);
+  }
 
-		solo.clickOnView(solo.getView(R.id.OK));
-		int[] visibilities = {TextView.VISIBLE, TextView.INVISIBLE, TextView.INVISIBLE, TextView.INVISIBLE};
-		assertRegistration("ì˙ïtÇ™ïsê≥Ç≈Ç∑", texts, "é˚ì¸", visibilities);
-	}
+  @Test
+  public void testRegistration_exception_includeInvalidValue() {
+    assertStartApplication();
 
-	@Test
-	public void testCancelRegistration_normal() {
-		assertStartApplication();
+    String[] texts = {"invalid_date", "data for system test", "test", "100"};
+    inputAccountInfo(texts);
+    solo.clickOnView(solo.getView(R.id.income));
 
-		inputAccountInfo(new String[]{"2015-01-01", "data for system test", "test", "100"});
-		solo.clickOnView(solo.getView(R.id.income));
+    solo.clickOnView(solo.getView(R.id.OK));
+    int[] visibilities = {TextView.VISIBLE, TextView.INVISIBLE, TextView.INVISIBLE, TextView.INVISIBLE};
+    assertRegistration("Êó•‰ªò„Åå‰∏çÊ≠£„Åß„Åô", texts, "ÂèéÂÖ•", visibilities);
+    assertSettleView(settle_before);
+  }
 
-		solo.clickOnView(solo.getView(R.id.cancel));
-		assertCancel();
-	}
+  @Test
+  public void testCancelRegistration_normal() {
+    assertStartApplication();
 
-	@Test
-	public void testCancelRegistration_normal_includeEmpty() {
-		assertStartApplication();
+    inputAccountInfo(new String[]{"2015-01-01", "data for system test", "test", "100"});
+    solo.clickOnView(solo.getView(R.id.income));
 
-		inputAccountInfo(new String[]{"2015-01-01", "data for system test", "", ""});
-		solo.clickOnView(solo.getView(R.id.income));
+    solo.clickOnView(solo.getView(R.id.cancel));
+    assertCancel();
+    assertSettleView(settle_before);
+  }
 
-		solo.clickOnView(solo.getView(R.id.cancel));
-		assertCancel();
-	}
+  @Test
+  public void testCancelRegistration_normal_includeEmpty() {
+    assertStartApplication();
 
-	@Test
-	public void testCancelRegistration_normal_includeInvalidValue() {
-		assertStartApplication();
+    inputAccountInfo(new String[]{"2015-01-01", "data for system test", "", ""});
+    solo.clickOnView(solo.getView(R.id.income));
 
-		inputAccountInfo(new String[]{"2015-01-01", "data for system test", "test", "invalid_price"});
-		solo.clickOnView(solo.getView(R.id.income));
+    solo.clickOnView(solo.getView(R.id.cancel));
+    assertCancel();
+    assertSettleView(settle_before);
+  }
 
-		solo.clickOnView(solo.getView(R.id.cancel));
-		assertCancel();
-	}
+  @Test
+  public void testCancelRegistration_normal_includeInvalidValue() {
+    assertStartApplication();
 
-	private void assertStartApplication() {
-		assertTrue(solo.waitForActivity(MainActivity.class, 5 * 1000));
-		
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-		assertTextInField(new String[]{simpleDateFormat.format(new Date()), "", "", ""});
-		assertTableButton("éxèo");
-		assertErrorChecker(new int[]{TextView.INVISIBLE, TextView.INVISIBLE, TextView.INVISIBLE, TextView.INVISIBLE});
-	}
+    inputAccountInfo(new String[]{"2015-01-01", "data for system test", "test", "invalid_price"});
+    solo.clickOnView(solo.getView(R.id.income));
 
-	private void assertRegistration(String toast, String[] inputTexts, String button, int[] visibilities) {
-		assertTrue(solo.waitForText(toast, 1, 10 * 1000));
-		assertTextInField(inputTexts);
-		assertTableButton(button);
-		assertErrorChecker(visibilities);
-	}
-	
-	private void assertCancel() {
-		assertTextInField(new String[]{"", "", "", ""});
-		assertTableButton("é˚ì¸");
-		assertErrorChecker(new int[]{TextView.INVISIBLE, TextView.INVISIBLE, TextView.INVISIBLE, TextView.INVISIBLE});
-	}
+    solo.clickOnView(solo.getView(R.id.cancel));
+    assertCancel();
+    assertSettleView(settle_before);
+  }
 
-	private void assertTextInField(String[] texts) {
-		for(int i=0;i<fieldIDs.length;i++) {
-			assertTrue(((EditText) solo.getView(fieldIDs[i])).getText().toString().equals(texts[i]));
-		}
-	}
+  private void assertStartApplication() {
+    assertTrue(solo.waitForActivity(MainActivity.class, 5 * 1000));
+    assertTextInField(new String[]{today, "", "", ""});
+    assertTableButton("ÊîØÂá∫");
+    assertErrorChecker(new int[]{TextView.INVISIBLE, TextView.INVISIBLE, TextView.INVISIBLE, TextView.INVISIBLE});
+    assertSettleView("ÂÜÜ");
+    settle_before = ((TextView) solo.getView(R.id.result_settle)).getText().toString().replaceAll(" ÂÜÜ", "");
+  }
 
-	private void assertErrorChecker(int[] visibilities) {
-		for(int i=0;i<checkIDs.length;i++) {
-			assertEquals(((TextView) solo.getView(checkIDs[i])).getVisibility(), visibilities[i]);
-		}
-	}
+  private void assertRegistration(String toast, String[] inputTexts, String button, int[] visibilities) {
+    assertTrue(solo.waitForText(toast, 1, 10 * 1000));
+    assertTextInField(inputTexts);
+    assertTableButton(button);
+    assertErrorChecker(visibilities);
+  }
 
-	private void assertTableButton(String text) {
-		int id = ((RadioGroup) solo.getView(R.id.radiogroup)).getCheckedRadioButtonId();
-		assertTrue(((RadioButton) solo.getView(id)).getText().toString().equals(text));
-	}
+  private void assertCancel() {
+    assertTextInField(new String[]{"", "", "", ""});
+    assertTableButton("ÂèéÂÖ•");
+    assertErrorChecker(new int[]{TextView.INVISIBLE, TextView.INVISIBLE, TextView.INVISIBLE, TextView.INVISIBLE});
+  }
 
-	private void inputAccountInfo(String[] texts) {
-		for(int i=0;i<fieldIDs.length;i++) {
-			if(!texts[i].equals("")) {
-				solo.clearEditText((EditText) solo.getView(fieldIDs[i]));
-				solo.typeText((EditText) solo.getView(fieldIDs[i]), texts[i]);
-			}
-		}
-	}
+  private void assertTextInField(String[] texts) {
+    for(int i=0;i<fieldIDs.length;i++) {
+      assertTrue(((EditText) solo.getView(fieldIDs[i])).getText().toString().equals(texts[i]));
+    }
+  }
+
+  private void assertErrorChecker(int[] visibilities) {
+    for(int i=0;i<checkIDs.length;i++) {
+      assertEquals(((TextView) solo.getView(checkIDs[i])).getVisibility(), visibilities[i]);
+    }
+  }
+
+  private void assertTableButton(String text) {
+    int id = ((RadioGroup) solo.getView(R.id.radiogroup)).getCheckedRadioButtonId();
+    assertTrue(((RadioButton) solo.getView(id)).getText().toString().equals(text));
+  }
+  
+  private void assertSettleView(String settlement) {
+    assertTrue(((TextView) solo.getView(R.id.result_settle)).getText().toString().contains(settlement));
+  }
+
+  private void inputAccountInfo(String[] texts) {
+    for(int i=0;i<fieldIDs.length;i++) {
+      if(!texts[i].equals("")) {
+        solo.clearEditText((EditText) solo.getView(fieldIDs[i]));
+        solo.typeText((EditText) solo.getView(fieldIDs[i]), texts[i]);
+      }
+    }
+  }
 }

@@ -4,6 +4,9 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,125 +15,147 @@ import android.test.AndroidTestCase;
 
 import com.register.android.lib.HTTPClient;
 
-public class HTTPClientTest extends AndroidTestCase{
-	public HTTPClientTest() {}
+public class HTTPClientTest extends AndroidTestCase {
+  private static final String[] attributes = {"date", "content", "category", "price", "account_type"};
+  private HashMap<String, Object> ret;
 
-	@Before
-	public void setUp() throws Exception {}
+  public HTTPClientTest() {}
 
-	@After
-	public void tearDown() throws Exception {}
+  @Before
+  public void setUp() throws Exception {}
 
-	@Test
-	public void testSendAccount_normal() {
-		String[] inputs = {"2015-01-01", "ÉeÉXÉgópÉfÅ[É^", "ÉeÉXÉg", "100", "expense"};
-		HTTPClient httpClient = setupMock(inputs);
+  @After
+  public void tearDown() throws Exception {}
 
-		HashMap<String, Object> expected_response = new HashMap<String, Object>();
-		expected_response.put("statusCode", 201);
+  @Test
+  public void testSendAccount_normal() {
+    String[] inputs = {"2015-01-01", "„ÉÜ„Çπ„ÉàÁî®„Éá„Éº„Çø", "„ÉÜ„Çπ„Éà", "100", "expense"};
+    HTTPClient httpClient = setupMock(inputs);
 
-		HashMap<String, String> a = new HashMap<String, String>();
-    	a.put("account_type", "expense");
-    	a.put("date", "2015-01-01");
-    	a.put("content", "ÉeÉXÉgópÉfÅ[É^");
-    	a.put("category", "ÉeÉXÉg");
-    	a.put("price", "100");
-		expected_response.put("body", a);
+    ret = httpClient.sendRequest();
 
-		assertEquals(expected_response, httpClient.sendAccount());
-	}
+    assertStatusCode(201);
 
-	@Test
-	public void testSendAccount_exception_categoryIsAbsent() {
-		String[] inputs = {"2015-01-01", "ÉeÉXÉgópÉfÅ[É^", null, "100", "expense"};
-		HTTPClient httpClient = setupMock(inputs);
+    try {
+      HashMap<String, String> expectedAccount = new HashMap<String, String>();
+      JSONObject responseBody = new JSONObject(ret.get("body").toString());
+      HashMap<String, String> actualAccount = new HashMap<String, String>();
 
-		HashMap<String, Object> expected_response = new HashMap<String, Object>();
-		expected_response.put("statusCode", 400);
+      for(int i=0;i<attributes.length;i++) {
+        expectedAccount.put(attributes[i], inputs[i]);
+        actualAccount.put(attributes[i], responseBody.getString(attributes[i]));
+      }
 
-		ArrayList<HashMap<String, String> > errors = new ArrayList<HashMap<String, String> >();
-		HashMap<String, String> e = new HashMap<String, String>();
-		e.put("errorCode", "absent_param_category");
-		errors.add(e);
-    	expected_response.put("body", errors);
+      assertEquals(expectedAccount, actualAccount);
+    } catch (JSONException e) {
+      e.printStackTrace();
+    }
+  }
 
-		assertEquals(expected_response, httpClient.sendAccount());
-	}
+  @Test
+  public void testSendAccount_exception_categoryIsAbsent() {
+    String[] inputs = {"2015-01-01", "„ÉÜ„Çπ„ÉàÁî®„Éá„Éº„Çø", null, "100", "expense"};
+    HTTPClient httpClient = setupMock(inputs);
 
-	@Test
-	public void testSendAccount_exception_dateIsInvalid() {
-		String[] inputs = {"01-01-2015", "ÉeÉXÉgópÉfÅ[É^", "ÉeÉXÉg", "100", "expense"};
-		HTTPClient httpClient = setupMock(inputs);
+    ret = httpClient.sendRequest();
 
-		HashMap<String, Object> expected_response = new HashMap<String, Object>();
-		expected_response.put("statusCode", 400);
+    assertStatusCode(400);
+    assertErrorCode(new String[]{"absent_param_category"});
+  }
 
-		ArrayList<HashMap<String, String> > errors = new ArrayList<HashMap<String, String> >();
-		HashMap<String, String> e = new HashMap<String, String>();
-		e.put("errorCode", "invalid_param_date");
-		errors.add(e);
-    	expected_response.put("body", errors);
+  @Test
+  public void testSendAccount_exception_dateIsInvalid() {
+    String[] inputs = {"01-01-2015", "„ÉÜ„Çπ„ÉàÁî®„Éá„Éº„Çø", "„ÉÜ„Çπ„Éà", "100", "expense"};
+    HTTPClient httpClient = setupMock(inputs);
 
-		assertEquals(expected_response, httpClient.sendAccount());
-	}
+    ret = httpClient.sendRequest();
 
-	@Test
-	public void testSendAccount_exception_multipleInputsIsAbsent() {
-		String[] inputs = {"2015-01-01", null, "ÉeÉXÉg", null, "expense"};
-		HTTPClient httpClient = setupMock(inputs);
+    assertStatusCode(400);
+    assertErrorCode(new String[]{"invalid_param_date"});
+  }
 
-		HashMap<String, Object> expected_response = new HashMap<String, Object>();
-		expected_response.put("statusCode", 400);
+  @Test
+  public void testSendAccount_exception_multipleInputsIsAbsent() {
+    String[] inputs = {"2015-01-01", null, "„ÉÜ„Çπ„Éà", null, "expense"};
+    HTTPClient httpClient = setupMock(inputs);
 
-		ArrayList<HashMap<String, String> > errors = new ArrayList<HashMap<String, String> >();
-		HashMap<String, String> e1 = new HashMap<String, String>();
-		e1.put("errorCode", "absent_param_content");
-		errors.add(e1);
-		HashMap<String, String> e2 = new HashMap<String, String>();
-		e2.put("errorCode", "absent_param_price");
-		errors.add(e2);
-    	expected_response.put("body", errors);
+    ret = httpClient.sendRequest();
 
-		assertEquals(expected_response, httpClient.sendAccount());
-	}
+    assertStatusCode(400);
+    assertErrorCode(new String[]{"absent_param_content", "absent_param_price"});
+  }
 
-	@Test
-	public void testSendAccount_exception_multipleInputsIsInvalid() {
-		String[] inputs = {"01-01-2015", "ÉeÉXÉgópÉfÅ[É^", "ÉeÉXÉg", "-100", "expense"};
-		HTTPClient httpClient = setupMock(inputs);
+  @Test
+  public void testSendAccount_exception_multipleInputsIsInvalid() {
+    String[] inputs = {"01-01-2015", "„ÉÜ„Çπ„ÉàÁî®„Éá„Éº„Çø", "„ÉÜ„Çπ„Éà", "-100", "expense"};
+    HTTPClient httpClient = setupMock(inputs);
 
-		HashMap<String, Object> expected_response = new HashMap<String, Object>();
-		expected_response.put("statusCode", 400);
+    ret = httpClient.sendRequest();
 
-		ArrayList<HashMap<String, String> > errors = new ArrayList<HashMap<String, String> >();
-		HashMap<String, String> e1 = new HashMap<String, String>();
-		e1.put("errorCode", "invalid_param_date");
-		errors.add(e1);
-		HashMap<String, String> e2 = new HashMap<String, String>();
-		e2.put("errorCode", "invalid_param_price");
-		errors.add(e2);
-    	expected_response.put("body", errors);
+    assertStatusCode(400);
+    assertErrorCode(new String[]{"invalid_param_date", "invalid_param_price"});
+  }
 
-		assertEquals(expected_response, httpClient.sendAccount());
-	}
+  @Test
+  public void testGetSettlement_normal() {
+    HTTPClient httpClient = setupMock();
 
-	private HTTPClient setupMock(String[] inputs) {
-		HTTPClient httpClient = new HTTPClient(getContext(), inputs);
+    ret = httpClient.sendRequest();
 
-		Class<? extends HTTPClient> c = httpClient.getClass();
-		Field f;
-		try {
-			f = c.getDeclaredField("port");
-			f.setAccessible(true);
-			f.set(httpClient, "88");
-		} catch (NoSuchFieldException e) {
-			e.printStackTrace();
-		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-		}
-		
-		return httpClient;
-	}
+    assertStatusCode(200);
+  }
+
+  private HTTPClient setupMock(String[] inputs) {
+    return changePort(new HTTPClient(getContext(), inputs));
+  }
+  
+  private HTTPClient setupMock() {
+    return changePort(new HTTPClient(getContext()));
+  }
+
+  private HTTPClient changePort(HTTPClient httpClient) {
+    Class<? extends HTTPClient> c = httpClient.getClass();
+    try {
+      Field f = c.getDeclaredField("port");
+      f.setAccessible(true);
+      f.set(httpClient, "88");
+    } catch (NoSuchFieldException e) {
+      e.printStackTrace();
+    } catch (IllegalArgumentException e) {
+      e.printStackTrace();
+    } catch (IllegalAccessException e) {
+      e.printStackTrace();
+    }
+    return httpClient;
+  }
+
+  private void assertStatusCode(int expectedCode) {
+    int actualCode = Integer.parseInt(ret.get("statusCode").toString());
+    assertEquals(expectedCode, actualCode);
+  }
+
+  private void assertErrorCode(String[] errorCodes) {
+    try {
+      HashMap<String, String> error;
+
+      ArrayList<HashMap<String, String> > expectedErrors = new ArrayList<HashMap<String, String> >();
+      for(int i=0;i<errorCodes.length;i++) {
+        error = new HashMap<String, String>();
+        error.put("errorCode", errorCodes[i]);
+        expectedErrors.add(error);
+      }
+
+      JSONArray array = new JSONArray(ret.get("body").toString());
+      ArrayList<HashMap<String, String> > actualErrors = new ArrayList<HashMap<String, String> >();
+      for(int i=0;i<array.length();i++) {
+        error = new HashMap<String, String>();
+        error.put("errorCode", array.getJSONObject(i).getString("error_code"));
+        actualErrors.add(error);
+      }
+
+      assertEquals(expectedErrors, actualErrors);
+    } catch (JSONException e) {
+      e.printStackTrace();
+    }
+  }
 }

@@ -12,6 +12,6 @@
     <string name="OK">登録</string>
     <string name="cancel">取消</string>
     <string name="error">*</string>
-    
+    <string name="settle">　　収支：</string>
 
 </resources>

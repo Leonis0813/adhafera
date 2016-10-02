@@ -22,12 +22,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class RegistrationView extends RelativeLayout implements OnClickListener{
-	public static final String[] LABELS = {"ì˙ït", "ì‡óe", "ÉJÉeÉSÉä", "ã‡äz"};
+	public static final String[] LABELS = {"Êó•‰ªò", "ÂÜÖÂÆπ", "„Ç´„ÉÜ„Ç¥„É™", "ÈáëÈ°ç"};
 
 	private EditText[] fields;
 	private TextView[] errorCheckers;
 	private RadioGroup radioGroup;
 	private Button OK, cancel;
+	private TextView settleView;
 	
 	private Context context;
 	
@@ -42,9 +43,7 @@ public class RegistrationView extends RelativeLayout implements OnClickListener{
 		fields[1] = (EditText) layout.findViewById(R.id.field_content);
 		fields[2] = (EditText) layout.findViewById(R.id.field_category);
 		fields[3] = (EditText) layout.findViewById(R.id.field_price);
-		
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-		fields[0].setText(simpleDateFormat.format(new Date()));
+		setToday();
 
 		errorCheckers = new TextView[LABELS.length];
 		errorCheckers[0] = (TextView) layout.findViewById(R.id.check_date);
@@ -58,6 +57,13 @@ public class RegistrationView extends RelativeLayout implements OnClickListener{
 		OK.setOnClickListener(this);
 		cancel = (Button) layout.findViewById(R.id.cancel);
 		cancel.setOnClickListener(this);
+		
+		settleView = (TextView) layout.findViewById(R.id.result_settle);
+	}
+
+	public void setToday() {
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		fields[0].setText(simpleDateFormat.format(new Date()));
 	}
 
 	public void showMessage(String message) {
@@ -71,9 +77,14 @@ public class RegistrationView extends RelativeLayout implements OnClickListener{
 		}
 	}
 
+	public void showSettlement(String settlement) {
+	  settleView.setText(settlement + " ÂÜÜ");
+	}
+
 	public void resetField() {
 		for(int i=0;i<fields.length;i++) {
 			fields[i].setText("");
+			errorCheckers[i].setVisibility(INVISIBLE);
 		}
 	}
 
@@ -87,12 +98,11 @@ public class RegistrationView extends RelativeLayout implements OnClickListener{
 			}
 			int id = radioGroup.getCheckedRadioButtonId();
 			RadioButton radioButton = (RadioButton) findViewById(id);
-			inputs[4] = radioButton.getText().toString().equals("é˚ì¸") ? "income" : "expense";
+			inputs[4] = radioButton.getText().toString().equals("ÂèéÂÖ•") ? "income" : "expense";
 			((MainActivity)context).registAccount(inputs);
 		} else if(v == cancel) {
 			for(int i=0;i<LABELS.length;i++) {
-				fields[i].setText("");
-				errorCheckers[i].setVisibility(INVISIBLE);
+				resetField();
 			}
 		}
 	}

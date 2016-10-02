@@ -1,24 +1,31 @@
 package com.register.android;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import com.register.android.lib.HTTPClient;
 import com.register.android.service.InputChecker;
 import com.register.android.view.RegistrationView;
 
 import android.support.v7.app.ActionBarActivity;
-import android.app.LoaderManager.LoaderCallbacks;
+import android.app.LoaderManager;
+import android.content.Context;
 import android.content.Loader;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class MainActivity extends ActionBarActivity implements LoaderCallbacks<HashMap<String, Object> >{
+public class MainActivity extends ActionBarActivity {
 	public static final int INPUT_SIZE = 5;
 	private static final int LOADER_ID = 0;
 
+	private Context activity;
 	private RegistrationView rv;
 	private InputChecker inputChecker;
 
@@ -27,8 +34,10 @@ public class MainActivity extends ActionBarActivity implements LoaderCallbacks<H
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
+		activity = this;
 		rv = (RegistrationView) findViewById(R.id.registration);
 		inputChecker = new InputChecker();
+		settle();
 	}
 
 	@Override
@@ -54,30 +63,48 @@ public class MainActivity extends ActionBarActivity implements LoaderCallbacks<H
 			while(it.hasNext()) {
 				errorMessage += "," + RegistrationView.LABELS[it.next()];
 			}
-			errorMessage += "‚ª“ü—Í‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ";
+			errorMessage += "ãŒå…¥åŠ›ã•ã‚Œã¦ã„ã¾ã›ã‚“";
 			noticeError(errorMessage, ids);
 			return;
 		}
-		if(!inputChecker.checkDate(inputs[0])) {
-			ids.add(0);
-		}
-		if(!inputChecker.checkPrice(inputs[3])) {
-			ids.add(3);
-		}
+		if(!inputChecker.checkDate(inputs[0])) { ids.add(0); }
+		if(!inputChecker.checkPrice(inputs[3])) { ids.add(3); }
 		if(!ids.isEmpty()) {
 			Iterator<Integer> it = ids.iterator();
 			String errorMessage = RegistrationView.LABELS[it.next()];
 			while(it.hasNext()) {
 				errorMessage += "," + RegistrationView.LABELS[it.next()];
 			}
-			errorMessage += "‚ª•s³‚Å‚·";
+			errorMessage += "ãŒä¸æ­£ã§ã™";
 			noticeError(errorMessage, ids);
 			return;
 		}
 
 		Bundle args = new Bundle();
 		args.putStringArray("inputs", inputs);
-	    getLoaderManager().initLoader(LOADER_ID, args, this);
+	    getLoaderManager().initLoader(LOADER_ID, args, new LoaderManager.LoaderCallbacks<HashMap<String, Object>>() {
+	      @Override
+	      public Loader<HashMap<String, Object>> onCreateLoader(int id, Bundle args) {
+	        return new HTTPClient(activity, args.getStringArray("inputs"));
+	      }
+	      
+	      @Override
+	      public void onLoadFinished(Loader<HashMap<String, Object>> loader, HashMap<String, Object> data) {
+	          int code = Integer.parseInt(data.get("statusCode").toString());
+	          if(code == 201) {
+	              rv.showMessage("å®¶è¨ˆç°¿ã‚’ç™»éŒ²ã—ã¾ã—ãŸ");
+	              rv.resetField();
+	              rv.setToday();
+	              settle();
+	          } else if (code == 400) {
+	              rv.showMessage("å®¶è¨ˆç°¿ã®ç™»éŒ²ã«å¤±æ•—ã—ã¾ã—ãŸ");
+	          }
+	          getLoaderManager().destroyLoader(LOADER_ID);
+	      }
+	      
+	      @Override
+	      public void onLoaderReset(Loader<HashMap<String, Object>> loader) {}
+	    });
 	}
 	
 	public void noticeError(String errorMessage, ArrayList<Integer> ids) {
@@ -89,26 +116,36 @@ public class MainActivity extends ActionBarActivity implements LoaderCallbacks<H
 		rv.showMessage(result);
 	}
 
-	@Override
-	public Loader<HashMap<String, Object>> onCreateLoader(int id, Bundle args) {
-		String[] inputs = args.getStringArray("inputs");
-		return new HTTPClient(this, inputs);
-	}
+	public void settle() {
+      getLoaderManager().initLoader(LOADER_ID + 1, new Bundle(), new LoaderManager.LoaderCallbacks<HashMap<String, Object>>() {
+        @Override
+        public Loader<HashMap<String, Object>> onCreateLoader(int id, Bundle args) {
+          return new HTTPClient(activity);
+        }
 
-	@Override
-	public void onLoadFinished(Loader<HashMap<String, Object>> loader, HashMap<String, Object> data) {
-		int code = Integer.parseInt(data.get("statusCode").toString());
-		if(code == 201) {
-			rv.showMessage("‰ÆŒv•ë‚ğ“o˜^‚µ‚Ü‚µ‚½");
-			rv.resetField();
-		} else if (code == 400) {
-			rv.showMessage("‰ÆŒv•ë‚Ì“o˜^‚É¸”s‚µ‚Ü‚µ‚½");
-		}
-		getLoaderManager().destroyLoader(LOADER_ID);
-	}
+        @Override
+        public void onLoadFinished(Loader<HashMap<String, Object>> loader, HashMap<String, Object> data) {
+          int code = Integer.parseInt(data.get("statusCode").toString());
+          if(code == 200) {
+            try {
+              JSONObject body = new JSONObject(data.get("body").toString());
+              SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
+              String yearmonth = sdf.format(Calendar.getInstance().getTime());
+              if(body.isNull(yearmonth)) {
+                rv.showSettlement("0");
+              } else {
+                rv.showSettlement(body.getString(yearmonth));
+              }
+            } catch (JSONException e) {
+              e.printStackTrace();
+            }
+          } else if (code == 400) {
+            rv.showMessage("åæ”¯ã®å–å¾—ã«å¤±æ•—ã—ã¾ã—ãŸ");
+          }
+          getLoaderManager().destroyLoader(LOADER_ID + 1);
+        }
 
-	@Override
-	public void onLoaderReset(Loader<HashMap<String, Object>> loader) {
-		
+        public void onLoaderReset(Loader<HashMap<String, Object>> loader) {}
+      });
 	}
 }
