@@ -65,7 +65,7 @@ public class HTTPClientTest extends AndroidTestCase {
 
   @Test
   public void testSendAccount_exception_dateIsInvalid() {
-    String[] inputs = {"01-01-2015", "テスト用データ", "テスト", "100", "expense"};
+    String[] inputs = {"invalid_date", "テスト用データ", "テスト", "100", "expense"};
     HTTPClient httpClient = setupMock(inputs);
 
     ret = httpClient.sendRequest();
@@ -87,7 +87,7 @@ public class HTTPClientTest extends AndroidTestCase {
 
   @Test
   public void testSendAccount_exception_multipleInputsIsInvalid() {
-    String[] inputs = {"01-01-2015", "テスト用データ", "テスト", "-100", "expense"};
+    String[] inputs = {"invalid_date", "テスト用データ", "テスト", "-100", "expense"};
     HTTPClient httpClient = setupMock(inputs);
 
     ret = httpClient.sendRequest();
