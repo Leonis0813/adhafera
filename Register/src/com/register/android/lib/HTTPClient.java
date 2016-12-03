@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -15,12 +16,15 @@ import org.json.JSONObject;
 
 import android.content.AsyncTaskLoader;
 import android.content.Context;
+import android.util.Base64;
 
 public class HTTPClient extends AsyncTaskLoader<HashMap<String, Object> >{
   private static final String host = "160.16.66.112";
   private HttpURLConnection con;
   private JSONObject param;
   private String port = "80";
+  private static final String application_id = "68c58a4f26cb84bd";
+  private static final String application_key = "a469856b9b1b873a5230a0e1b36ee170";
 
   private HashMap<String, Object> response;
 
@@ -38,6 +42,7 @@ public class HTTPClient extends AsyncTaskLoader<HashMap<String, Object> >{
       con = (HttpURLConnection) new URL("http://" + host + ":" + port + "/accounts").openConnection();
       con.setRequestMethod("POST");
       con.setRequestProperty("Content-Type", "application/json");
+      con.setRequestProperty("Authorization", "Basic " + credential());
       con.setDoInput(true);
       con.setDoOutput(true);
 
@@ -63,6 +68,7 @@ public class HTTPClient extends AsyncTaskLoader<HashMap<String, Object> >{
     try {
       con = (HttpURLConnection) new URL("http://" + host + ":" + port + "/settlement?interval=monthly").openConnection();
       con.setRequestMethod("GET");
+      con.setRequestProperty("Authorization", "Basic " + credential());
     } catch (MalformedURLException e) {
       e.printStackTrace();
     } catch (IOException e) {
@@ -105,5 +111,15 @@ public class HTTPClient extends AsyncTaskLoader<HashMap<String, Object> >{
   @Override
   protected void onStartLoading() {
     forceLoad();
+  }
+  
+  private String credential() {
+    byte[] credential = Base64.encode((application_id + ":" + application_key).getBytes(), Base64.DEFAULT);
+    try {
+      return new String(credential, "UTF-8");
+    } catch (UnsupportedEncodingException e) {
+      e.printStackTrace();
+      return null;
+    }
   }
 }
