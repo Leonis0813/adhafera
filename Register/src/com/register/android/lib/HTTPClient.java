@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -41,8 +42,7 @@ public class HTTPClient extends AsyncTaskLoader<HashMap<String, Object> >{
       con = (HttpURLConnection) new URL("http://" + host + ":" + port + "/accounts").openConnection();
       con.setRequestMethod("POST");
       con.setRequestProperty("Content-Type", "application/json");
-      byte[] credential = Base64.encode((application_id + ":" + application_key).getBytes(), Base64.DEFAULT);
-      con.setRequestProperty("Authorization", "Basic " + new String(credential, "UTF-8"));
+      con.setRequestProperty("Authorization", "Basic " + credential());
       con.setDoInput(true);
       con.setDoOutput(true);
 
@@ -68,6 +68,7 @@ public class HTTPClient extends AsyncTaskLoader<HashMap<String, Object> >{
     try {
       con = (HttpURLConnection) new URL("http://" + host + ":" + port + "/settlement?interval=monthly").openConnection();
       con.setRequestMethod("GET");
+      con.setRequestProperty("Authorization", "Basic " + credential());
     } catch (MalformedURLException e) {
       e.printStackTrace();
     } catch (IOException e) {
@@ -110,5 +111,15 @@ public class HTTPClient extends AsyncTaskLoader<HashMap<String, Object> >{
   @Override
   protected void onStartLoading() {
     forceLoad();
+  }
+  
+  private String credential() {
+    byte[] credential = Base64.encode((application_id + ":" + application_key).getBytes(), Base64.DEFAULT);
+    try {
+      return new String(credential, "UTF-8");
+    } catch (UnsupportedEncodingException e) {
+      e.printStackTrace();
+      return null;
+    }
   }
 }
