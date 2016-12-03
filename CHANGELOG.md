@@ -1,6 +1,9 @@
 adhafera
 ========
 
+- 2.0.1:
+  - [ADD] authorization header
+
 - 2.0.0:
   - [ADD] settle view for this month
 
