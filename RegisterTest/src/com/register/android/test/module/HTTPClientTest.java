@@ -16,7 +16,7 @@ import android.test.AndroidTestCase;
 import com.register.android.lib.HTTPClient;
 
 public class HTTPClientTest extends AndroidTestCase {
-  private static final String[] attributes = {"date", "content", "category", "price", "account_type"};
+  private static final String[] attributes = {"date", "content", "category", "price", "payment_type"};
   private HashMap<String, Object> ret;
 
   public HTTPClientTest() {}
@@ -28,7 +28,7 @@ public class HTTPClientTest extends AndroidTestCase {
   public void tearDown() throws Exception {}
 
   @Test
-  public void testSendAccount_normal() {
+  public void testSendPayment_normal() {
     String[] inputs = {"2015-01-01", "テスト用データ", "テスト", "100", "expense"};
     HTTPClient httpClient = setupMock(inputs);
 
@@ -37,23 +37,23 @@ public class HTTPClientTest extends AndroidTestCase {
     assertStatusCode(201);
 
     try {
-      HashMap<String, String> expectedAccount = new HashMap<String, String>();
+      HashMap<String, String> expectedPayment = new HashMap<String, String>();
       JSONObject responseBody = new JSONObject(ret.get("body").toString());
-      HashMap<String, String> actualAccount = new HashMap<String, String>();
+      HashMap<String, String> actualPayment = new HashMap<String, String>();
 
       for(int i=0;i<attributes.length;i++) {
-        expectedAccount.put(attributes[i], inputs[i]);
-        actualAccount.put(attributes[i], responseBody.getString(attributes[i]));
+        expectedPayment.put(attributes[i], inputs[i]);
+        actualPayment.put(attributes[i], responseBody.getString(attributes[i]));
       }
 
-      assertEquals(expectedAccount, actualAccount);
+      assertEquals(expectedPayment, actualPayment);
     } catch (JSONException e) {
       e.printStackTrace();
     }
   }
 
   @Test
-  public void testSendAccount_exception_categoryIsAbsent() {
+  public void testSendPayment_exception_categoryIsAbsent() {
     String[] inputs = {"2015-01-01", "テスト用データ", null, "100", "expense"};
     HTTPClient httpClient = setupMock(inputs);
 
@@ -64,7 +64,7 @@ public class HTTPClientTest extends AndroidTestCase {
   }
 
   @Test
-  public void testSendAccount_exception_dateIsInvalid() {
+  public void testSendPayment_exception_dateIsInvalid() {
     String[] inputs = {"invalid_date", "テスト用データ", "テスト", "100", "expense"};
     HTTPClient httpClient = setupMock(inputs);
 
@@ -75,7 +75,7 @@ public class HTTPClientTest extends AndroidTestCase {
   }
 
   @Test
-  public void testSendAccount_exception_multipleInputsIsAbsent() {
+  public void testSendPayment_exception_multipleInputsIsAbsent() {
     String[] inputs = {"2015-01-01", null, "テスト", null, "expense"};
     HTTPClient httpClient = setupMock(inputs);
 
@@ -86,7 +86,7 @@ public class HTTPClientTest extends AndroidTestCase {
   }
 
   @Test
-  public void testSendAccount_exception_multipleInputsIsInvalid() {
+  public void testSendPayment_exception_multipleInputsIsInvalid() {
     String[] inputs = {"invalid_date", "テスト用データ", "テスト", "-100", "expense"};
     HTTPClient httpClient = setupMock(inputs);
 
