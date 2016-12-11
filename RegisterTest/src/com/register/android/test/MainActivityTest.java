@@ -46,12 +46,12 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
     assertStartApplication();
 
     String[] texts = {"", "data for system test", "test", "100"};
-    inputAccountInfo(texts);
+    inputPaymentInfo(texts);
     solo.clickOnView(solo.getView(R.id.income));
 
     solo.clickOnView(solo.getView(R.id.OK));
     int[] visibilities = {TextView.INVISIBLE, TextView.INVISIBLE, TextView.INVISIBLE, TextView.INVISIBLE};
-    assertRegistration("家計簿を登録しました", new String[]{today, "", "", ""}, "収入", visibilities);
+    assertRegistration("収支情報を登録しました", new String[]{today, "", "", ""}, "収入", visibilities);
 
     int settle_after = Integer.parseInt(settle_before) + 100;
     assertSettleView(String.valueOf(settle_after));
@@ -62,7 +62,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
     assertStartApplication();
 
     String[] texts = {"2015-01-01", "", "test", "100"};
-    inputAccountInfo(texts);
+    inputPaymentInfo(texts);
     solo.clickOnView(solo.getView(R.id.income));
 
     solo.clickOnView(solo.getView(R.id.OK));
@@ -76,7 +76,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
     assertStartApplication();
 
     String[] texts = {"invalid_date", "data for system test", "test", "100"};
-    inputAccountInfo(texts);
+    inputPaymentInfo(texts);
     solo.clickOnView(solo.getView(R.id.income));
 
     solo.clickOnView(solo.getView(R.id.OK));
@@ -89,7 +89,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
   public void testCancelRegistration_normal() {
     assertStartApplication();
 
-    inputAccountInfo(new String[]{"2015-01-01", "data for system test", "test", "100"});
+    inputPaymentInfo(new String[]{"2015-01-01", "data for system test", "test", "100"});
     solo.clickOnView(solo.getView(R.id.income));
 
     solo.clickOnView(solo.getView(R.id.cancel));
@@ -101,7 +101,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
   public void testCancelRegistration_normal_includeEmpty() {
     assertStartApplication();
 
-    inputAccountInfo(new String[]{"2015-01-01", "data for system test", "", ""});
+    inputPaymentInfo(new String[]{"2015-01-01", "data for system test", "", ""});
     solo.clickOnView(solo.getView(R.id.income));
 
     solo.clickOnView(solo.getView(R.id.cancel));
@@ -113,7 +113,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
   public void testCancelRegistration_normal_includeInvalidValue() {
     assertStartApplication();
 
-    inputAccountInfo(new String[]{"2015-01-01", "data for system test", "test", "invalid_price"});
+    inputPaymentInfo(new String[]{"2015-01-01", "data for system test", "test", "invalid_price"});
     solo.clickOnView(solo.getView(R.id.income));
 
     solo.clickOnView(solo.getView(R.id.cancel));
@@ -164,7 +164,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
     assertTrue(((TextView) solo.getView(R.id.result_settle)).getText().toString().contains(settlement));
   }
 
-  private void inputAccountInfo(String[] texts) {
+  private void inputPaymentInfo(String[] texts) {
     for(int i=0;i<fieldIDs.length;i++) {
       if(!texts[i].equals("")) {
         solo.clearEditText((EditText) solo.getView(fieldIDs[i]));
