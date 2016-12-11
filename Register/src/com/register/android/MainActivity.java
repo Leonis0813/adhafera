@@ -92,12 +92,12 @@ public class MainActivity extends ActionBarActivity {
 	      public void onLoadFinished(Loader<HashMap<String, Object>> loader, HashMap<String, Object> data) {
 	          int code = Integer.parseInt(data.get("statusCode").toString());
 	          if(code == 201) {
-	              rv.showMessage("家計簿を登録しました");
+	              rv.showMessage("収支情報を登録しました");
 	              rv.resetField();
 	              rv.setToday();
 	              settle();
 	          } else if (code == 400) {
-	              rv.showMessage("家計簿の登録に失敗しました");
+	              rv.showMessage("収支情報の登録に失敗しました");
 	          }
 	          getLoaderManager().destroyLoader(LOADER_ID);
 	      }
