@@ -55,7 +55,7 @@ public class MainActivity extends ActionBarActivity {
 		return super.onOptionsItemSelected(item);
 	}
 	
-	public void registAccount(String[] inputs) {
+	public void registPayment(String[] inputs) {
 		ArrayList<Integer> ids = inputChecker.checkEmpty(inputs);
 		if(!ids.isEmpty()) {
 			Iterator<Integer> it = ids.iterator();

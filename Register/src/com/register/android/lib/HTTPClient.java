@@ -33,24 +33,24 @@ public class HTTPClient extends AsyncTaskLoader<HashMap<String, Object> >{
 
     try {
       param = new JSONObject();
-      param.put("account_type", inputs[4]);
+      param.put("payment_type", inputs[4]);
       param.put("date", inputs[0]);
       param.put("content", inputs[1]);
       param.put("category", inputs[2]);
       param.put("price", inputs[3]);
       
-      con = (HttpURLConnection) new URL("http://" + host + ":" + port + "/accounts").openConnection();
+      con = (HttpURLConnection) new URL("http://" + host + ":" + port + "/payments").openConnection();
       con.setRequestMethod("POST");
       con.setRequestProperty("Content-Type", "application/json");
       con.setRequestProperty("Authorization", "Basic " + credential());
       con.setDoInput(true);
       con.setDoOutput(true);
 
-      JSONObject account = new JSONObject();
-      account.put("accounts", param);
+      JSONObject payment = new JSONObject();
+      payment.put("payments", param);
 
       OutputStreamWriter out = new OutputStreamWriter(con.getOutputStream());
-      out.write(account.toString());
+      out.write(payment.toString());
       out.flush();
       out.close();
     } catch (JSONException e) {
