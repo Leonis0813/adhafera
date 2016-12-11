@@ -1,6 +1,9 @@
 adhafera
 ========
 
+- 2.0.2:
+  - [CHANGE] parameter name
+
 - 2.0.1:
   - [ADD] authorization header
 
