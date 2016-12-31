@@ -99,7 +99,7 @@ public class RegistrationView extends RelativeLayout implements OnClickListener{
 			int id = radioGroup.getCheckedRadioButtonId();
 			RadioButton radioButton = (RadioButton) findViewById(id);
 			inputs[4] = radioButton.getText().toString().equals("収入") ? "income" : "expense";
-			((MainActivity)context).registAccount(inputs);
+			((MainActivity)context).registPayment(inputs);
 		} else if(v == cancel) {
 			for(int i=0;i<LABELS.length;i++) {
 				resetField();
