@@ -62,6 +62,21 @@ public class HTTPClient extends AsyncTaskLoader<HashMap<String, Object> >{
     }
   }
 
+  public HTTPClient(Context context, String keyword) {
+    super(context);
+
+    try {
+      keyword = keyword == null ? "" : "?keyword=" + keyword;
+      con = (HttpURLConnection) new URL("http://" + host + ":" + port + "/categories" + keyword).openConnection();
+      con.setRequestMethod("GET");
+      con.setRequestProperty("Authorization", "Basic " + credential());
+    } catch (MalformedURLException e) {
+      e.printStackTrace();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
   public HTTPClient(Context context) {
     super(context);
 
