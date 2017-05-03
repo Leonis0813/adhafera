@@ -66,7 +66,7 @@ public class HTTPClient extends AsyncTaskLoader<HashMap<String, Object> >{
     super(context);
 
     try {
-      keyword = keyword == null ? "" : "?keyword=" + keyword;
+      keyword = keyword == "" ? "" : "?keyword=" + keyword;
       con = (HttpURLConnection) new URL("http://" + host + ":" + port + "/categories" + keyword).openConnection();
       con.setRequestMethod("GET");
       con.setRequestProperty("Authorization", "Basic " + credential());

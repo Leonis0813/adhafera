@@ -6,6 +6,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -38,6 +39,7 @@ public class MainActivity extends ActionBarActivity {
 		rv = (RegistrationView) findViewById(R.id.registration);
 		inputChecker = new InputChecker();
 		settle();
+		getCategories();
 	}
 
 	@Override
@@ -143,6 +145,37 @@ public class MainActivity extends ActionBarActivity {
             rv.showMessage("収支の取得に失敗しました");
           }
           getLoaderManager().destroyLoader(LOADER_ID + 1);
+        }
+
+        public void onLoaderReset(Loader<HashMap<String, Object>> loader) {}
+      });
+	}
+	
+	public void getCategories() {
+	  getLoaderManager().initLoader(LOADER_ID + 2, new Bundle(), new LoaderManager.LoaderCallbacks<HashMap<String, Object>>() {
+        @Override
+        public Loader<HashMap<String, Object>> onCreateLoader(int id, Bundle args) {
+          return new HTTPClient(activity, "");
+        }
+
+        @Override
+        public void onLoadFinished(Loader<HashMap<String, Object>> loader, HashMap<String, Object> data) {
+          int code = Integer.parseInt(data.get("statusCode").toString());
+          if(code == 200) {
+            try {
+              JSONArray body = new JSONArray(data.get("body").toString());
+              String[] names = new String[body.length()];
+              for(int i=0;i<body.length();i++) {
+                names[i] = body.getJSONObject(i).getString("name");
+              }
+              rv.setCategories(names);
+            } catch (JSONException e) {
+              e.printStackTrace();
+            }
+          } else if (code == 400) {
+            rv.showMessage("カテゴリの取得に失敗しました");
+          }
+          getLoaderManager().destroyLoader(LOADER_ID + 2);
         }
 
         public void onLoaderReset(Loader<HashMap<String, Object>> loader) {}
