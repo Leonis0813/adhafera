@@ -12,7 +12,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 public class DateView extends InputView {
-  public static final String LABEL = "日付";
   private static final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
   private EditText fieldView;
 
@@ -21,8 +20,6 @@ public class DateView extends InputView {
 
     View layout = View.inflate(context, R.layout.date_view, this);
 
-    labelView = (TextView) layout.findViewById(R.id.label_date);
-    labelView.setText("　　" + LABEL + "：");
     fieldView = (EditText) layout.findViewById(R.id.field_date);
     errorChecker = (TextView) layout.findViewById(R.id.check_date);
     

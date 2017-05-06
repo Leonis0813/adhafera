@@ -9,7 +9,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 public class ContentView extends InputView {
-  public static final String LABEL = "内容";
   private EditText fieldView;
 
   public ContentView(Context context, AttributeSet attributeSet) {
@@ -17,8 +16,6 @@ public class ContentView extends InputView {
     
     View.inflate(context, R.layout.content_view, this);
     
-    labelView = (TextView) findViewById(R.id.label_content);
-    labelView.setText("　　" + LABEL + "：");
     fieldView = (EditText) findViewById(R.id.field_content);
     errorChecker = (TextView) findViewById(R.id.check_content);
   }

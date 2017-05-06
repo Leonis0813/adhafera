@@ -12,7 +12,6 @@ import android.widget.Button;
 import android.widget.TextView;
 
 public class CategoryView extends InputView implements OnClickListener {
-  public static final String LABEL = "カテゴリ";
   private String[] categories;
   private boolean[] selected;
   private TextView fieldView;
@@ -23,8 +22,6 @@ public class CategoryView extends InputView implements OnClickListener {
 
     View.inflate(context, R.layout.category_view, this);
     
-    labelView = (TextView) findViewById(R.id.label_category);
-    labelView.setText(LABEL + "：");
     fieldView = (TextView) findViewById(R.id.field_category);
     errorChecker = (TextView) findViewById(R.id.check_category);
     

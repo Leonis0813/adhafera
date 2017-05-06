@@ -84,13 +84,13 @@ public class RegistrationView extends RelativeLayout implements OnClickListener 
 	public String getLabel(int id) {
 	  switch(id) {
 	  case 0:
-	    return DateView.LABEL;
+	    return getResources().getString(R.string.date);
 	  case 1:
-	    return ContentView.LABEL;
+	    return getResources().getString(R.string.content);
 	  case 2:
-	    return CategoryView.LABEL;
+	    return getResources().getString(R.string.category);
 	  case 3:
-	    return PriceView.LABEL;
+	    return getResources().getString(R.string.price);
 	  default:
 	    return null;
 	  }
