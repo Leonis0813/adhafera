@@ -69,8 +69,8 @@ public class MainActivity extends ActionBarActivity {
       noticeError(errorMessage, ids);
       return;
     }
-    if(!inputChecker.checkDate(inputs[0])) { ids.add(0); }
-    if(!inputChecker.checkPrice(inputs[3])) { ids.add(3); }
+    if(!inputChecker.checkDate(inputs[RegistrationView.INPUT_VIEW_DATE])) { ids.add(RegistrationView.INPUT_VIEW_DATE); }
+    if(!inputChecker.checkPrice(inputs[RegistrationView.INPUT_VIEW_PRICE])) { ids.add(RegistrationView.INPUT_VIEW_PRICE); }
     if(!ids.isEmpty()) {
       Iterator<Integer> it = ids.iterator();
       String errorMessage = rv.getLabel(it.next());

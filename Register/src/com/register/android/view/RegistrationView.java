@@ -20,6 +20,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class RegistrationView extends RelativeLayout implements OnClickListener {
+  public static final int INPUT_VIEW_DATE = 0;
+  public static final int INPUT_VIEW_CONTENT = 1;
+  public static final int INPUT_VIEW_CATEGORY = 2;
+  public static final int INPUT_VIEW_PRICE = 3;
+  public static final int INPUT_VIEW_SIZE = 4;
+  public static final int INPUTS_PAYMENT_TYPE = 4;
   private InputView[] inputViews;
   private RadioGroup radioGroup;
   private Button OK, cancel;
@@ -33,11 +39,11 @@ public class RegistrationView extends RelativeLayout implements OnClickListener 
 
     View layout = View.inflate(context, R.layout.registration_view, this);
 
-    inputViews = new InputView[4];
-    inputViews[0] = (InputView) layout.findViewById(R.id.date);
-    inputViews[1] = (InputView) layout.findViewById(R.id.content);
-    inputViews[2] = (InputView) layout.findViewById(R.id.category);
-    inputViews[3] = (InputView) layout.findViewById(R.id.price);
+    inputViews = new InputView[INPUT_VIEW_SIZE];
+    inputViews[INPUT_VIEW_DATE] = (InputView) layout.findViewById(R.id.date);
+    inputViews[INPUT_VIEW_CONTENT] = (InputView) layout.findViewById(R.id.content);
+    inputViews[INPUT_VIEW_CATEGORY] = (InputView) layout.findViewById(R.id.category);
+    inputViews[INPUT_VIEW_PRICE] = (InputView) layout.findViewById(R.id.price);
 
     radioGroup = (RadioGroup) findViewById(R.id.radiogroup);
 
@@ -52,7 +58,7 @@ public class RegistrationView extends RelativeLayout implements OnClickListener 
 
   public void setToday() {
     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-    inputViews[0].setInputText(simpleDateFormat.format(new Date()));
+    inputViews[INPUT_VIEW_DATE].setInputText(simpleDateFormat.format(new Date()));
   }
 
   public void showMessage(String message) {
@@ -78,18 +84,18 @@ public class RegistrationView extends RelativeLayout implements OnClickListener 
   }
 
   public void setCategories(String[] names) {
-    ((CategoryView) inputViews[2]).setCategories(names);
+    ((CategoryView) inputViews[INPUT_VIEW_CATEGORY]).setCategories(names);
   }
 
   public String getLabel(int id) {
     switch(id) {
-    case 0:
+    case INPUT_VIEW_DATE:
       return getResources().getString(R.string.date);
-    case 1:
+    case INPUT_VIEW_CONTENT:
       return getResources().getString(R.string.content);
-    case 2:
+    case INPUT_VIEW_CATEGORY:
       return getResources().getString(R.string.category);
-    case 3:
+    case INPUT_VIEW_PRICE:
       return getResources().getString(R.string.price);
     default:
       return null;
@@ -106,7 +112,7 @@ public class RegistrationView extends RelativeLayout implements OnClickListener 
       }
       int id = radioGroup.getCheckedRadioButtonId();
       RadioButton radioButton = (RadioButton) findViewById(id);
-      inputs[4] = radioButton.getText().toString().equals("収入") ? "income" : "expense";
+      inputs[INPUTS_PAYMENT_TYPE] = radioButton.getText().toString().equals(getResources().getString(R.string.income)) ? "income" : "expense";
       ((MainActivity)context).registPayment(inputs);
     } else if(v == cancel) {
       resetField();
