@@ -21,18 +21,18 @@ public class CategoryView extends InputView implements OnClickListener {
     super(context, attributeSet);
 
     View.inflate(context, R.layout.category_view, this);
-    
+
     fieldView = (TextView) findViewById(R.id.field_category);
     errorChecker = (TextView) findViewById(R.id.check_category);
-    
+
     selectButton = (Button) findViewById(R.id.select_category);
     selectButton.setOnClickListener(this);
   }
-  
+
   public void setInputText(String text) {
     fieldView.setText(text);
   }
-  
+
   public String getInputText() {
     return fieldView.getText().toString();
   }
@@ -51,25 +51,25 @@ public class CategoryView extends InputView implements OnClickListener {
     .setIcon(android.R.drawable.ic_menu_help)
     .setTitle("カテゴリを選択")
     .setMultiChoiceItems(categories, selected,
-            new DialogInterface.OnMultiChoiceClickListener() {
-                public void onClick(DialogInterface dialog, int whichButton, boolean isChecked) {
-                  selected[whichButton] = isChecked;
-                }
-            })
+        new DialogInterface.OnMultiChoiceClickListener() {
+      public void onClick(DialogInterface dialog, int whichButton, boolean isChecked) {
+        selected[whichButton] = isChecked;
+      }
+    })
     .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-        public void onClick(DialogInterface dialog, int whichButton) {
-          String category = "";
-          for(int i=0;i<selected.length;i++) {
-            if(selected[i]) {
-              category += category.equals("") ? categories[i] : "," + categories[i];
-            }
+      public void onClick(DialogInterface dialog, int whichButton) {
+        String category = "";
+        for(int i=0;i<selected.length;i++) {
+          if(selected[i]) {
+            category += category.equals("") ? categories[i] : "," + categories[i];
           }
-          fieldView.setText(category);
         }
+        fieldView.setText(category);
+      }
     })
     .setNegativeButton("キャンセル", new DialogInterface.OnClickListener() {
-        public void onClick(DialogInterface dialog, int whichButton) {}
+      public void onClick(DialogInterface dialog, int whichButton) {}
     })
-   .show();    
+    .show();    
   }
 }

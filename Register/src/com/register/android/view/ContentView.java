@@ -13,17 +13,17 @@ public class ContentView extends InputView {
 
   public ContentView(Context context, AttributeSet attributeSet) {
     super(context, attributeSet);
-    
+
     View.inflate(context, R.layout.content_view, this);
-    
+
     fieldView = (EditText) findViewById(R.id.field_content);
     errorChecker = (TextView) findViewById(R.id.check_content);
   }
-  
+
   public void setInputText(String text) {
     fieldView.setText(text);
   }
-  
+
   public String getInputText() {
     return fieldView.getText().toString();
   }

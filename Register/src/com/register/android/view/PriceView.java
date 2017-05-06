@@ -13,17 +13,17 @@ public class PriceView extends InputView {
 
   public PriceView(Context context, AttributeSet attributeSet) {
     super(context, attributeSet);
-    
+
     View.inflate(context, R.layout.price_view, this);
-    
+
     fieldView = (EditText) findViewById(R.id.field_price);
     errorChecker = (TextView) findViewById(R.id.check_price);
   }
-  
+
   public void setInputText(String text) {
     fieldView.setText(text);
   }
-  
+
   public String getInputText() {
     return fieldView.getText().toString();
   }

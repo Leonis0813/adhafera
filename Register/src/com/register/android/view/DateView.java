@@ -22,14 +22,14 @@ public class DateView extends InputView {
 
     fieldView = (EditText) layout.findViewById(R.id.field_date);
     errorChecker = (TextView) layout.findViewById(R.id.check_date);
-    
+
     setInputText(simpleDateFormat.format(new Date()));
   }
-  
+
   public void setInputText(String text) {
     fieldView.setText(text);
   }
-  
+
   public String getInputText() {
     return fieldView.getText().toString();
   }

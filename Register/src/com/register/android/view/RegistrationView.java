@@ -20,96 +20,96 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class RegistrationView extends RelativeLayout implements OnClickListener {
-	private InputView[] inputViews;
-	private RadioGroup radioGroup;
-	private Button OK, cancel;
-	private TextView settleView;
-	
-	private Context context;
-	
-	public RegistrationView(Context context, AttributeSet attributeSet) {
-		super(context, attributeSet);
-		this.context = context;
-		
-		View layout = View.inflate(context, R.layout.registration_view, this);
+  private InputView[] inputViews;
+  private RadioGroup radioGroup;
+  private Button OK, cancel;
+  private TextView settleView;
 
-		inputViews = new InputView[4];
-		inputViews[0] = (InputView) layout.findViewById(R.id.date);
-		inputViews[1] = (InputView) layout.findViewById(R.id.content);
-		inputViews[2] = (InputView) layout.findViewById(R.id.category);
-		inputViews[3] = (InputView) layout.findViewById(R.id.price);
+  private Context context;
 
-		radioGroup = (RadioGroup) findViewById(R.id.radiogroup);
+  public RegistrationView(Context context, AttributeSet attributeSet) {
+    super(context, attributeSet);
+    this.context = context;
 
-		OK = (Button) findViewById(R.id.OK);
-		OK.setOnClickListener(this);
+    View layout = View.inflate(context, R.layout.registration_view, this);
 
-		cancel = (Button) findViewById(R.id.cancel);
-		cancel.setOnClickListener(this);
+    inputViews = new InputView[4];
+    inputViews[0] = (InputView) layout.findViewById(R.id.date);
+    inputViews[1] = (InputView) layout.findViewById(R.id.content);
+    inputViews[2] = (InputView) layout.findViewById(R.id.category);
+    inputViews[3] = (InputView) layout.findViewById(R.id.price);
 
-		settleView = (TextView) findViewById(R.id.result_settle);
-	}
+    radioGroup = (RadioGroup) findViewById(R.id.radiogroup);
 
-	public void setToday() {
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-		inputViews[0].setInputText(simpleDateFormat.format(new Date()));
-	}
+    OK = (Button) findViewById(R.id.OK);
+    OK.setOnClickListener(this);
 
-	public void showMessage(String message) {
-		Toast.makeText(context, message, Toast.LENGTH_LONG).show();
-	}
-	
-	public void showWrongInput(ArrayList<Integer> ids) {
-		Iterator<Integer> it = ids.iterator();
-		while(it.hasNext()) {
-			inputViews[it.next()].errorChecker.setVisibility(VISIBLE);
-		}
-	}
+    cancel = (Button) findViewById(R.id.cancel);
+    cancel.setOnClickListener(this);
 
-	public void showSettlement(String settlement) {
-	  settleView.setText(settlement + " 円");
-	}
+    settleView = (TextView) findViewById(R.id.result_settle);
+  }
 
-	public void resetField() {
-		for(int i=0;i<inputViews.length;i++) {
-		  inputViews[i].setInputText("");
-		  inputViews[i].errorChecker.setVisibility(INVISIBLE);
-		}
-	}
+  public void setToday() {
+    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    inputViews[0].setInputText(simpleDateFormat.format(new Date()));
+  }
 
-	public void setCategories(String[] names) {
-	  ((CategoryView) inputViews[2]).setCategories(names);
-	}
+  public void showMessage(String message) {
+    Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+  }
 
-	public String getLabel(int id) {
-	  switch(id) {
-	  case 0:
-	    return getResources().getString(R.string.date);
-	  case 1:
-	    return getResources().getString(R.string.content);
-	  case 2:
-	    return getResources().getString(R.string.category);
-	  case 3:
-	    return getResources().getString(R.string.price);
-	  default:
-	    return null;
-	  }
+  public void showWrongInput(ArrayList<Integer> ids) {
+    Iterator<Integer> it = ids.iterator();
+    while(it.hasNext()) {
+      inputViews[it.next()].errorChecker.setVisibility(VISIBLE);
     }
+  }
 
-	@Override
-	public void onClick(View v) {
-		if(v == OK) {
-			String[] inputs = new String[MainActivity.INPUT_SIZE];
-			for(int i=0;i<inputViews.length;i++) {
-				String input = inputViews[i].getInputText();
-				inputs[i] = input.equals("") ? null : input;
-			}
-			int id = radioGroup.getCheckedRadioButtonId();
-			RadioButton radioButton = (RadioButton) findViewById(id);
-			inputs[4] = radioButton.getText().toString().equals("収入") ? "income" : "expense";
-			((MainActivity)context).registPayment(inputs);
-		} else if(v == cancel) {
-          resetField();
-		}
-	}
+  public void showSettlement(String settlement) {
+    settleView.setText(settlement + " 円");
+  }
+
+  public void resetField() {
+    for(int i=0;i<inputViews.length;i++) {
+      inputViews[i].setInputText("");
+      inputViews[i].errorChecker.setVisibility(INVISIBLE);
+    }
+  }
+
+  public void setCategories(String[] names) {
+    ((CategoryView) inputViews[2]).setCategories(names);
+  }
+
+  public String getLabel(int id) {
+    switch(id) {
+    case 0:
+      return getResources().getString(R.string.date);
+    case 1:
+      return getResources().getString(R.string.content);
+    case 2:
+      return getResources().getString(R.string.category);
+    case 3:
+      return getResources().getString(R.string.price);
+    default:
+      return null;
+    }
+  }
+
+  @Override
+  public void onClick(View v) {
+    if(v == OK) {
+      String[] inputs = new String[MainActivity.INPUT_SIZE];
+      for(int i=0;i<inputViews.length;i++) {
+        String input = inputViews[i].getInputText();
+        inputs[i] = input.equals("") ? null : input;
+      }
+      int id = radioGroup.getCheckedRadioButtonId();
+      RadioButton radioButton = (RadioButton) findViewById(id);
+      inputs[4] = radioButton.getText().toString().equals("収入") ? "income" : "expense";
+      ((MainActivity)context).registPayment(inputs);
+    } else if(v == cancel) {
+      resetField();
+    }
+  }
 }
