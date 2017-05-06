@@ -1,132 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
-    
-    <LinearLayout
+
+    <com.register.android.view.DateView
+        android:id="@+id/date"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="25dip"
-        android:id="@+id/date">
-    	<TextView
-    	    android:layout_width="match_parent"
-    	    android:layout_height="wrap_content"
-    	    android:layout_weight="1"
-    	    android:id="@+id/label_date"
-    	    android:text="@string/date"
-    	    android:textSize="25sp"
-    	    />
-    	<EditText
-    	    android:layout_width="match_parent"
-    	    android:layout_height="wrap_content"
-    	    android:layout_weight="1"
-    	    android:id="@+id/field_date"
-    	    />
-    	<TextView
-    	    android:layout_width="wrap_content"
-    	    android:layout_height="wrap_content"
-    	    android:text="@string/error"
-    	    android:textSize="25sp"
-    	    android:textColor="#ff0000"
-    	    android:visibility="invisible"
-    	    android:id="@+id/check_date"
-    	    />
-    </LinearLayout>
+        android:layout_marginTop="25dip" />
 
-   	<LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/date"
+    <com.register.android.view.ContentView
         android:id="@+id/content"
-        >
-    	<TextView
-        	android:layout_width="match_parent"
-    	    android:layout_height="wrap_content"
-        	android:layout_weight="1"
-    	    android:id="@+id/label_content"
-    	    android:text="@string/content"
-        	android:textSize="25sp"
-        	/>
-    	<EditText
-    	    android:layout_width="match_parent"
-        	android:layout_height="wrap_content"
-    	    android:layout_weight="1"
-    	    android:id="@+id/field_content"
-        	/>
-    	<TextView
-    	    android:layout_width="wrap_content"
-        	android:layout_height="wrap_content"
-    	    android:text="@string/error"
-    	    android:textSize="25sp"
-        	android:textColor="#ff0000"
-    	    android:visibility="invisible"
-    	    android:id="@+id/check_content"
-        	/>
-    </LinearLayout>
-        
-    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/content"
+        android:layout_below="@id/date" />
+        
+    <com.register.android.view.CategoryView
         android:id="@+id/category"
-        >
-   		<TextView
-        	android:layout_width="match_parent"
-        	android:layout_height="wrap_content"
-        	android:layout_weight="1"
-        	android:id="@+id/label_category"
-        	android:text="@string/category"
-        	android:textSize="25sp"
-        	/>
-    	<EditText
-    	    android:layout_width="match_parent"
-        	android:layout_height="wrap_content"
-        	android:layout_weight="1"
-        	android:id="@+id/field_category"
-        	/>
-    	<TextView
-    	    android:layout_width="wrap_content"
-        	android:layout_height="wrap_content"
-        	android:text="@string/error"
-        	android:textSize="25sp"
-        	android:textColor="#ff0000"
-        	android:visibility="invisible"
-        	android:id="@+id/check_category"
-        	/>
-    </LinearLayout>
-        
-    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/category"
+        android:layout_below="@id/content" />
+            
+    <com.register.android.view.PriceView
         android:id="@+id/price"
-        >
-    	<TextView
-        	android:layout_width="match_parent"
-        	android:layout_height="wrap_content"
-        	android:layout_weight="1"
-        	android:id="@+id/label_price"
-        	android:text="@string/price"
-        	android:textSize="25sp"
-        	/>
-    	<EditText
-        	android:layout_width="match_parent"
-        	android:layout_height="wrap_content"
-        	android:layout_weight="1"
-        	android:id="@+id/field_price"
-        	/>
-    	<TextView
-        	android:layout_width="wrap_content"
-        	android:layout_height="wrap_content"
-        	android:text="@string/error"
-        	android:textSize="25sp"
-        	android:textColor="#ff0000"
-        	android:visibility="invisible"
-        	android:id="@+id/check_price"
-        	/>
-    </LinearLayout>
-        
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/category" />
+
     <RadioGroup
         android:orientation="horizontal"
 	    android:layout_width="wrap_content"

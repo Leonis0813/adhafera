@@ -61,9 +61,9 @@ public class MainActivity extends ActionBarActivity {
 		ArrayList<Integer> ids = inputChecker.checkEmpty(inputs);
 		if(!ids.isEmpty()) {
 			Iterator<Integer> it = ids.iterator();
-			String errorMessage = RegistrationView.LABELS[it.next()];
+			String errorMessage = rv.getLabel(it.next());
 			while(it.hasNext()) {
-				errorMessage += "," + RegistrationView.LABELS[it.next()];
+				errorMessage += "," + rv.getLabel(it.next());
 			}
 			errorMessage += "が入力されていません";
 			noticeError(errorMessage, ids);
@@ -73,9 +73,9 @@ public class MainActivity extends ActionBarActivity {
 		if(!inputChecker.checkPrice(inputs[3])) { ids.add(3); }
 		if(!ids.isEmpty()) {
 			Iterator<Integer> it = ids.iterator();
-			String errorMessage = RegistrationView.LABELS[it.next()];
+			String errorMessage = rv.getLabel(it.next());
 			while(it.hasNext()) {
-				errorMessage += "," + RegistrationView.LABELS[it.next()];
+				errorMessage += "," + rv.getLabel(it.next());
 			}
 			errorMessage += "が不正です";
 			noticeError(errorMessage, ids);
