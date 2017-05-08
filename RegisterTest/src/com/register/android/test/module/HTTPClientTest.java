@@ -136,6 +136,28 @@ public class HTTPClientTest extends AndroidTestCase {
     }
   }
 
+  @Test
+  public void testGetCategories_normal() {
+    HTTPClient httpClient = new HTTPClient(getContext(), "");
+    setupMock(httpClient, 200, "[{\"id\":\"1\", \"name\":\"test\", \"description\":\"test category\"}, {\"id\":\"2\", \"name\":\"test2\", \"description\":\"test category\"}]");
+
+    ret = httpClient.sendRequest();
+
+    assertStatusCode(200);
+
+    try {
+      JSONArray body = new JSONArray(ret.get("body").toString());
+      assertEquals("1", body.getJSONObject(0).getString("id"));
+      assertEquals("test", body.getJSONObject(0).getString("name"));
+      assertEquals("test category", body.getJSONObject(0).getString("description"));
+      assertEquals("2", body.getJSONObject(1).getString("id"));
+      assertEquals("test2", body.getJSONObject(1).getString("name"));
+      assertEquals("test category", body.getJSONObject(1).getString("description"));
+    } catch (JSONException e) {
+      e.printStackTrace();
+    }
+  }
+
   private void assertStatusCode(int expectedCode) {
     int actualCode = Integer.parseInt(ret.get("statusCode").toString());
     assertEquals(expectedCode, actualCode);
