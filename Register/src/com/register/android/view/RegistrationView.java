@@ -76,9 +76,14 @@ public class RegistrationView extends RelativeLayout implements OnClickListener 
     settleView.setText(settlement + " 円");
   }
 
-  public void resetField() {
+  public void resetFields() {
     for(int i=0;i<inputViews.length;i++) {
       inputViews[i].setInputText("");
+    }
+  }
+
+  public void resetErrorCheckers() {
+    for(int i=0;i<inputViews.length;i++) {
       inputViews[i].errorChecker.setVisibility(INVISIBLE);
     }
   }
@@ -113,9 +118,11 @@ public class RegistrationView extends RelativeLayout implements OnClickListener 
       int id = radioGroup.getCheckedRadioButtonId();
       RadioButton radioButton = (RadioButton) findViewById(id);
       inputs[INPUTS_PAYMENT_TYPE] = radioButton.getText().toString().equals(getResources().getString(R.string.income)) ? "income" : "expense";
+      resetErrorCheckers();
       ((MainActivity)context).registPayment(inputs);
     } else if(v == cancel) {
-      resetField();
+      resetFields();
+      resetErrorCheckers();
     }
   }
 }

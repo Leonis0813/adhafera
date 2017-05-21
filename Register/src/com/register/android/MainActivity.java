@@ -14,11 +14,11 @@ import com.register.android.lib.HTTPClient;
 import com.register.android.service.InputChecker;
 import com.register.android.view.RegistrationView;
 
-import android.support.v7.app.ActionBarActivity;
 import android.app.LoaderManager;
 import android.content.Context;
 import android.content.Loader;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -95,7 +95,8 @@ public class MainActivity extends ActionBarActivity {
         int code = Integer.parseInt(data.get("statusCode").toString());
         if(code == 201) {
           rv.showMessage("収支情報を登録しました");
-          rv.resetField();
+          rv.resetFields();
+          rv.resetErrorCheckers();
           rv.setToday();
           settle();
         } else if (code == 400) {
