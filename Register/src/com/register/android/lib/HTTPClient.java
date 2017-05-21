@@ -38,7 +38,7 @@ public class HTTPClient extends AsyncTaskLoader<HashMap<String, Object> >{
       param.put("content", inputs[1]);
       param.put("category", inputs[2]);
       param.put("price", inputs[3]);
-      
+
       con = (HttpURLConnection) new URL("http://" + host + ":" + port + "/payments").openConnection();
       con.setRequestMethod("POST");
       con.setRequestProperty("Content-Type", "application/json");
@@ -55,6 +55,21 @@ public class HTTPClient extends AsyncTaskLoader<HashMap<String, Object> >{
       out.close();
     } catch (JSONException e) {
       e.printStackTrace();
+    } catch (MalformedURLException e) {
+      e.printStackTrace();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
+  public HTTPClient(Context context, String keyword) {
+    super(context);
+
+    try {
+      keyword = keyword == "" ? "" : "?keyword=" + keyword;
+      con = (HttpURLConnection) new URL("http://" + host + ":" + port + "/categories.json" + keyword).openConnection();
+      con.setRequestMethod("GET");
+      con.setRequestProperty("Authorization", "Basic " + credential());
     } catch (MalformedURLException e) {
       e.printStackTrace();
     } catch (IOException e) {
@@ -107,12 +122,12 @@ public class HTTPClient extends AsyncTaskLoader<HashMap<String, Object> >{
   public HashMap<String, Object> loadInBackground() {
     return sendRequest();
   }
-	
+
   @Override
   protected void onStartLoading() {
     forceLoad();
   }
-  
+
   private String credential() {
     byte[] credential = Base64.encode((application_id + ":" + application_key).getBytes(), Base64.DEFAULT);
     try {

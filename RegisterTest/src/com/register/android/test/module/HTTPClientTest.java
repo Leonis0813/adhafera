@@ -1,6 +1,13 @@
 package com.register.android.test.module;
 
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Field;
+import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -11,26 +18,33 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import android.test.AndroidTestCase;
-
 import com.register.android.lib.HTTPClient;
+
+import android.test.AndroidTestCase;
 
 public class HTTPClientTest extends AndroidTestCase {
   private static final String[] attributes = {"date", "content", "category", "price", "payment_type"};
   private HashMap<String, Object> ret;
+  private HttpURLConnection con;
 
   public HTTPClientTest() {}
 
   @Before
-  public void setUp() throws Exception {}
+  public void setUp() throws Exception {
+    super.setUp();
+    System.setProperty("dexmaker.dexcache", getContext().getCacheDir().getPath());
+    con = mock(HttpURLConnection.class);
+    doNothing().when(con).connect();
+  }
 
   @After
   public void tearDown() throws Exception {}
 
   @Test
-  public void testSendPayment_normal() {
-    String[] inputs = {"2015-01-01", "テスト用データ", "テスト", "100", "expense"};
-    HTTPClient httpClient = setupMock(inputs);
+  public void testRegistPayment_normal() {
+    String[] inputs = {"2015-01-01", "for http client test", "test", "100", "expense"};
+    HTTPClient httpClient = new HTTPClient(getContext(), inputs);
+    setupMock(httpClient, 201, "{\"date\":\"2015-01-01\",\"content\":\"for http client test\",\"category\":\"test\",\"price\":\"100\",\"payment_type\":\"expense\"}");
 
     ret = httpClient.sendRequest();
 
@@ -53,9 +67,11 @@ public class HTTPClientTest extends AndroidTestCase {
   }
 
   @Test
-  public void testSendPayment_exception_categoryIsAbsent() {
-    String[] inputs = {"2015-01-01", "テスト用データ", null, "100", "expense"};
-    HTTPClient httpClient = setupMock(inputs);
+  public void testRegistPayment_exception_categoryIsAbsent() {
+    String[] inputs = {"2015-01-01", "for http client test", null, "100", "expense"};
+
+    HTTPClient httpClient = new HTTPClient(getContext(), inputs);
+    setupMock(httpClient, 400, "[{\"error_code\":\"absent_param_category\"}]");
 
     ret = httpClient.sendRequest();
 
@@ -64,9 +80,11 @@ public class HTTPClientTest extends AndroidTestCase {
   }
 
   @Test
-  public void testSendPayment_exception_dateIsInvalid() {
+  public void testRegistPayment_exception_dateIsInvalid() {
     String[] inputs = {"invalid_date", "テスト用データ", "テスト", "100", "expense"};
-    HTTPClient httpClient = setupMock(inputs);
+
+    HTTPClient httpClient = new HTTPClient(getContext(), inputs);
+    setupMock(httpClient, 400, "[{\"error_code\":\"invalid_param_date\"}]");
 
     ret = httpClient.sendRequest();
 
@@ -75,9 +93,11 @@ public class HTTPClientTest extends AndroidTestCase {
   }
 
   @Test
-  public void testSendPayment_exception_multipleInputsIsAbsent() {
+  public void testRegistPayment_exception_multipleInputsIsAbsent() {
     String[] inputs = {"2015-01-01", null, "テスト", null, "expense"};
-    HTTPClient httpClient = setupMock(inputs);
+
+    HTTPClient httpClient = new HTTPClient(getContext(), inputs);
+    setupMock(httpClient, 400, "[{\"error_code\":\"absent_param_content\"}, {\"error_code\":\"absent_param_price\"}]");
 
     ret = httpClient.sendRequest();
 
@@ -86,9 +106,11 @@ public class HTTPClientTest extends AndroidTestCase {
   }
 
   @Test
-  public void testSendPayment_exception_multipleInputsIsInvalid() {
+  public void testRegistPayment_exception_multipleInputsIsInvalid() {
     String[] inputs = {"invalid_date", "テスト用データ", "テスト", "-100", "expense"};
-    HTTPClient httpClient = setupMock(inputs);
+
+    HTTPClient httpClient = new HTTPClient(getContext(), inputs);
+    setupMock(httpClient, 400, "[{\"error_code\":\"invalid_param_date\"}, {\"error_code\":\"invalid_param_price\"}]");
 
     ret = httpClient.sendRequest();
 
@@ -98,35 +120,42 @@ public class HTTPClientTest extends AndroidTestCase {
 
   @Test
   public void testGetSettlement_normal() {
-    HTTPClient httpClient = setupMock();
+    HTTPClient httpClient = new HTTPClient(getContext());
+    setupMock(httpClient, 200, "{\"2000-01\":\"1000\"}, {\"2000-02\":\"-100\"}]");
 
     ret = httpClient.sendRequest();
 
     assertStatusCode(200);
-  }
 
-  private HTTPClient setupMock(String[] inputs) {
-    return changePort(new HTTPClient(getContext(), inputs));
-  }
-  
-  private HTTPClient setupMock() {
-    return changePort(new HTTPClient(getContext()));
-  }
-
-  private HTTPClient changePort(HTTPClient httpClient) {
-    Class<? extends HTTPClient> c = httpClient.getClass();
     try {
-      Field f = c.getDeclaredField("port");
-      f.setAccessible(true);
-      f.set(httpClient, "88");
-    } catch (NoSuchFieldException e) {
-      e.printStackTrace();
-    } catch (IllegalArgumentException e) {
-      e.printStackTrace();
-    } catch (IllegalAccessException e) {
+      JSONObject body = new JSONObject(ret.get("body").toString());
+      assertEquals("1000", body.getString("2000-01"));
+      assertEquals("-100", body.getString("2000-02"));
+    } catch (JSONException e) {
       e.printStackTrace();
     }
-    return httpClient;
+  }
+
+  @Test
+  public void testGetCategories_normal() {
+    HTTPClient httpClient = new HTTPClient(getContext(), "");
+    setupMock(httpClient, 200, "[{\"id\":\"1\", \"name\":\"test\", \"description\":\"test category\"}, {\"id\":\"2\", \"name\":\"test2\", \"description\":\"test category\"}]");
+
+    ret = httpClient.sendRequest();
+
+    assertStatusCode(200);
+
+    try {
+      JSONArray body = new JSONArray(ret.get("body").toString());
+      assertEquals("1", body.getJSONObject(0).getString("id"));
+      assertEquals("test", body.getJSONObject(0).getString("name"));
+      assertEquals("test category", body.getJSONObject(0).getString("description"));
+      assertEquals("2", body.getJSONObject(1).getString("id"));
+      assertEquals("test2", body.getJSONObject(1).getString("name"));
+      assertEquals("test category", body.getJSONObject(1).getString("description"));
+    } catch (JSONException e) {
+      e.printStackTrace();
+    }
   }
 
   private void assertStatusCode(int expectedCode) {
@@ -145,16 +174,45 @@ public class HTTPClientTest extends AndroidTestCase {
         expectedErrors.add(error);
       }
 
-      JSONArray array = new JSONArray(ret.get("body").toString());
+      JSONArray jsonArray = new JSONArray(ret.get("body").toString());
       ArrayList<HashMap<String, String> > actualErrors = new ArrayList<HashMap<String, String> >();
-      for(int i=0;i<array.length();i++) {
+      for(int i=0;i<jsonArray.length();i++) {
         error = new HashMap<String, String>();
-        error.put("errorCode", array.getJSONObject(i).getString("error_code"));
+        error.put("errorCode", jsonArray.getJSONObject(i).getString("error_code"));
         actualErrors.add(error);
       }
 
       assertEquals(expectedErrors, actualErrors);
     } catch (JSONException e) {
+      e.printStackTrace();
+    }
+  }
+
+  private void setupMock(HTTPClient httpClient, int statusCode, final String responseBody) {
+    try {
+      when(con.getResponseCode()).thenReturn(statusCode);
+      when(con.getInputStream()).thenReturn(new InputStream() {
+        private int position = 0;
+        @Override
+        public int read() throws IOException {
+          return position < responseBody.length() ? responseBody.charAt(position++) : -1;
+        }
+
+        @Override
+        public void close() throws IOException {}
+      });
+
+      Class<? extends HTTPClient> c = httpClient.getClass();
+      Field f = c.getDeclaredField("con");
+      f.setAccessible(true);
+      f.set(httpClient, con);
+    } catch (NoSuchFieldException e) {
+      e.printStackTrace();
+    } catch (IllegalArgumentException e) {
+      e.printStackTrace();
+    } catch (IllegalAccessException e) {
+      e.printStackTrace();
+    } catch (IOException e) {
       e.printStackTrace();
     }
   }

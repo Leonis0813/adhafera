@@ -3,10 +3,10 @@
 
     <string name="app_name">家計簿</string>
     <string name="action_settings">設定</string>
-    <string name="date">　　日付：</string>
-    <string name="content">　　内容：</string>
-    <string name="category">カテゴリ：</string>
-    <string name="price">　　金額：</string>
+    <string name="date">日付</string>
+    <string name="content">内容</string>
+    <string name="category">カテゴリ</string>
+    <string name="price">金額</string>
     <string name="income">収入</string>
     <string name="expense">支出</string>
     <string name="OK">登録</string>
