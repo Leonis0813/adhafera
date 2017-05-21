@@ -1,6 +1,10 @@
 adhafera
 ========
 
+- 2.1.0:
+  - [ADD] dialog to select categories
+  - [FIX] reset error checkers when register
+
 - 2.0.2:
   - [CHANGE] parameter name
 
