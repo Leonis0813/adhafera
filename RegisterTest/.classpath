@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry exported="true" kind="lib" path="libs/robotium-solo-5.5.3.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/mockito-all-1.9.5.jar"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="gen"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/Register"/>
@@ -12,6 +13,8 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
-	<classpathentry exported="true" kind="lib" path="/Users/leonis/Documents/adhafera/RegisterTest/libs/AndroidMockGenerator.jar"/>
+	<classpathentry kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
+	<classpathentry exported="true" kind="lib" path="libs/dexmaker-1.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/dexmaker-mockito-1.0.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

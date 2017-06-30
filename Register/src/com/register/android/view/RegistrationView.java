@@ -10,100 +10,119 @@ import com.register.android.R;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class RegistrationView extends RelativeLayout implements OnClickListener{
-	public static final String[] LABELS = {"日付", "内容", "カテゴリ", "金額"};
+public class RegistrationView extends RelativeLayout implements OnClickListener {
+  public static final int INPUT_VIEW_DATE = 0;
+  public static final int INPUT_VIEW_CONTENT = 1;
+  public static final int INPUT_VIEW_CATEGORY = 2;
+  public static final int INPUT_VIEW_PRICE = 3;
+  public static final int INPUT_VIEW_SIZE = 4;
+  public static final int INPUTS_PAYMENT_TYPE = 4;
+  private InputView[] inputViews;
+  private RadioGroup radioGroup;
+  private Button OK, cancel;
+  private TextView settleView;
 
-	private EditText[] fields;
-	private TextView[] errorCheckers;
-	private RadioGroup radioGroup;
-	private Button OK, cancel;
-	private TextView settleView;
-	
-	private Context context;
-	
-	public RegistrationView(Context context, AttributeSet attributeSet) {
-		super(context, attributeSet);
-		this.context = context;
+  private Context context;
 
-		View layout = LayoutInflater.from(context).inflate(R.layout.registration_view, this);
+  public RegistrationView(Context context, AttributeSet attributeSet) {
+    super(context, attributeSet);
+    this.context = context;
 
-		fields = new EditText[LABELS.length];
-		fields[0] = (EditText) layout.findViewById(R.id.field_date);
-		fields[1] = (EditText) layout.findViewById(R.id.field_content);
-		fields[2] = (EditText) layout.findViewById(R.id.field_category);
-		fields[3] = (EditText) layout.findViewById(R.id.field_price);
-		setToday();
+    View layout = View.inflate(context, R.layout.registration_view, this);
 
-		errorCheckers = new TextView[LABELS.length];
-		errorCheckers[0] = (TextView) layout.findViewById(R.id.check_date);
-		errorCheckers[1] = (TextView) layout.findViewById(R.id.check_content);
-		errorCheckers[2] = (TextView) layout.findViewById(R.id.check_category);
-		errorCheckers[3] = (TextView) layout.findViewById(R.id.check_price);
+    inputViews = new InputView[INPUT_VIEW_SIZE];
+    inputViews[INPUT_VIEW_DATE] = (InputView) layout.findViewById(R.id.date);
+    inputViews[INPUT_VIEW_CONTENT] = (InputView) layout.findViewById(R.id.content);
+    inputViews[INPUT_VIEW_CATEGORY] = (InputView) layout.findViewById(R.id.category);
+    inputViews[INPUT_VIEW_PRICE] = (InputView) layout.findViewById(R.id.price);
 
-		radioGroup = (RadioGroup) layout.findViewById(R.id.radiogroup);
+    radioGroup = (RadioGroup) findViewById(R.id.radiogroup);
 
-		OK = (Button) layout.findViewById(R.id.OK);
-		OK.setOnClickListener(this);
-		cancel = (Button) layout.findViewById(R.id.cancel);
-		cancel.setOnClickListener(this);
-		
-		settleView = (TextView) layout.findViewById(R.id.result_settle);
-	}
+    OK = (Button) findViewById(R.id.OK);
+    OK.setOnClickListener(this);
 
-	public void setToday() {
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-		fields[0].setText(simpleDateFormat.format(new Date()));
-	}
+    cancel = (Button) findViewById(R.id.cancel);
+    cancel.setOnClickListener(this);
 
-	public void showMessage(String message) {
-		Toast.makeText(context, message, Toast.LENGTH_LONG).show();
-	}
-	
-	public void showWrongInput(ArrayList<Integer> ids) {
-		Iterator<Integer> it = ids.iterator();
-		while(it.hasNext()) {
-			errorCheckers[it.next()].setVisibility(VISIBLE);
-		}
-	}
+    settleView = (TextView) findViewById(R.id.result_settle);
+  }
 
-	public void showSettlement(String settlement) {
-	  settleView.setText(settlement + " 円");
-	}
+  public void setToday() {
+    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    inputViews[INPUT_VIEW_DATE].setInputText(simpleDateFormat.format(new Date()));
+  }
 
-	public void resetField() {
-		for(int i=0;i<fields.length;i++) {
-			fields[i].setText("");
-			errorCheckers[i].setVisibility(INVISIBLE);
-		}
-	}
+  public void showMessage(String message) {
+    Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+  }
 
-	@Override
-	public void onClick(View v) {
-		if(v == OK) {
-			String[] inputs = new String[MainActivity.INPUT_SIZE];
-			for(int i=0;i<LABELS.length;i++) {
-				String input = fields[i].getText().toString();
-				inputs[i] = input.equals("") ? null : input;
-			}
-			int id = radioGroup.getCheckedRadioButtonId();
-			RadioButton radioButton = (RadioButton) findViewById(id);
-			inputs[4] = radioButton.getText().toString().equals("収入") ? "income" : "expense";
-			((MainActivity)context).registPayment(inputs);
-		} else if(v == cancel) {
-			for(int i=0;i<LABELS.length;i++) {
-				resetField();
-			}
-		}
-	}
+  public void showWrongInput(ArrayList<Integer> ids) {
+    Iterator<Integer> it = ids.iterator();
+    while(it.hasNext()) {
+      inputViews[it.next()].errorChecker.setVisibility(VISIBLE);
+    }
+  }
+
+  public void showSettlement(String settlement) {
+    settleView.setText(settlement + " 円");
+  }
+
+  public void resetFields() {
+    for(int i=0;i<inputViews.length;i++) {
+      inputViews[i].setInputText("");
+    }
+  }
+
+  public void resetErrorCheckers() {
+    for(int i=0;i<inputViews.length;i++) {
+      inputViews[i].errorChecker.setVisibility(INVISIBLE);
+    }
+  }
+
+  public void setCategories(String[] names) {
+    ((CategoryView) inputViews[INPUT_VIEW_CATEGORY]).setCategories(names);
+  }
+
+  public String getLabel(int id) {
+    switch(id) {
+    case INPUT_VIEW_DATE:
+      return getResources().getString(R.string.date);
+    case INPUT_VIEW_CONTENT:
+      return getResources().getString(R.string.content);
+    case INPUT_VIEW_CATEGORY:
+      return getResources().getString(R.string.category);
+    case INPUT_VIEW_PRICE:
+      return getResources().getString(R.string.price);
+    default:
+      return null;
+    }
+  }
+
+  @Override
+  public void onClick(View v) {
+    if(v == OK) {
+      String[] inputs = new String[MainActivity.INPUT_SIZE];
+      for(int i=0;i<inputViews.length;i++) {
+        String input = inputViews[i].getInputText();
+        inputs[i] = input.equals("") ? null : input;
+      }
+      int id = radioGroup.getCheckedRadioButtonId();
+      RadioButton radioButton = (RadioButton) findViewById(id);
+      inputs[INPUTS_PAYMENT_TYPE] = radioButton.getText().toString().equals(getResources().getString(R.string.income)) ? "income" : "expense";
+      resetErrorCheckers();
+      ((MainActivity)context).registPayment(inputs);
+    } else if(v == cancel) {
+      resetFields();
+      resetErrorCheckers();
+    }
+  }
 }

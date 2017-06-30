@@ -42,15 +42,33 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
   }
 
   @Test
-  public void testRegistration_normal() {
+  public void testInputCategory() {
     assertStartApplication();
 
-    String[] texts = {"", "data for system test", "test", "100"};
+    String[] texts = {"", "", "test", "invalid_price"};
     inputPaymentInfo(texts);
     solo.clickOnView(solo.getView(R.id.income));
-
     solo.clickOnView(solo.getView(R.id.OK));
-    int[] visibilities = {TextView.INVISIBLE, TextView.INVISIBLE, TextView.INVISIBLE, TextView.INVISIBLE};
+
+    int[] visibilities = {TextView.INVISIBLE, TextView.VISIBLE, TextView.INVISIBLE, TextView.INVISIBLE};
+    assertRegistration("内容が入力されていません", new String[]{today, "", "test", "invalid_price"}, "収入", visibilities);
+
+    texts[1] = "data for system test";
+    texts[2] = "";
+    texts[3] = "";
+    inputPaymentInfo(texts);
+    solo.clickOnView(solo.getView(R.id.OK));
+
+    visibilities[1] = TextView.INVISIBLE;
+    visibilities[3] = TextView.VISIBLE;
+    assertRegistration("金額が不正です", new String[]{today, "data for system test", "test", "invalid_price"}, "収入", visibilities);
+
+    texts[1] = "";
+    texts[3] = "100";
+    inputPaymentInfo(texts);
+    solo.clickOnView(solo.getView(R.id.OK));
+
+    visibilities[3] = TextView.INVISIBLE;
     assertRegistration("収支情報を登録しました", new String[]{today, "", "", ""}, "収入", visibilities);
 
     int settle_after = Integer.parseInt(settle_before) + 100;
@@ -58,67 +76,46 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
   }
 
   @Test
-  public void testRegistration_exception_includeEmpty() {
+  public void testSelectCategory() {
     assertStartApplication();
-
-    String[] texts = {"2015-01-01", "", "test", "100"};
-    inputPaymentInfo(texts);
-    solo.clickOnView(solo.getView(R.id.income));
 
     solo.clickOnView(solo.getView(R.id.OK));
-    int[] visibilities = {TextView.INVISIBLE, TextView.VISIBLE, TextView.INVISIBLE, TextView.INVISIBLE};
-    assertRegistration("内容が入力されていません", texts, "収入", visibilities);
-    assertSettleView(settle_before);
-  }
 
-  @Test
-  public void testRegistration_exception_includeInvalidValue() {
-    assertStartApplication();
+    int[] visibilities = {TextView.INVISIBLE, TextView.VISIBLE, TextView.VISIBLE, TextView.VISIBLE};
+    assertRegistration("内容,カテゴリ,金額が入力されていません", new String[]{today, "", "", ""}, "支出", visibilities);
 
-    String[] texts = {"invalid_date", "data for system test", "test", "100"};
+    solo.clickOnView(solo.getView(R.id.cancel));
+
+    assertCancel();
+
+    String[] texts = {"invalid_date", "data for system test", "", "100"};
     inputPaymentInfo(texts);
-    solo.clickOnView(solo.getView(R.id.income));
+
+    solo.clickOnView(solo.getView(R.id.select_category));
+    solo.waitForDialogToOpen();
+    solo.clickOnText("test");
+    solo.clickOnButton("OK");
 
     solo.clickOnView(solo.getView(R.id.OK));
-    int[] visibilities = {TextView.VISIBLE, TextView.INVISIBLE, TextView.INVISIBLE, TextView.INVISIBLE};
-    assertRegistration("日付が不正です", texts, "収入", visibilities);
-    assertSettleView(settle_before);
-  }
 
-  @Test
-  public void testCancelRegistration_normal() {
-    assertStartApplication();
+    visibilities[0] = TextView.VISIBLE;
+    visibilities[1] = TextView.INVISIBLE;
+    visibilities[2] = TextView.INVISIBLE;
+    visibilities[3] = TextView.INVISIBLE;
+    assertRegistration("日付が不正です", new String[]{"invalid_date", "data for system test", "test", "100"}, "支出", visibilities);
 
-    inputPaymentInfo(new String[]{"2015-01-01", "data for system test", "test", "100"});
-    solo.clickOnView(solo.getView(R.id.income));
+    texts[0] = today;
+    texts[1] = "";
+    texts[2] = "";
+    texts[3] = "";
+    visibilities[0] = TextView.INVISIBLE;
+    inputPaymentInfo(texts);
+    solo.clickOnView(solo.getView(R.id.OK));
 
-    solo.clickOnView(solo.getView(R.id.cancel));
-    assertCancel();
-    assertSettleView(settle_before);
-  }
+    assertRegistration("収支情報を登録しました", new String[]{today, "", "", ""}, "支出", visibilities);
 
-  @Test
-  public void testCancelRegistration_normal_includeEmpty() {
-    assertStartApplication();
-
-    inputPaymentInfo(new String[]{"2015-01-01", "data for system test", "", ""});
-    solo.clickOnView(solo.getView(R.id.income));
-
-    solo.clickOnView(solo.getView(R.id.cancel));
-    assertCancel();
-    assertSettleView(settle_before);
-  }
-
-  @Test
-  public void testCancelRegistration_normal_includeInvalidValue() {
-    assertStartApplication();
-
-    inputPaymentInfo(new String[]{"2015-01-01", "data for system test", "test", "invalid_price"});
-    solo.clickOnView(solo.getView(R.id.income));
-
-    solo.clickOnView(solo.getView(R.id.cancel));
-    assertCancel();
-    assertSettleView(settle_before);
+    int settle_after = Integer.parseInt(settle_before) - 100;
+    assertSettleView(String.valueOf(settle_after));
   }
 
   private void assertStartApplication() {
@@ -139,7 +136,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
 
   private void assertCancel() {
     assertTextInField(new String[]{"", "", "", ""});
-    assertTableButton("収入");
+    assertTableButton("支出");
     assertErrorChecker(new int[]{TextView.INVISIBLE, TextView.INVISIBLE, TextView.INVISIBLE, TextView.INVISIBLE});
   }
 
@@ -159,7 +156,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
     int id = ((RadioGroup) solo.getView(R.id.radiogroup)).getCheckedRadioButtonId();
     assertTrue(((RadioButton) solo.getView(id)).getText().toString().equals(text));
   }
-  
+
   private void assertSettleView(String settlement) {
     assertTrue(((TextView) solo.getView(R.id.result_settle)).getText().toString().contains(settlement));
   }
