@@ -1,3 +1,6 @@
+# 2.1.1 (2017/10/14)
+- [ADD] webapi base path
+
 # 2.1.0 (2017/05/21)
 - [ADD] dialog to select categories
 - [FIX] reset error checkers when register
