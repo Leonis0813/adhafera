@@ -20,6 +20,7 @@ import android.util.Base64;
 
 public class HTTPClient extends AsyncTaskLoader<HashMap<String, Object> >{
   private static final String host = "160.16.66.112";
+  private static final String base_path = "/algieba/api";
   private HttpURLConnection con;
   private JSONObject param;
   private String port = "80";
@@ -39,7 +40,7 @@ public class HTTPClient extends AsyncTaskLoader<HashMap<String, Object> >{
       param.put("category", inputs[2]);
       param.put("price", inputs[3]);
 
-      con = (HttpURLConnection) new URL("http://" + host + ":" + port + "/payments").openConnection();
+      con = (HttpURLConnection) new URL("http://" + host + ":" + port + base_path + "/payments").openConnection();
       con.setRequestMethod("POST");
       con.setRequestProperty("Content-Type", "application/json");
       con.setRequestProperty("Authorization", "Basic " + credential());
@@ -67,7 +68,7 @@ public class HTTPClient extends AsyncTaskLoader<HashMap<String, Object> >{
 
     try {
       keyword = keyword == "" ? "" : "?keyword=" + keyword;
-      con = (HttpURLConnection) new URL("http://" + host + ":" + port + "/categories.json" + keyword).openConnection();
+      con = (HttpURLConnection) new URL("http://" + host + ":" + port + base_path + "/categories" + keyword).openConnection();
       con.setRequestMethod("GET");
       con.setRequestProperty("Authorization", "Basic " + credential());
     } catch (MalformedURLException e) {
@@ -81,7 +82,7 @@ public class HTTPClient extends AsyncTaskLoader<HashMap<String, Object> >{
     super(context);
 
     try {
-      con = (HttpURLConnection) new URL("http://" + host + ":" + port + "/settlement?interval=monthly").openConnection();
+      con = (HttpURLConnection) new URL("http://" + host + ":" + port + base_path + "/settlement?interval=monthly").openConnection();
       con.setRequestMethod("GET");
       con.setRequestProperty("Authorization", "Basic " + credential());
     } catch (MalformedURLException e) {
