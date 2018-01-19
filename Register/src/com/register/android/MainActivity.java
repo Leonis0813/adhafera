@@ -8,7 +8,6 @@ import java.util.Iterator;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import com.register.android.lib.HTTPClient;
 import com.register.android.service.InputChecker;
@@ -131,14 +130,18 @@ public class MainActivity extends ActionBarActivity {
         int code = Integer.parseInt(data.get("statusCode").toString());
         if(code == 200) {
           try {
-            JSONObject body = new JSONObject(data.get("body").toString());
+            JSONArray body = new JSONArray(data.get("body").toString());
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
             String yearmonth = sdf.format(Calendar.getInstance().getTime());
-            if(body.isNull(yearmonth)) {
-              rv.showSettlement("0");
-            } else {
-              rv.showSettlement(body.getString(yearmonth));
+
+            for(int i=0;i<body.length();i++) {
+              String date = body.getJSONObject(i).getString("date");
+              if(date.equals(yearmonth)) {
+                rv.showSettlement(body.getJSONObject(i).getString("price"));
+                return;
+              }
             }
+            rv.showSettlement("0");
           } catch (JSONException e) {
             e.printStackTrace();
           }
