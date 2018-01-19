@@ -134,14 +134,15 @@ public class MainActivity extends ActionBarActivity {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
             String yearmonth = sdf.format(Calendar.getInstance().getTime());
 
+            String price = "0";
             for(int i=0;i<body.length();i++) {
               String date = body.getJSONObject(i).getString("date");
               if(date.equals(yearmonth)) {
-                rv.showSettlement(body.getJSONObject(i).getString("price"));
-                return;
+                price = body.getJSONObject(i).getString("price");
+                break;
               }
             }
-            rv.showSettlement("0");
+            rv.showSettlement(price);
           } catch (JSONException e) {
             e.printStackTrace();
           }
