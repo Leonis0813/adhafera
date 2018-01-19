@@ -1,3 +1,6 @@
+# 2.1.2 (2018/01/20)
+- [UPDATE] response handling for settlement
+
 # 2.1.1 (2017/10/14)
 - [ADD] webapi base path
 
