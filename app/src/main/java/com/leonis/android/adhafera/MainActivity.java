@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void registPayment(String[] inputs) {
+    public void registerPayment(String[] inputs) {
         ArrayList<Integer> ids = inputChecker.checkEmpty(inputs);
         if(!ids.isEmpty()) {
             Iterator<Integer> it = ids.iterator();
@@ -132,12 +132,12 @@ public class MainActivity extends AppCompatActivity {
                     try {
                         JSONArray body = new JSONArray(data.get("body").toString());
                         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
-                        String yearmonth = sdf.format(Calendar.getInstance().getTime());
+                        String year_month = sdf.format(Calendar.getInstance().getTime());
                         if (body == null) {
                             rv.showSettlement("0");
                         } else {
                             for (int i = 0; i < body.length(); i++) {
-                                if (yearmonth.equals(body.getJSONObject(i).getString("date"))) {
+                                if (year_month.equals(body.getJSONObject(i).getString("date"))) {
                                     rv.showSettlement(body.getJSONObject(i).getString("price"));
                                     break;
                                 }

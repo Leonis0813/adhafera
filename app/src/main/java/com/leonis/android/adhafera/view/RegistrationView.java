@@ -49,7 +49,7 @@ public class RegistrationView extends RelativeLayout implements OnClickListener 
         inputViews[INPUT_VIEW_CATEGORY] = (InputView) layout.findViewById(R.id.category);
         inputViews[INPUT_VIEW_PRICE] = (InputView) layout.findViewById(R.id.price);
 
-        radioGroup = (RadioGroup) findViewById(R.id.radiogroup);
+        radioGroup = (RadioGroup) findViewById(R.id.radio_group);
 
         OK = (Button) findViewById(R.id.OK);
         OK.setOnClickListener(this);
@@ -123,7 +123,7 @@ public class RegistrationView extends RelativeLayout implements OnClickListener 
             RadioButton radioButton = (RadioButton) findViewById(id);
             inputs[INPUTS_PAYMENT_TYPE] = radioButton.getText().toString().equals(getResources().getString(R.string.income)) ? "income" : "expense";
             resetErrorCheckers();
-            ((MainActivity)context).registPayment(inputs);
+            ((MainActivity)context).registerPayment(inputs);
         } else if(v == cancel) {
             resetFields();
             resetErrorCheckers();
