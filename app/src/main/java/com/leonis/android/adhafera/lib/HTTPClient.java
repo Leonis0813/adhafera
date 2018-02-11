@@ -143,5 +143,3 @@ public class HTTPClient extends AsyncTaskLoader<HashMap<String, Object> >{
         }
     }
 }
-
-}
