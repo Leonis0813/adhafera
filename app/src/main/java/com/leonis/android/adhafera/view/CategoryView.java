@@ -17,18 +17,17 @@ import com.leonis.android.adhafera.R;
 public class CategoryView extends InputView implements View.OnClickListener {
     private String[] categories;
     private boolean[] selected;
-    private TextView fieldView;
-    private Button selectButton;
+    private final TextView fieldView;
 
     public CategoryView(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
 
         View.inflate(context, R.layout.category_view, this);
 
-        fieldView = (TextView) findViewById(R.id.field_category);
-        errorChecker = (TextView) findViewById(R.id.check_category);
+        fieldView = findViewById(R.id.field_category);
+        errorChecker = findViewById(R.id.check_category);
 
-        selectButton = (Button) findViewById(R.id.select_category);
+        Button selectButton = findViewById(R.id.select_category);
         selectButton.setOnClickListener(this);
     }
 
@@ -61,13 +60,13 @@ public class CategoryView extends InputView implements View.OnClickListener {
                         })
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
-                        String category = "";
+                        StringBuilder category = new StringBuilder();
                         for(int i=0;i<selected.length;i++) {
                             if(selected[i]) {
-                                category += category.equals("") ? categories[i] : "," + categories[i];
+                                category.append(category.toString().equals("") ? categories[i] : "," + categories[i]);
                             }
                         }
-                        fieldView.setText(category);
+                        fieldView.setText(category.toString());
                     }
                 })
                 .setNegativeButton("キャンセル", new DialogInterface.OnClickListener() {

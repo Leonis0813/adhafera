@@ -26,8 +26,7 @@ public class HTTPClient extends AsyncTaskLoader<HashMap<String, Object> >{
     private static final String host = "160.16.66.112";
     private static final String base_path = "/algieba/api";
     private HttpURLConnection con;
-    private JSONObject param;
-    private String port = "80";
+    private final String port = "80";
     private static final String application_id = "68c58a4f26cb84bd";
     private static final String application_key = "a469856b9b1b873a5230a0e1b36ee170";
 
@@ -37,7 +36,7 @@ public class HTTPClient extends AsyncTaskLoader<HashMap<String, Object> >{
         super(context);
 
         try {
-            param = new JSONObject();
+            JSONObject param = new JSONObject();
             param.put("payment_type", inputs[4]);
             param.put("date", inputs[0]);
             param.put("content", inputs[1]);
@@ -71,7 +70,6 @@ public class HTTPClient extends AsyncTaskLoader<HashMap<String, Object> >{
         super(context);
 
         try {
-            keyword = keyword == "" ? "" : "?keyword=" + keyword;
             con = (HttpURLConnection) new URL("http://" + host + ":" + port + base_path + "/categories" + keyword).openConnection();
             con.setRequestMethod("GET");
             con.setRequestProperty("Authorization", "Basic " + credential());
@@ -96,13 +94,13 @@ public class HTTPClient extends AsyncTaskLoader<HashMap<String, Object> >{
         }
     }
 
-    public HashMap<String, Object> sendRequest() {
+    private HashMap<String, Object> sendRequest() {
         try {
             con.connect();
 
-            StringBuffer sb = new StringBuffer();
-            String st = "";
-            BufferedReader br = null;
+            StringBuilder sb = new StringBuilder();
+            String st;
+            BufferedReader br;
             try {
                 br = new BufferedReader(new InputStreamReader(con.getInputStream(), "UTF-8"));
             } catch (FileNotFoundException e) {
@@ -112,7 +110,7 @@ public class HTTPClient extends AsyncTaskLoader<HashMap<String, Object> >{
                 sb.append(st);
             }
 
-            response = new HashMap<String, Object>();
+            response = new HashMap<>();
             response.put("statusCode", con.getResponseCode());
             response.put("body", sb.toString());
         } catch (MalformedURLException e) {

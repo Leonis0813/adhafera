@@ -12,7 +12,7 @@ import com.leonis.android.adhafera.R;
  */
 
 public class PriceView extends InputView {
-    private EditText fieldView;
+    private final EditText fieldView;
 
     public PriceView(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);

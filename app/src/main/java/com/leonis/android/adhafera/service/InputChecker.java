@@ -8,7 +8,8 @@ import java.util.regex.Pattern;
  */
 
 public class InputChecker {
-    private Pattern datePattern, pricePattern;
+    private final Pattern datePattern;
+    private final Pattern pricePattern;
 
     public InputChecker() {
         datePattern = Pattern.compile("^\\d{4}-\\d{2}-\\d{2}$");
@@ -16,7 +17,7 @@ public class InputChecker {
     }
 
     public ArrayList<Integer> checkEmpty(String[] inputs) {
-        ArrayList<Integer> ids = new ArrayList<Integer>();
+        ArrayList<Integer> ids = new ArrayList<>();
         for(int i=0;i<inputs.length;i++) {
             if(inputs[i] == null || inputs[i].equals("")) {
                 ids.add(i);

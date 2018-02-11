@@ -10,9 +10,8 @@ import android.widget.TextView;
  */
 
 public abstract class InputView extends LinearLayout {
-    protected Context context;
-    protected TextView labelView;
-    protected TextView errorChecker;
+    final Context context;
+    TextView errorChecker;
 
     public InputView(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);

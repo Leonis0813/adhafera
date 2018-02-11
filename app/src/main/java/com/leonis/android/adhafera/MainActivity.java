@@ -50,34 +50,31 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
+        return id == R.id.action_settings || super.onOptionsItemSelected(item);
     }
 
     public void registerPayment(String[] inputs) {
         ArrayList<Integer> ids = inputChecker.checkEmpty(inputs);
         if(!ids.isEmpty()) {
             Iterator<Integer> it = ids.iterator();
-            String errorMessage = rv.getLabel(it.next());
+            StringBuilder errorMessage = new StringBuilder(rv.getLabel(it.next()));
             while(it.hasNext()) {
-                errorMessage += "," + rv.getLabel(it.next());
+                errorMessage.append(",").append(rv.getLabel(it.next()));
             }
-            errorMessage += "が入力されていません";
-            noticeError(errorMessage, ids);
+            errorMessage.append("が入力されていません");
+            noticeError(errorMessage.toString(), ids);
             return;
         }
         if(!inputChecker.checkDate(inputs[RegistrationView.INPUT_VIEW_DATE])) { ids.add(RegistrationView.INPUT_VIEW_DATE); }
         if(!inputChecker.checkPrice(inputs[RegistrationView.INPUT_VIEW_PRICE])) { ids.add(RegistrationView.INPUT_VIEW_PRICE); }
         if(!ids.isEmpty()) {
             Iterator<Integer> it = ids.iterator();
-            String errorMessage = rv.getLabel(it.next());
+            StringBuilder errorMessage = new StringBuilder(rv.getLabel(it.next()));
             while(it.hasNext()) {
-                errorMessage += "," + rv.getLabel(it.next());
+                errorMessage.append(",").append(rv.getLabel(it.next()));
             }
-            errorMessage += "が不正です";
-            noticeError(errorMessage, ids);
+            errorMessage.append("が不正です");
+            noticeError(errorMessage.toString(), ids);
             return;
         }
 
@@ -109,16 +106,12 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void noticeError(String errorMessage, ArrayList<Integer> ids) {
+    private void noticeError(String errorMessage, ArrayList<Integer> ids) {
         rv.showMessage(errorMessage);
         rv.showWrongInput(ids);
     }
 
-    public void noticeResult(String result) {
-        rv.showMessage(result);
-    }
-
-    public void settle() {
+    private void settle() {
         getLoaderManager().initLoader(LOADER_ID + 1, new Bundle(), new LoaderManager.LoaderCallbacks<HashMap<String, Object>>() {
             @Override
             public Loader<HashMap<String, Object>> onCreateLoader(int id, Bundle args) {
@@ -133,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
                         JSONArray body = new JSONArray(data.get("body").toString());
                         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
                         String year_month = sdf.format(Calendar.getInstance().getTime());
-                        if (body == null) {
+                        if (body.length() == 0) {
                             rv.showSettlement("0");
                         } else {
                             for (int i = 0; i < body.length(); i++) {
@@ -157,7 +150,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void getCategories() {
+    private void getCategories() {
         getLoaderManager().initLoader(LOADER_ID + 2, new Bundle(), new LoaderManager.LoaderCallbacks<HashMap<String, Object>>() {
             @Override
             public Loader<HashMap<String, Object>> onCreateLoader(int id, Bundle args) {
