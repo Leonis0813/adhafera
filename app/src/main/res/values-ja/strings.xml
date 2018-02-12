@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">家計簿</string>
     <string name="action_settings">設定</string>
     <string name="date">日付</string>
@@ -12,5 +12,4 @@
     <string name="cancel">取消</string>
     <string name="error">*</string>
     <string name="settle">　　収支：</string>
-    <string name="yen">円</string>
 </resources>
