@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <string name="app_name">家計簿</string>
     <string name="action_settings">設定</string>
     <string name="date">日付</string>
