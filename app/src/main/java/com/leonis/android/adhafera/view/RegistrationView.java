@@ -17,9 +17,11 @@ import com.leonis.android.adhafera.R;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by leonis on 2018/02/11.
+ *
  */
 
 public class RegistrationView extends RelativeLayout implements OnClickListener {
@@ -61,7 +63,7 @@ public class RegistrationView extends RelativeLayout implements OnClickListener 
     }
 
     public void setToday() {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.JAPAN);
         inputViews[INPUT_VIEW_DATE].setInputText(simpleDateFormat.format(new Date()));
     }
 
@@ -76,7 +78,7 @@ public class RegistrationView extends RelativeLayout implements OnClickListener 
     }
 
     public void showSettlement(String settlement) {
-        settleView.setText(settlement + " 円");
+        settleView.setText(String.format("%s %s", settlement, R.string.yen));
     }
 
     public void resetFields() {

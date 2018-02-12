@@ -4,6 +4,7 @@
     <string name="date">日付</string>
     <string name="content">内容</string>
     <string name="category">カテゴリ</string>
+    <string name="select_category">▼</string>
     <string name="price">金額</string>
     <string name="income">収入</string>
     <string name="expense">支出</string>
@@ -11,4 +12,5 @@
     <string name="cancel">取消</string>
     <string name="error">*</string>
     <string name="settle">　　収支：</string>
+    <string name="yen">円</string>
 </resources>

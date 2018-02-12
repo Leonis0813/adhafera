@@ -9,6 +9,7 @@ import com.leonis.android.adhafera.R;
 
 /**
  * Created by leonis on 2018/02/11.
+ *
  */
 
 public class PriceView extends InputView {

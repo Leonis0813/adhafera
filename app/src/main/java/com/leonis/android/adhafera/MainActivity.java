@@ -20,6 +20,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.text.SimpleDateFormat;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
     public static final int INPUT_SIZE = 5;
@@ -124,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
                 if (code == 200) {
                     try {
                         JSONArray body = new JSONArray(data.get("body").toString());
-                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
+                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM", Locale.JAPAN);
                         String year_month = sdf.format(Calendar.getInstance().getTime());
                         if (body.length() == 0) {
                             rv.showSettlement("0");

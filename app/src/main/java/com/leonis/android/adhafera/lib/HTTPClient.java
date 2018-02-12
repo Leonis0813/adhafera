@@ -20,6 +20,7 @@ import java.util.HashMap;
 
 /**
  * Created by leonis on 2018/02/11.
+ *
  */
 
 public class HTTPClient extends AsyncTaskLoader<HashMap<String, Object> >{

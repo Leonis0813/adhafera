@@ -9,13 +9,15 @@ import com.leonis.android.adhafera.R;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by leonis on 2018/02/11.
+ *
  */
 
 public class DateView extends InputView {
-    private static final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    private static final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.JAPAN);
     private final EditText fieldView;
 
     public DateView(Context context, AttributeSet attributeSet) {

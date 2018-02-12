@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 /**
  * Created by leonis on 2018/02/11.
+ *
  */
 
 public abstract class InputView extends LinearLayout {

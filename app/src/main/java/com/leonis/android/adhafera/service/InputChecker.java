@@ -5,6 +5,7 @@ import java.util.regex.Pattern;
 
 /**
  * Created by leonis on 2018/02/11.
+ *
  */
 
 public class InputChecker {
