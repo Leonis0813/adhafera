@@ -1,3 +1,6 @@
+# 2.1.3 (2018/02/18)
+- [UPDATE] project to gradle
+
 # 2.1.2 (2018/01/20)
 - [UPDATE] response handling for settlement
 
