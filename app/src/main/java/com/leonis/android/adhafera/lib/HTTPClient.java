@@ -10,6 +10,7 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
@@ -17,6 +18,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.Properties;
 
 /**
  * Created by leonis on 2018/02/11.
@@ -24,19 +26,23 @@ import java.util.HashMap;
  */
 
 public class HTTPClient extends AsyncTaskLoader<HashMap<String, Object> >{
-    private static final String host = "160.16.66.112";
-    private static final String base_path = "/algieba/api";
+    private Properties webApiProp;
+    private static String host;
     private HttpURLConnection con;
-    private final String port = "80";
-    private static final String application_id = "68c58a4f26cb84bd";
-    private static final String application_key = "a469856b9b1b873a5230a0e1b36ee170";
-
     private HashMap<String, Object> response;
+
+    private static final String BASE_PATH = "/algieba/api";
+    private static final String PORT = "80";
 
     public HTTPClient(Context context, String[] inputs) {
         super(context);
+        InputStream inputStream = context.getClassLoader().getResourceAsStream("web-api.properties");
 
         try {
+            webApiProp = new Properties();
+            webApiProp.load(inputStream);
+            host = webApiProp.getProperty("host");
+
             JSONObject param = new JSONObject();
             param.put("payment_type", inputs[4]);
             param.put("date", inputs[0]);
@@ -44,7 +50,7 @@ public class HTTPClient extends AsyncTaskLoader<HashMap<String, Object> >{
             param.put("category", inputs[2]);
             param.put("price", inputs[3]);
 
-            con = (HttpURLConnection) new URL("http://" + host + ":" + port + base_path + "/payments").openConnection();
+            con = (HttpURLConnection) new URL("http://" + host + ":" + PORT + BASE_PATH + "/payments").openConnection();
             con.setRequestMethod("POST");
             con.setRequestProperty("Content-Type", "application/json");
             con.setRequestProperty("Authorization", "Basic " + credential());
@@ -69,9 +75,14 @@ public class HTTPClient extends AsyncTaskLoader<HashMap<String, Object> >{
 
     public HTTPClient(Context context, String keyword) {
         super(context);
+        InputStream inputStream = context.getClassLoader().getResourceAsStream("web-api.properties");
 
         try {
-            con = (HttpURLConnection) new URL("http://" + host + ":" + port + base_path + "/categories" + keyword).openConnection();
+            webApiProp = new Properties();
+            webApiProp.load(inputStream);
+            host = webApiProp.getProperty("host");
+
+            con = (HttpURLConnection) new URL("http://" + host + ":" + PORT + BASE_PATH + "/categories" + keyword).openConnection();
             con.setRequestMethod("GET");
             con.setRequestProperty("Authorization", "Basic " + credential());
         } catch (MalformedURLException e) {
@@ -83,9 +94,14 @@ public class HTTPClient extends AsyncTaskLoader<HashMap<String, Object> >{
 
     public HTTPClient(Context context) {
         super(context);
+        InputStream inputStream = context.getClassLoader().getResourceAsStream("web-api.properties");
 
         try {
-            con = (HttpURLConnection) new URL("http://" + host + ":" + port + base_path + "/settlement?interval=monthly").openConnection();
+            webApiProp = new Properties();
+            webApiProp.load(inputStream);
+            host = webApiProp.getProperty("host");
+
+            con = (HttpURLConnection) new URL("http://" + host + ":" + PORT + BASE_PATH + "/settlement?interval=monthly").openConnection();
             con.setRequestMethod("GET");
             con.setRequestProperty("Authorization", "Basic " + credential());
         } catch (MalformedURLException e) {
@@ -133,6 +149,9 @@ public class HTTPClient extends AsyncTaskLoader<HashMap<String, Object> >{
     }
 
     private String credential() {
+        String application_id = webApiProp.getProperty("application_id");
+        String application_key = webApiProp.getProperty("application_key");
+
         byte[] credential = Base64.encode((application_id + ":" + application_key).getBytes(), Base64.DEFAULT);
         try {
             return new String(credential, "UTF-8");
