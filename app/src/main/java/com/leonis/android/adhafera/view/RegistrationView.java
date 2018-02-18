@@ -79,7 +79,6 @@ public class RegistrationView extends RelativeLayout implements OnClickListener 
     }
 
     public void showSettlement(String settlement) {
-        Log.d("settle", settlement);
         settleView.setText(String.format("%s 円", settlement));
     }
 
