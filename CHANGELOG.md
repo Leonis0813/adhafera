@@ -1,3 +1,6 @@
+# 2.1.5 (2018/05/12)
+- [FIX] bug for http client
+
 # 2.1.4 (2018/02/25)
 - [UPDATE] module test to apply groovy
 
