@@ -1,3 +1,6 @@
+# 2.1.6 (2018/07/21)
+- [UPDATE] icon and input keyboard for price
+
 # 2.1.5 (2018/05/12)
 - [FIX] bug for http client
 
