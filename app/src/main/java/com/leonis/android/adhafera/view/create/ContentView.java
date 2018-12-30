@@ -20,8 +20,8 @@ public class ContentView extends InputView {
 
         View.inflate(context, R.layout.create_content_view, this);
 
-        fieldView = findViewById(R.id.field_content);
-        errorChecker = findViewById(R.id.check_content);
+        fieldView = findViewById(R.id.create_field_content);
+        errorChecker = findViewById(R.id.create_check_content);
     }
 
     public void setInputText(String text) {

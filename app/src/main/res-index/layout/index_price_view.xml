@@ -3,40 +3,35 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="5dip"
         android:gravity="end"
-        android:text="@string/period"
+        android:text="@string/price"
         android:textSize="20sp" />
 
     <EditText
-        android:id="@+id/index_field_price_lower"
-        android:layout_width="wrap_content"
+        android:id="@+id/index_field_price_upper"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:width="100dp"
         android:inputType="text" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="5dip"
-        android:gravity="end"
         android:text=" 〜 "
         android:textSize="20sp" />
 
     <EditText
-        android:id="@+id/index_field_price_upper"
-        android:layout_width="wrap_content"
+        android:id="@+id/index_field_price_lower"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:width="100dp"
         android:inputType="text" />
 
     <TextView
         android:id="@+id/index_check_price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="end"
         android:text="@string/error"
         android:textColor="#ff0000"
         android:textSize="20sp"

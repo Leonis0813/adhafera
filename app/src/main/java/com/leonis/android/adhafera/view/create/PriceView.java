@@ -20,8 +20,8 @@ public class PriceView extends InputView {
 
         View.inflate(context, R.layout.create_price_view, this);
 
-        fieldView = findViewById(R.id.field_price);
-        errorChecker = findViewById(R.id.check_price);
+        fieldView = findViewById(R.id.create_field_price);
+        errorChecker = findViewById(R.id.create_check_price);
     }
 
     public void setInputText(String text) {

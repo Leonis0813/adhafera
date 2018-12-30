@@ -46,10 +46,10 @@ public class RegistrationView extends RelativeLayout implements OnClickListener 
         View layout = View.inflate(context, R.layout.create_view, this);
 
         inputViews = new InputView[INPUT_VIEW_SIZE];
-        inputViews[INPUT_VIEW_DATE] = layout.findViewById(R.id.date);
-        inputViews[INPUT_VIEW_CONTENT] = layout.findViewById(R.id.content);
-        inputViews[INPUT_VIEW_CATEGORY] = layout.findViewById(R.id.category);
-        inputViews[INPUT_VIEW_PRICE] = layout.findViewById(R.id.price);
+        inputViews[INPUT_VIEW_DATE] = layout.findViewById(R.id.create_date);
+        inputViews[INPUT_VIEW_CONTENT] = layout.findViewById(R.id.create_content);
+        inputViews[INPUT_VIEW_CATEGORY] = layout.findViewById(R.id.create_category);
+        inputViews[INPUT_VIEW_PRICE] = layout.findViewById(R.id.create_price);
 
         radioGroup = layout.findViewById(R.id.radio_group);
 

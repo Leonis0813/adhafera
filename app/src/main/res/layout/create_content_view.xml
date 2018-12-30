@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <TextView
-        android:labelFor="@id/field_content"
+        android:labelFor="@id/create_field_content"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="5dip"
@@ -12,14 +12,14 @@
         android:textSize="20sp" />
 
     <EditText
-        android:id="@+id/field_content"
+        android:id="@+id/create_field_content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:width="200dp"
         android:inputType="text" />
 
     <TextView
-        android:id="@+id/check_content"
+        android:id="@+id/create_check_content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="end"

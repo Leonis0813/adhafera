@@ -25,8 +25,8 @@ public class DateView extends InputView {
 
         View layout = View.inflate(context, R.layout.create_date_view, this);
 
-        fieldView = layout.findViewById(R.id.field_date);
-        errorChecker = layout.findViewById(R.id.check_date);
+        fieldView = layout.findViewById(R.id.create_field_date);
+        errorChecker = layout.findViewById(R.id.create_check_date);
 
         setInputText(simpleDateFormat.format(new Date()));
     }

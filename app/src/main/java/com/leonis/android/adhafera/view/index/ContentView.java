@@ -12,7 +12,7 @@ import com.leonis.android.adhafera.R;
  * Created by leonis on 2018/12/30.
  */
 
-public class ContentView extends IndexView {
+public class ContentView extends InputView {
     private final EditText content;
     private final Spinner contentType;
 

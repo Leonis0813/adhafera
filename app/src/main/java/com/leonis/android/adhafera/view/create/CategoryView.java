@@ -25,10 +25,10 @@ public class CategoryView extends InputView implements View.OnClickListener {
 
         View.inflate(context, R.layout.create_category_view, this);
 
-        fieldView = findViewById(R.id.field_category);
-        errorChecker = findViewById(R.id.check_category);
+        fieldView = findViewById(R.id.create_field_category);
+        errorChecker = findViewById(R.id.create_check_category);
 
-        Button selectButton = findViewById(R.id.select_category);
+        Button selectButton = findViewById(R.id.create_select_category);
         selectButton.setOnClickListener(this);
     }
 
