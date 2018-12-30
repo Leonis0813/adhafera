@@ -78,14 +78,14 @@ public class HTTPClient extends AsyncTaskLoader<HashMap<String, Object> >{
             webApiProp.load(inputStream);
             host = webApiProp.getProperty("host");
 
-            String query_string = "";
+            StringBuilder query_string = new StringBuilder();
             if(!query.isEmpty()) {
-                query_string = "?";
+                query_string = new StringBuilder("?");
             }
             for (Map.Entry<String, String> entry : query.entrySet()) {
-                query_string += entry.getKey() + "=" + entry.getValue() + "&";
+                query_string.append(entry.getKey()).append("=").append(entry.getValue()).append("&");
             }
-            query_string = query_string.substring(0, query_string.length() - 1);
+            query_string = new StringBuilder(query_string.substring(0, query_string.length() - 1));
 
             con = (HttpURLConnection) new URL("http://" + host + ":" + PORT + BASE_PATH + "/categories" + query_string).openConnection();
             con.setRequestMethod("GET");
