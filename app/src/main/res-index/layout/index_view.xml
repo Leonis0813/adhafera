@@ -3,32 +3,33 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.leonis.android.adhafera.view.index.PeriodView
+    <com.leonis.android.adhafera.views.index.PeriodView
         android:id="@+id/index_period"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_marginTop="10dip" />
 
-    <com.leonis.android.adhafera.view.index.ContentView
+    <com.leonis.android.adhafera.views.index.ContentView
         android:id="@+id/index_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/index_period" />
 
-    <com.leonis.android.adhafera.view.index.CategoryView
+    <com.leonis.android.adhafera.views.index.CategoryView
         android:id="@+id/index_category"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/index_content" />
 
-    <com.leonis.android.adhafera.view.index.PriceView
+    <com.leonis.android.adhafera.views.index.PriceView
         android:id="@+id/index_price"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/index_category" />
 
     <LinearLayout
+        android:id="@+id/index_payment_type_submit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/index_price"
@@ -49,6 +50,7 @@
                 android:textSize="20sp" />
 
             <Spinner
+                android:id="@+id/index_payment_type"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:entries="@array/payment_types" />
@@ -56,7 +58,7 @@
         </LinearLayout>
 
         <Button
-            android:id="@+id/submit"
+            android:id="@+id/index_submit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right"
@@ -64,4 +66,20 @@
 
     </LinearLayout>
 
+    <ListView
+        android:id="@+id/index_payment_list"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_below="@id/index_payment_type_submit"
+        android:layout_marginTop="12dp" />
+
+    <Button
+        android:id="@+id/index_next_page"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/index_payment_list"
+        android:layout_marginTop="10dp"
+        android:text="さらに読み込む" />
 </RelativeLayout>

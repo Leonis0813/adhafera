@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     tools:context="com.leonis.android.adhafera.IndexActivity">
 
-    <com.leonis.android.adhafera.view.index.IndexView
+    <com.leonis.android.adhafera.views.index.IndexView
         android:id="@+id/index"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

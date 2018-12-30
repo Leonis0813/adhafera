@@ -1,4 +1,4 @@
-package com.leonis.android.adhafera.view.index;
+package com.leonis.android.adhafera.views.index;
 
 import android.content.Context;
 import android.util.AttributeSet;

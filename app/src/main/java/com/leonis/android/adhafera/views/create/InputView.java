@@ -1,4 +1,4 @@
-package com.leonis.android.adhafera.view.index;
+package com.leonis.android.adhafera.views.create;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -19,4 +19,7 @@ public abstract class InputView extends LinearLayout {
 
         this.context = context;
     }
+
+    abstract public void setInputText(String text);
+    abstract public String getInputText();
 }

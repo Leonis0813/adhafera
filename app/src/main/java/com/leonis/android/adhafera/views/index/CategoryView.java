@@ -1,4 +1,4 @@
-package com.leonis.android.adhafera.view.create;
+package com.leonis.android.adhafera.views.index;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -11,8 +11,7 @@ import android.widget.TextView;
 import com.leonis.android.adhafera.R;
 
 /**
- * Created by leonis on 2018/02/11.
- *
+ * Created by leonis on 2018/12/30.
  */
 
 public class CategoryView extends InputView implements View.OnClickListener {
@@ -23,21 +22,11 @@ public class CategoryView extends InputView implements View.OnClickListener {
     public CategoryView(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
 
-        View.inflate(context, R.layout.create_category_view, this);
+        View layout = View.inflate(context, R.layout.index_category_view, this);
 
-        fieldView = findViewById(R.id.create_field_category);
-        errorChecker = findViewById(R.id.create_check_category);
-
-        Button selectButton = findViewById(R.id.create_select_category);
+        fieldView = layout.findViewById(R.id.index_field_category);
+        Button selectButton = layout.findViewById(R.id.index_select_category);
         selectButton.setOnClickListener(this);
-    }
-
-    public void setInputText(String text) {
-        fieldView.setText(text);
-    }
-
-    public String getInputText() {
-        return fieldView.getText().toString();
     }
 
     public void setCategories(String[] names) {
