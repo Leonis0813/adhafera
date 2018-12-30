@@ -2,6 +2,7 @@ package com.leonis.android.adhafera;
 
 import android.app.LoaderManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.Loader;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -51,7 +52,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        return id == R.id.action_settings || super.onOptionsItemSelected(item);
+        if(id == R.id.index) {
+            Intent intent = new Intent(this, IndexActivity.class);
+            startActivity(intent);
+            finish();
+        }
+        return true;
     }
 
     public void registerPayment(String[] inputs) {

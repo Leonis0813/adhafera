@@ -5,8 +5,8 @@
     android:layout_height="match_parent"
     tools:context="com.leonis.android.adhafera.MainActivity">
 
-    <com.leonis.android.adhafera.view.RegistrationView
-        android:id="@+id/registration"
+    <com.leonis.android.adhafera.view.IndexView
+        android:id="@+id/index"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 </RelativeLayout>
