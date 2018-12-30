@@ -23,7 +23,7 @@ public class CategoryView extends InputView implements View.OnClickListener {
     public CategoryView(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
 
-        View.inflate(context, R.layout.category_view, this);
+        View.inflate(context, R.layout.create_category_view, this);
 
         fieldView = findViewById(R.id.field_category);
         errorChecker = findViewById(R.id.check_category);

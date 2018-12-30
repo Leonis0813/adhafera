@@ -18,7 +18,7 @@ public class ContentView extends InputView {
     public ContentView(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
 
-        View.inflate(context, R.layout.content_view, this);
+        View.inflate(context, R.layout.create_content_view, this);
 
         fieldView = findViewById(R.id.field_content);
         errorChecker = findViewById(R.id.check_content);

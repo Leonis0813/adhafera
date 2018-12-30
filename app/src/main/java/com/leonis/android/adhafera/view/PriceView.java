@@ -18,7 +18,7 @@ public class PriceView extends InputView {
     public PriceView(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
 
-        View.inflate(context, R.layout.price_view, this);
+        View.inflate(context, R.layout.create_price_view, this);
 
         fieldView = findViewById(R.id.field_price);
         errorChecker = findViewById(R.id.check_price);

@@ -43,7 +43,7 @@ public class RegistrationView extends RelativeLayout implements OnClickListener 
         super(context, attributeSet);
         this.context = context;
 
-        View layout = View.inflate(context, R.layout.registration_view, this);
+        View layout = View.inflate(context, R.layout.create_view, this);
 
         inputViews = new InputView[INPUT_VIEW_SIZE];
         inputViews[INPUT_VIEW_DATE] = layout.findViewById(R.id.date);
@@ -51,15 +51,15 @@ public class RegistrationView extends RelativeLayout implements OnClickListener 
         inputViews[INPUT_VIEW_CATEGORY] = layout.findViewById(R.id.category);
         inputViews[INPUT_VIEW_PRICE] = layout.findViewById(R.id.price);
 
-        radioGroup = findViewById(R.id.radio_group);
+        radioGroup = layout.findViewById(R.id.radio_group);
 
-        OK = findViewById(R.id.OK);
+        OK = layout.findViewById(R.id.OK);
         OK.setOnClickListener(this);
 
-        cancel = findViewById(R.id.cancel);
+        cancel = layout.findViewById(R.id.cancel);
         cancel.setOnClickListener(this);
 
-        settleView = findViewById(R.id.result_settle);
+        settleView = layout.findViewById(R.id.result_settle);
     }
 
     public void setToday() {

@@ -23,7 +23,7 @@ public class DateView extends InputView {
     public DateView(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
 
-        View layout = View.inflate(context, R.layout.date_view, this);
+        View layout = View.inflate(context, R.layout.create_date_view, this);
 
         fieldView = layout.findViewById(R.id.field_date);
         errorChecker = layout.findViewById(R.id.check_date);
