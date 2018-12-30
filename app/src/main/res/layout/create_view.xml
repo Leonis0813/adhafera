@@ -3,26 +3,26 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.leonis.android.adhafera.view.DateView
+    <com.leonis.android.adhafera.view.create.DateView
         android:id="@+id/date"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_marginTop="25dip" />
 
-    <com.leonis.android.adhafera.view.ContentView
+    <com.leonis.android.adhafera.view.create.ContentView
         android:id="@+id/content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/date" />
 
-    <com.leonis.android.adhafera.view.CategoryView
+    <com.leonis.android.adhafera.view.create.CategoryView
         android:id="@+id/category"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/content" />
 
-    <com.leonis.android.adhafera.view.PriceView
+    <com.leonis.android.adhafera.view.create.PriceView
         android:id="@+id/price"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

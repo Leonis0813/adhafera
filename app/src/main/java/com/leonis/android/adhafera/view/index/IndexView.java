@@ -1,4 +1,4 @@
-package com.leonis.android.adhafera.view;
+package com.leonis.android.adhafera.view.index;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -8,6 +8,7 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 
 import com.leonis.android.adhafera.R;
+import com.leonis.android.adhafera.view.create.InputView;
 
 /**
  * Created by leonis on 2018/12/30.

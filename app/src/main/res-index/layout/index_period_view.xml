@@ -1,6 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="5dip"
+        android:gravity="end"
+        android:text="@string/period"
+        android:textSize="20sp" />
 
-</android.support.constraint.ConstraintLayout>
+    <EditText
+        android:id="@+id/index_field_date_after"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:width="100dp"
+        android:inputType="text" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="5dip"
+        android:gravity="end"
+        android:text=" 〜 "
+        android:textSize="20sp" />
+
+    <EditText
+        android:id="@+id/index_field_date_before"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:width="100dp"
+        android:inputType="text" />
+
+    <TextView
+        android:id="@+id/index_check_period"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        android:text="@string/error"
+        android:textColor="#ff0000"
+        android:textSize="20sp"
+        android:visibility="invisible" />
+</LinearLayout>

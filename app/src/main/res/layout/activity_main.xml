@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     tools:context="com.leonis.android.adhafera.MainActivity">
 
-    <com.leonis.android.adhafera.view.RegistrationView
+    <com.leonis.android.adhafera.view.create.RegistrationView
         android:id="@+id/registration"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

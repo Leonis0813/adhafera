@@ -11,7 +11,7 @@ import android.view.MenuItem;
 
 import com.leonis.android.adhafera.lib.HTTPClient;
 import com.leonis.android.adhafera.service.InputChecker;
-import com.leonis.android.adhafera.view.RegistrationView;
+import com.leonis.android.adhafera.view.create.RegistrationView;
 
 import org.json.JSONArray;
 import org.json.JSONException;

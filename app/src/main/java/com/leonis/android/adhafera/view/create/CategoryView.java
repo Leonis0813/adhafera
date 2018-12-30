@@ -1,4 +1,4 @@
-package com.leonis.android.adhafera.view;
+package com.leonis.android.adhafera.view.create;
 
 import android.app.AlertDialog;
 import android.content.Context;

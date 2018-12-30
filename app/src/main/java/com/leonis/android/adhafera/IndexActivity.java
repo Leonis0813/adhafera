@@ -7,7 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.leonis.android.adhafera.view.IndexView;
+import com.leonis.android.adhafera.view.index.IndexView;
 
 /**
  * Created by leonis on 2018/12/30.
