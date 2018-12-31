@@ -24,4 +24,12 @@ public class PeriodView extends InputView {
         dateAfter = layout.findViewById(R.id.index_field_date_after);
         errorChecker = layout.findViewById(R.id.index_check_period);
     }
+
+    public String getDateBefore() {
+        return dateBefore.getText().toString();
+    }
+
+    public String getDateAfter() {
+        return dateAfter.getText().toString();
+    }
 }

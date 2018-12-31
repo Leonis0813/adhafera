@@ -17,14 +17,14 @@ import com.leonis.android.adhafera.R;
 public class CategoryView extends InputView implements View.OnClickListener {
     private String[] categories;
     private boolean[] selected;
-    private final TextView fieldView;
+    private final TextView category;
 
     public CategoryView(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
 
         View layout = View.inflate(context, R.layout.index_category_view, this);
 
-        fieldView = layout.findViewById(R.id.index_field_category);
+        category = layout.findViewById(R.id.index_field_category);
         Button selectButton = layout.findViewById(R.id.index_select_category);
         selectButton.setOnClickListener(this);
     }
@@ -35,6 +35,10 @@ public class CategoryView extends InputView implements View.OnClickListener {
         for(int i=0;i<selected.length;i++) {
             selected[i] = false;
         }
+    }
+
+    public String getCategory() {
+        return category.getText().toString();
     }
 
     @Override
@@ -50,13 +54,13 @@ public class CategoryView extends InputView implements View.OnClickListener {
                         })
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
-                        StringBuilder category = new StringBuilder();
+                        StringBuilder categoryString = new StringBuilder();
                         for(int i=0;i<selected.length;i++) {
                             if(selected[i]) {
-                                category.append(category.toString().equals("") ? categories[i] : "," + categories[i]);
+                                categoryString.append(categoryString.toString().equals("") ? categories[i] : "," + categories[i]);
                             }
                         }
-                        fieldView.setText(category.toString());
+                        category.setText(categoryString.toString());
                     }
                 })
                 .setNegativeButton("キャンセル", new DialogInterface.OnClickListener() {

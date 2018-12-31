@@ -15,6 +15,7 @@ import com.leonis.android.adhafera.R;
 public class ContentView extends InputView {
     private final EditText content;
     private final Spinner contentType;
+    public final static String[] CONTENT_TYPE_KEYS = {"content_include", "content_equal"};
 
     public ContentView(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
@@ -23,5 +24,13 @@ public class ContentView extends InputView {
 
         content = layout.findViewById(R.id.index_field_content);
         contentType = layout.findViewById(R.id.index_field_content_type);
+    }
+
+    public String getContent() {
+        return content.getText().toString();
+    }
+
+    public String getContentType() {
+        return contentType.getSelectedItem().toString();
     }
 }

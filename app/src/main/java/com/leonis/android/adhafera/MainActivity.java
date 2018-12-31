@@ -113,41 +113,6 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void searchPayments(HashMap<String, String> condition) {
-        ArrayList<Integer> ids = new ArrayList<>();
-        if((condition.containsKey("date_before") && !inputChecker.checkDate(condition.get("date_before"))) ||
-                (condition.containsKey("date_after") && !inputChecker.checkDate(condition.get("date_after")))) {
-        }
-        if((condition.containsKey("price_upper") && !inputChecker.checkPrice(condition.get("price_upper"))) ||
-                (condition.containsKey("price_lower") && !inputChecker.checkPrice(condition.get("price_lower")))) {
-        }
-        if(!ids.isEmpty()) {
-            return;
-        }
-
-        Bundle args = new Bundle();
-        args.putSerializable("query", condition);
-        getLoaderManager().initLoader(LOADER_ID, args, new LoaderManager.LoaderCallbacks<HashMap<String, Object>>() {
-            @Override
-            @SuppressWarnings("unchecked")
-            public Loader<HashMap<String, Object>> onCreateLoader(int id, Bundle args) {
-                return new HTTPClient(activity, ((HashMap<String, String>) args.getSerializable("query")));
-            }
-
-            @Override
-            public void onLoadFinished(Loader<HashMap<String, Object>> loader, HashMap<String, Object> data) {
-                int code = Integer.parseInt(data.get("statusCode").toString());
-                if(code == 200) {
-                } else if (code == 400) {
-                }
-                getLoaderManager().destroyLoader(LOADER_ID);
-            }
-
-            @Override
-            public void onLoaderReset(Loader<HashMap<String, Object>> loader) {}
-        });
-    }
-
     private void noticeError(String errorMessage, ArrayList<Integer> ids) {
         rv.showMessage(errorMessage);
         rv.showWrongInput(ids);

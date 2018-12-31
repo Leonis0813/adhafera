@@ -24,4 +24,12 @@ public class PriceView extends InputView {
         priceLower = layout.findViewById(R.id.index_field_price_lower);
         errorChecker = layout.findViewById(R.id.index_check_price);
     }
+
+    public String getPriceUpper() {
+        return priceUpper.getText().toString();
+    }
+
+    public String getPriceLower() {
+        return priceLower.getText().toString();
+    }
 }

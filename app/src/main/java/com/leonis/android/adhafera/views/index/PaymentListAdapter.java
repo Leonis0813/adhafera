@@ -10,13 +10,14 @@ import android.widget.TextView;
 import com.leonis.android.adhafera.R;
 import com.leonis.android.adhafera.models.Payment;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 /**
  * Created by leonis on 2018/12/30.
  */
 
-public class PaymentListView extends BaseAdapter {
+public class PaymentListAdapter extends BaseAdapter {
     private Context context;
     private List<Payment> payments;
 
@@ -27,7 +28,7 @@ public class PaymentListView extends BaseAdapter {
         TextView priceView;
     }
 
-    public PaymentListView(Context context, List<Payment> payments) {
+    public PaymentListAdapter(Context context, List<Payment> payments) {
         this.context = context;
         this.payments = payments;
     }
@@ -78,9 +79,18 @@ public class PaymentListView extends BaseAdapter {
         }
 
         holder.contentView.setText(payment.getContent());
-        holder.dateView.setText(payment.getDate().toString());
-        holder.categoryView.setText(payment.getCategories().toString());
-        holder.priceView.setText(payment.getPrice());
+
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        holder.dateView.setText(format.format(payment.getDate()));
+
+        String[] categories = payment.getCategories();
+        String categoryString = "";
+        for(String category : categories) {
+            categoryString += category + ",";
+        }
+        holder.categoryView.setText(categoryString.substring(0, categoryString.length() - 1));
+
+        holder.priceView.setText(String.valueOf(payment.getPrice()));
 
         return view;
     }

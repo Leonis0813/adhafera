@@ -11,14 +11,12 @@ public class Payment {
     private String content;
     private String[] categories;
     private int price;
-    private String paymentType;
 
     public Payment(Date date, String content, String[] categories, int price, String paymentType) {
         this.date = date;
         this.content = content;
         this.categories = categories;
-        this.price = price;
-        this.paymentType  = paymentType;
+        this.price = paymentType.equals("income") ? price : -1 * price;
     }
 
     public void setDate(Date date) {
@@ -51,13 +49,5 @@ public class Payment {
 
     public int getPrice() {
         return price;
-    }
-
-    public void setPaymentType(String paymentType) {
-        this.paymentType = paymentType;
-    }
-
-    public String getPaymentType() {
-        return paymentType;
     }
 }

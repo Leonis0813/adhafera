@@ -87,7 +87,7 @@ public class HTTPClient extends AsyncTaskLoader<HashMap<String, Object> >{
             }
             query_string = new StringBuilder(query_string.substring(0, query_string.length() - 1));
 
-            con = (HttpURLConnection) new URL("http://" + host + ":" + PORT + BASE_PATH + "/categories" + query_string).openConnection();
+            con = (HttpURLConnection) new URL("http://" + host + ":" + PORT + BASE_PATH + "/payments" + query_string).openConnection();
             con.setRequestMethod("GET");
             con.setRequestProperty("Authorization", "Basic " + credential());
         } catch (MalformedURLException e) {
