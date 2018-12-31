@@ -16,12 +16,11 @@
     <string name="period">期間</string>
     <string name="payment_type">種類</string>
     <string-array name="content_types">
-        <item></item>
         <item>を含む</item>
         <item>と一致する</item>
     </string-array>
     <string-array name="payment_types">
-        <item></item>
+        <item>全て</item>
         <item>収入</item>
         <item>支出</item>
     </string-array>

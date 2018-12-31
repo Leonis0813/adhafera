@@ -4,6 +4,8 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.leonis.android.adhafera.R;
 
@@ -11,9 +13,10 @@ import com.leonis.android.adhafera.R;
  * Created by leonis on 2018/12/30.
  */
 
-public class PeriodView extends InputView {
+public class PeriodView extends LinearLayout {
     private final EditText dateBefore;
     private final EditText dateAfter;
+    private final TextView errorChecker;
 
     public PeriodView(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
@@ -31,5 +34,13 @@ public class PeriodView extends InputView {
 
     public String getDateAfter() {
         return dateAfter.getText().toString();
+    }
+
+    public void checkError() {
+        errorChecker.setVisibility(VISIBLE);
+    }
+
+    public void uncheckError() {
+        errorChecker.setVisibility(INVISIBLE);
     }
 }

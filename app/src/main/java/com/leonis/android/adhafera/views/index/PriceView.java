@@ -4,6 +4,8 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.leonis.android.adhafera.R;
 
@@ -11,9 +13,10 @@ import com.leonis.android.adhafera.R;
  * Created by leonis on 2018/12/30.
  */
 
-public class PriceView extends InputView {
+public class PriceView extends LinearLayout {
     private final EditText priceUpper;
     private final EditText priceLower;
+    private final TextView errorChecker;
 
     public PriceView(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
@@ -31,5 +34,13 @@ public class PriceView extends InputView {
 
     public String getPriceLower() {
         return priceLower.getText().toString();
+    }
+
+    public void checkError() {
+        errorChecker.setVisibility(VISIBLE);
+    }
+
+    public void uncheckError() {
+        errorChecker.setVisibility(INVISIBLE);
     }
 }

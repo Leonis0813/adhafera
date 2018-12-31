@@ -95,14 +95,23 @@ public class IndexActivity extends AppCompatActivity {
     }
 
     public void searchPayments(HashMap<String, String> query) {
-        ArrayList<Integer> ids = new ArrayList<>();
+        ArrayList<String> fields = new ArrayList<>();
         if((query.containsKey("date_before") && !inputChecker.checkDate(query.get("date_before"))) ||
                 (query.containsKey("date_after") && !inputChecker.checkDate(query.get("date_after")))) {
+            fields.add("期間");
+            iv.showWrongInput("期間");
         }
         if((query.containsKey("price_upper") && !inputChecker.checkPrice(query.get("price_upper"))) ||
                 (query.containsKey("price_lower") && !inputChecker.checkPrice(query.get("price_lower")))) {
+            fields.add("金額");
+            iv.showWrongInput("金額");
         }
-        if(!ids.isEmpty()) {
+        if(!fields.isEmpty()) {
+            String message = "";
+            for(String field : fields) {
+                message += field + ",";
+            }
+            iv.showMessage(message.substring(0, message.length() - 1) + "が不正です");
             return;
         }
 

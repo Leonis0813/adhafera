@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.leonis.android.adhafera.R;
@@ -14,13 +15,17 @@ import com.leonis.android.adhafera.R;
  * Created by leonis on 2018/12/30.
  */
 
-public class CategoryView extends InputView implements View.OnClickListener {
+public class CategoryView extends LinearLayout implements View.OnClickListener {
     private String[] categories;
     private boolean[] selected;
     private final TextView category;
 
+    private final Context context;
+
     public CategoryView(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
+
+        this.context = context;
 
         View layout = View.inflate(context, R.layout.index_category_view, this);
 

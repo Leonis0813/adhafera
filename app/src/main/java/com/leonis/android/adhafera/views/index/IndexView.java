@@ -24,11 +24,6 @@ import java.util.HashMap;
  */
 
 public class IndexView extends RelativeLayout implements OnClickListener {
-    public static final int INPUT_VIEW_PERIOD = 0;
-    public static final int INPUT_VIEW_CONTENT = 1;
-    public static final int INPUT_VIEW_CATEGORY = 2;
-    public static final int INPUT_VIEW_PRICE = 3;
-    private static final int INPUT_VIEW_SIZE = 4;
     private final PeriodView periodView;
     private final ContentView contentView;
     private final CategoryView categoryView;
@@ -72,6 +67,14 @@ public class IndexView extends RelativeLayout implements OnClickListener {
         Toast.makeText(context, message, Toast.LENGTH_LONG).show();
     }
 
+    public void showWrongInput(String field) {
+        if(field.equals(getResources().getString(R.string.period))) {
+            periodView.checkError();
+        } else if (field.equals(getResources().getString(R.string.price))) {
+            priceView.checkError();
+        }
+    }
+
     public void setCategories(String[] names) {
         categoryView.setCategories(names);
     }
@@ -103,6 +106,9 @@ public class IndexView extends RelativeLayout implements OnClickListener {
     @Override
     public void onClick(View v) {
         if(v == submit) {
+            periodView.uncheckError();
+            priceView.uncheckError();
+
             query = new HashMap<>();
             if(!periodView.getDateBefore().isEmpty()) {
                 query.put("date_before", periodView.getDateBefore());
@@ -112,9 +118,9 @@ public class IndexView extends RelativeLayout implements OnClickListener {
             }
             if(!contentView.getContent().isEmpty()) {
                 String[] contentTypes = getResources().getStringArray(R.array.content_types);
-                for(int i = 1;i < contentTypes.length;i++) {
+                for(int i = 0;i < contentTypes.length;i++) {
                     if (contentView.getContentType().equals(contentTypes[i])) {
-                        query.put(ContentView.CONTENT_TYPE_KEYS[i-1], contentView.getContent());
+                        query.put(ContentView.CONTENT_TYPE_KEYS[i], contentView.getContent());
                     }
                 }
             }
@@ -127,8 +133,8 @@ public class IndexView extends RelativeLayout implements OnClickListener {
             if(!priceView.getPriceLower().isEmpty()) {
                 query.put("price_lower", priceView.getPriceLower());
             }
-            if(!paymentType.getSelectedItem().toString().isEmpty()) {
-                String[] paymentTypes = getResources().getStringArray(R.array.payment_types);
+            String[] paymentTypes = getResources().getStringArray(R.array.payment_types);
+            if(!paymentType.getSelectedItem().toString().equals(paymentTypes[0])) {
                 for(int i = 1;i < paymentTypes.length;i++) {
                     if (paymentType.getSelectedItem().toString().equals(paymentTypes[i])) {
                         query.put("payment_type", PAYMENT_TYPE_VALUES[i-1]);

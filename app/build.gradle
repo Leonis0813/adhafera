@@ -20,7 +20,6 @@ android {
     sourceSets {
         main {
             res.srcDirs += [
-                    'src/main/res-create',
                     'src/main/res-index',
             ]
         }
