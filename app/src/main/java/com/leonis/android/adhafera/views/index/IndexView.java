@@ -2,10 +2,11 @@ package com.leonis.android.adhafera.views.index;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
@@ -39,6 +40,7 @@ public class IndexView extends RelativeLayout implements OnClickListener {
     private ListView paymentListView;
     private ArrayList<Payment> payments;
     private final Button nextPage;
+    private HashMap<String, String> query;
     private int currentPage;
 
     private final Context context;
@@ -63,7 +65,7 @@ public class IndexView extends RelativeLayout implements OnClickListener {
         paymentListAdapter = new PaymentListAdapter(context, payments);
         paymentListView = layout.findViewById(R.id.index_payment_list);
 
-        currentPage = 0;
+        currentPage = 1;
     }
 
     public void showMessage(String message) {
@@ -79,13 +81,29 @@ public class IndexView extends RelativeLayout implements OnClickListener {
             this.payments.add(payment);
         }
         paymentListView.setAdapter(paymentListAdapter);
+        fixListViewHeight(paymentListView);
+    }
 
+    private void fixListViewHeight(ListView listView) {
+        int totalHeight = 0;
+        ListAdapter adapter = listView.getAdapter();
+        int itemCount = adapter.getCount();
+
+        for (int i = 0;i < itemCount;i++) {
+            View listItem = adapter.getView(i, null, listView);
+            listItem.measure(0, 0);
+            totalHeight += listItem.getMeasuredHeight() - 50;
+        }
+
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+        params.height = totalHeight;
+        listView.setLayoutParams(params);
     }
 
     @Override
     public void onClick(View v) {
         if(v == submit) {
-            HashMap<String, String> query = new HashMap<>();
+            query = new HashMap<>();
             if(!periodView.getDateBefore().isEmpty()) {
                 query.put("date_before", periodView.getDateBefore());
             }
@@ -117,9 +135,13 @@ public class IndexView extends RelativeLayout implements OnClickListener {
                     }
                 }
             }
-            Log.d("query", query.toString());
+            currentPage = 1;
+            query.put("page", String.valueOf(currentPage));
+            payments.clear();
             ((IndexActivity) context).searchPayments(query);
         } else if(v == nextPage) {
+            query.put("page", String.valueOf(currentPage++));
+            ((IndexActivity) context).searchPayments(query);
         }
     }
 }

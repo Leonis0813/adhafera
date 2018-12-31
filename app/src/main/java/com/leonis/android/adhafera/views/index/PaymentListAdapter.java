@@ -50,12 +50,10 @@ public class PaymentListAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-
         View view = convertView;
         ViewHolder holder;
 
         Payment payment = payments.get(position);
-
 
         if (view == null) {
             LayoutInflater inflater =

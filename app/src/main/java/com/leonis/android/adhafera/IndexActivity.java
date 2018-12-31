@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.Loader;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -122,7 +121,6 @@ public class IndexActivity extends AppCompatActivity {
                 if(code == 200) {
                     try {
                         JSONArray body = new JSONArray(data.get("body").toString());
-                        Log.d("body", body.toString());
                         ArrayList<Payment> payments = new ArrayList<>();
                         for(int i = 0;i < body.length();i++) {
                             JSONObject payment = body.getJSONObject(i);
