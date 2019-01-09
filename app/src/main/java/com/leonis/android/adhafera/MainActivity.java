@@ -11,7 +11,7 @@ import android.view.MenuItem;
 
 import com.leonis.android.adhafera.lib.HTTPClient;
 import com.leonis.android.adhafera.service.InputChecker;
-import com.leonis.android.adhafera.views.create.RegistrationView;
+import com.leonis.android.adhafera.views.create.CreateView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
     private static final int LOADER_ID = 0;
 
     private Context activity;
-    private RegistrationView rv;
+    private CreateView createView;
     private InputChecker inputChecker;
 
     @Override
@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         activity = this;
-        rv = findViewById(R.id.registration);
+        createView = findViewById(R.id.create);
         inputChecker = new InputChecker();
         settle();
         getCategories();
@@ -64,21 +64,21 @@ public class MainActivity extends AppCompatActivity {
         ArrayList<Integer> ids = inputChecker.checkEmpty(inputs);
         if(!ids.isEmpty()) {
             Iterator<Integer> it = ids.iterator();
-            StringBuilder errorMessage = new StringBuilder(rv.getLabel(it.next()));
+            StringBuilder errorMessage = new StringBuilder(createView.getLabel(it.next()));
             while(it.hasNext()) {
-                errorMessage.append(",").append(rv.getLabel(it.next()));
+                errorMessage.append(",").append(createView.getLabel(it.next()));
             }
             errorMessage.append("が入力されていません");
             noticeError(errorMessage.toString(), ids);
             return;
         }
-        if(!inputChecker.checkDate(inputs[RegistrationView.INPUT_VIEW_DATE])) { ids.add(RegistrationView.INPUT_VIEW_DATE); }
-        if(!inputChecker.checkPrice(inputs[RegistrationView.INPUT_VIEW_PRICE])) { ids.add(RegistrationView.INPUT_VIEW_PRICE); }
+        if(!inputChecker.checkDate(inputs[CreateView.INPUT_VIEW_DATE])) { ids.add(CreateView.INPUT_VIEW_DATE); }
+        if(!inputChecker.checkPrice(inputs[CreateView.INPUT_VIEW_PRICE])) { ids.add(CreateView.INPUT_VIEW_PRICE); }
         if(!ids.isEmpty()) {
             Iterator<Integer> it = ids.iterator();
-            StringBuilder errorMessage = new StringBuilder(rv.getLabel(it.next()));
+            StringBuilder errorMessage = new StringBuilder(createView.getLabel(it.next()));
             while(it.hasNext()) {
-                errorMessage.append(",").append(rv.getLabel(it.next()));
+                errorMessage.append(",").append(createView.getLabel(it.next()));
             }
             errorMessage.append("が不正です");
             noticeError(errorMessage.toString(), ids);
@@ -97,13 +97,13 @@ public class MainActivity extends AppCompatActivity {
             public void onLoadFinished(Loader<HashMap<String, Object>> loader, HashMap<String, Object> data) {
                 int code = Integer.parseInt(data.get("statusCode").toString());
                 if(code == 201) {
-                    rv.showMessage("収支情報を登録しました");
-                    rv.resetFields();
-                    rv.resetErrorCheckers();
-                    rv.setToday();
+                    createView.showMessage("収支情報を登録しました");
+                    createView.resetFields();
+                    createView.resetErrorCheckers();
+                    createView.setToday();
                     settle();
                 } else if (code == 400) {
-                    rv.showMessage("収支情報の登録に失敗しました");
+                    createView.showMessage("収支情報の登録に失敗しました");
                 }
                 getLoaderManager().destroyLoader(LOADER_ID);
             }
@@ -114,8 +114,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void noticeError(String errorMessage, ArrayList<Integer> ids) {
-        rv.showMessage(errorMessage);
-        rv.showWrongInput(ids);
+        createView.showMessage(errorMessage);
+        createView.showWrongInput(ids);
     }
 
     private void settle() {
@@ -134,11 +134,11 @@ public class MainActivity extends AppCompatActivity {
                         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM", Locale.JAPAN);
                         String year_month = sdf.format(Calendar.getInstance().getTime());
                         if (body.length() == 0) {
-                            rv.showSettlement("0");
+                            createView.showSettlement("0");
                         } else {
                             for (int i = 0; i < body.length(); i++) {
                                 if (year_month.equals(body.getJSONObject(i).getString("date"))) {
-                                    rv.showSettlement(body.getJSONObject(i).getString("price"));
+                                    createView.showSettlement(body.getJSONObject(i).getString("price"));
                                     break;
                                 }
                             }
@@ -147,7 +147,7 @@ public class MainActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
                 } else if (code == 400) {
-                    rv.showMessage("収支の取得に失敗しました");
+                    createView.showMessage("収支の取得に失敗しました");
                 }
                 getLoaderManager().destroyLoader(LOADER_ID + 1);
             }
@@ -174,12 +174,12 @@ public class MainActivity extends AppCompatActivity {
                         for(int i=0;i<body.length();i++) {
                             names[i] = body.getJSONObject(i).getString("name");
                         }
-                        rv.setCategories(names);
+                        createView.setCategories(names);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 } else if (code == 400) {
-                    rv.showMessage("カテゴリの取得に失敗しました");
+                    createView.showMessage("カテゴリの取得に失敗しました");
                 }
                 getLoaderManager().destroyLoader(LOADER_ID + 2);
             }

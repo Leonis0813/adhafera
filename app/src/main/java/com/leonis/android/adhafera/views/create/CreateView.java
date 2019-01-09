@@ -24,7 +24,7 @@ import java.util.Locale;
  *
  */
 
-public class RegistrationView extends RelativeLayout implements OnClickListener {
+public class CreateView extends RelativeLayout implements OnClickListener {
     public static final int INPUT_VIEW_DATE = 0;
     private static final int INPUT_VIEW_CONTENT = 1;
     private static final int INPUT_VIEW_CATEGORY = 2;
@@ -39,7 +39,7 @@ public class RegistrationView extends RelativeLayout implements OnClickListener 
 
     private final Context context;
 
-    public RegistrationView(Context context, AttributeSet attributeSet) {
+    public CreateView(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
         this.context = context;
 
