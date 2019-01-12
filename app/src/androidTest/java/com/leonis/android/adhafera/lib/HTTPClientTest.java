@@ -168,8 +168,14 @@ public class HTTPClientTest {
     @Test
     public void testGetPayments_OK() {
         HTTPClient httpClient = new HTTPClient(getContext(), "");
-        String categories = "[{\"id\":\"1\", \"name\":\"test\", \"description\":\"test category\"}]";
-        String payments = "[{\"id\":\"1\", \"payment_type\":\"income\", \"date\":\"1000-01-01\", \"content\":\"test\", \"categories\":" + categories + ", \"price\":1000}]";
+        String payments = "[{" +
+                "\"id\":\"1\"," +
+                "\"payment_type\":\"income\"," +
+                "\"date\":\"1000-01-01\"," +
+                "\"content\":\"test\"," +
+                "\"categories\": [{\"id\":\"1\", \"name\":\"test\", \"description\":\"test category\"}]," +
+                "\"price\":1000" +
+                "}]";
         setupMock(httpClient, 200, payments);
 
         ret = httpClient.loadInBackground();
@@ -179,11 +185,15 @@ public class HTTPClientTest {
         try {
             JSONArray body = new JSONArray(ret.get("body").toString());
             assertEquals("1", body.getJSONObject(0).getString("id"));
-            assertEquals("test", body.getJSONObject(0).getString("name"));
-            assertEquals("test category", body.getJSONObject(0).getString("description"));
-            assertEquals("2", body.getJSONObject(1).getString("id"));
-            assertEquals("test2", body.getJSONObject(1).getString("name"));
-            assertEquals("test category", body.getJSONObject(1).getString("description"));
+            assertEquals("income", body.getJSONObject(0).getString("payment_type"));
+            assertEquals("1000-01-01", body.getJSONObject(0).getString("date"));
+            assertEquals("test", body.getJSONObject(0).getString("content"));
+            assertEquals("1000", body.getJSONObject(0).getString("price"));
+
+            JSONArray categories = body.getJSONObject(0).getJSONArray("categories");
+            assertEquals("1", categories.getJSONObject(0).getString("id"));
+            assertEquals("test", categories.getJSONObject(0).getString("name"));
+            assertEquals("test category", categories.getJSONObject(0).getString("description"));
         } catch (JSONException e) {
             e.printStackTrace();
             fail();
