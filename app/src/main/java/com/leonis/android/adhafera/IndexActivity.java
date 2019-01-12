@@ -32,7 +32,7 @@ public class IndexActivity extends AppCompatActivity {
     private static final int LOADER_ID = 0;
 
     private Context activity;
-    private IndexView iv;
+    private IndexView indexView;
     private InputChecker inputChecker;
 
     @Override
@@ -41,7 +41,7 @@ public class IndexActivity extends AppCompatActivity {
         setContentView(R.layout.activity_index);
 
         activity = this;
-        iv = findViewById(R.id.index);
+        indexView = findViewById(R.id.index);
         inputChecker = new InputChecker();
         getCategories();
     }
@@ -80,12 +80,12 @@ public class IndexActivity extends AppCompatActivity {
                         for(int i=0;i<body.length();i++) {
                             names[i] = body.getJSONObject(i).getString("name");
                         }
-                        iv.setCategories(names);
+                        indexView.setCategories(names);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 } else if (code == 400) {
-                    iv.showMessage("カテゴリの取得に失敗しました");
+                    indexView.showMessage("カテゴリの取得に失敗しました");
                 }
                 getLoaderManager().destroyLoader(LOADER_ID + 2);
             }
@@ -99,19 +99,19 @@ public class IndexActivity extends AppCompatActivity {
         if((query.containsKey("date_before") && !inputChecker.checkDate(query.get("date_before"))) ||
                 (query.containsKey("date_after") && !inputChecker.checkDate(query.get("date_after")))) {
             fields.add("期間");
-            iv.showWrongInput("期間");
+            indexView.showWrongInput("期間");
         }
         if((query.containsKey("price_upper") && !inputChecker.checkPrice(query.get("price_upper"))) ||
                 (query.containsKey("price_lower") && !inputChecker.checkPrice(query.get("price_lower")))) {
             fields.add("金額");
-            iv.showWrongInput("金額");
+            indexView.showWrongInput("金額");
         }
         if(!fields.isEmpty()) {
             String message = "";
             for(String field : fields) {
                 message += field + ",";
             }
-            iv.showMessage(message.substring(0, message.length() - 1) + "が不正です");
+            indexView.showMessage(message.substring(0, message.length() - 1) + "が不正です");
             return;
         }
 
@@ -146,15 +146,15 @@ public class IndexActivity extends AppCompatActivity {
                                 String paymentType = payment.getString("payment_type");
                                 payments.add(new Payment(date, content, category_names, price, paymentType));
                             } catch (ParseException e) {
-                                iv.showMessage("収支情報の検索に失敗しました");
+                                indexView.showMessage("収支情報の検索に失敗しました");
                             }
                         }
-                        iv.addPayments(payments);
+                        indexView.addPayments(payments);
                     } catch (JSONException e) {
-                        iv.showMessage("収支情報の検索に失敗しました");
+                        indexView.showMessage("収支情報の検索に失敗しました");
                     }
                 } else {
-                    iv.showMessage("収支情報の検索に失敗しました");
+                    indexView.showMessage("収支情報の検索に失敗しました");
                 }
                 getLoaderManager().destroyLoader(LOADER_ID);
             }

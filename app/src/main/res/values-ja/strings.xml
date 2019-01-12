@@ -15,6 +15,7 @@
     <string name="settle">　　収支：</string>
     <string name="period">期間</string>
     <string name="payment_type">種類</string>
+    <string name="submit">検索</string>
     <string-array name="content_types">
         <item>を含む</item>
         <item>と一致する</item>

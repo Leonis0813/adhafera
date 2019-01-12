@@ -190,6 +190,7 @@ public class HTTPClientTest {
 
     private void setupMock(HTTPClient httpClient, int statusCode, final String responseBody) {
         try {
+            when(con.getRequestMethod()).thenReturn("");
             when(con.getResponseCode()).thenReturn(statusCode);
             when(con.getInputStream()).thenReturn(new InputStream() {
                 private int position = 0;

@@ -30,7 +30,8 @@ public class CreateView extends RelativeLayout implements OnClickListener {
     private static final int INPUT_VIEW_CATEGORY = 2;
     public static final int INPUT_VIEW_PRICE = 3;
     private static final int INPUT_VIEW_SIZE = 4;
-    private static final int INPUTS_PAYMENT_TYPE = 4;
+    private static final int INPUT_PAYMENT_TYPE = 4;
+    private static final int INPUT_SIZE = 5;
     private final InputView[] inputViews;
     private final RadioGroup radioGroup;
     private final Button OK;
@@ -115,16 +116,16 @@ public class CreateView extends RelativeLayout implements OnClickListener {
     @Override
     public void onClick(View v) {
         if(v == OK) {
-            String[] inputs = new String[MainActivity.INPUT_SIZE];
+            String[] inputs = new String[INPUT_SIZE];
             for(int i=0;i<inputViews.length;i++) {
                 String input = inputViews[i].getInputText();
                 inputs[i] = input.equals("") ? null : input;
             }
             int id = radioGroup.getCheckedRadioButtonId();
             RadioButton radioButton = findViewById(id);
-            inputs[INPUTS_PAYMENT_TYPE] = radioButton.getText().toString().equals(getResources().getString(R.string.income)) ? "income" : "expense";
+            inputs[INPUT_PAYMENT_TYPE] = radioButton.getText().toString().equals(getResources().getString(R.string.income)) ? "income" : "expense";
             resetErrorCheckers();
-            ((MainActivity)context).registerPayment(inputs);
+            ((MainActivity)context).createPayment(inputs);
         } else if(v == cancel) {
             resetFields();
             resetErrorCheckers();

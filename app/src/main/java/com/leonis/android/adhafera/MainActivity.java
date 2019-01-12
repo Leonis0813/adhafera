@@ -24,7 +24,6 @@ import java.util.Iterator;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
-    public static final int INPUT_SIZE = 5;
     private static final int LOADER_ID = 0;
 
     private Context activity;
@@ -60,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    public void registerPayment(String[] inputs) {
+    public void createPayment(String[] inputs) {
         ArrayList<Integer> ids = inputChecker.checkEmpty(inputs);
         if(!ids.isEmpty()) {
             Iterator<Integer> it = ids.iterator();
