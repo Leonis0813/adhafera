@@ -18,6 +18,7 @@ import java.util.HashMap;
 
 import static android.support.test.InstrumentationRegistry.getContext;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -63,6 +64,7 @@ public class HTTPClientTest {
             assertEquals(expectedPayment, actualPayment);
         } catch (JSONException e) {
             e.printStackTrace();
+            fail();
         }
     }
 
@@ -121,18 +123,22 @@ public class HTTPClientTest {
     @Test
     public void testGetSettlement_OK() {
         HTTPClient httpClient = new HTTPClient(getContext());
-        setupMock(httpClient, 200, "[{\"2000-01\":\"1000\"}, {\"2000-02\":\"-100\"}]");
+        String settlement = "[{\"date\":\"2000-01\", \"price\":\"1000\"}, {\"date\":\"2000-02\", \"price\":\"-100\"}]";
+        setupMock(httpClient, 200, settlement);
 
         ret = httpClient.loadInBackground();
 
         assertStatusCode(200);
 
         try {
-            JSONObject body = new JSONObject(ret.get("body").toString());
-            assertEquals("1000", body.getString("2000-01"));
-            assertEquals("-100", body.getString("2000-02"));
+            JSONArray body = new JSONArray(ret.get("body").toString());
+            assertEquals("2000-01", body.getJSONObject(0).get("date"));
+            assertEquals("1000", body.getJSONObject(0).get("price"));
+            assertEquals("2000-02", body.getJSONObject(1).get("date"));
+            assertEquals("-100", body.getJSONObject(1).get("price"));
         } catch (JSONException e) {
             e.printStackTrace();
+            fail();
         }
     }
 
@@ -155,6 +161,32 @@ public class HTTPClientTest {
             assertEquals("test category", body.getJSONObject(1).getString("description"));
         } catch (JSONException e) {
             e.printStackTrace();
+            fail();
+        }
+    }
+
+    @Test
+    public void testGetPayments_OK() {
+        HTTPClient httpClient = new HTTPClient(getContext(), "");
+        String categories = "[{\"id\":\"1\", \"name\":\"test\", \"description\":\"test category\"}]";
+        String payments = "[{\"id\":\"1\", \"payment_type\":\"income\", \"date\":\"1000-01-01\", \"content\":\"test\", \"categories\":" + categories + ", \"price\":1000}]";
+        setupMock(httpClient, 200, payments);
+
+        ret = httpClient.loadInBackground();
+
+        assertStatusCode(200);
+
+        try {
+            JSONArray body = new JSONArray(ret.get("body").toString());
+            assertEquals("1", body.getJSONObject(0).getString("id"));
+            assertEquals("test", body.getJSONObject(0).getString("name"));
+            assertEquals("test category", body.getJSONObject(0).getString("description"));
+            assertEquals("2", body.getJSONObject(1).getString("id"));
+            assertEquals("test2", body.getJSONObject(1).getString("name"));
+            assertEquals("test category", body.getJSONObject(1).getString("description"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+            fail();
         }
     }
 
@@ -185,6 +217,7 @@ public class HTTPClientTest {
             assertEquals(expectedErrors, actualErrors);
         } catch (JSONException e) {
             e.printStackTrace();
+            fail();
         }
     }
 
