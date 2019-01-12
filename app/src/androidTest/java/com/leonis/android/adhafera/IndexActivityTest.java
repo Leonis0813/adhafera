@@ -11,6 +11,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.action.ViewActions.clearText;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.typeText;
@@ -18,6 +19,9 @@ import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withSpinnerText;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.Matchers.is;
 
 /**
  * Created by leonis on 2018/02/17.
@@ -65,6 +69,10 @@ public class IndexActivityTest extends ActivityInstrumentationTestCase2<IndexAct
 
         String[] queries= {"invalid", "", "", "", "invalid"};
         inputCondition(queries);
+        onView(withId(R.id.index_field_content_type)).perform(click());
+        onData(allOf(is(instanceOf(String.class)), is("と一致する"))).perform(click());
+        onView(withId(R.id.index_payment_type)).perform(click());
+        onData(allOf(is(instanceOf(String.class)), is("収入"))).perform(click());
         onView(withId(R.id.index_submit)).perform(click());
         assertErrorChecker(TextView.VISIBLE, TextView.VISIBLE);
 
@@ -91,11 +99,11 @@ public class IndexActivityTest extends ActivityInstrumentationTestCase2<IndexAct
         assertTrue(indexActivity.findViewById(R.id.index_check_price).getVisibility() == priceVisibility);
     }
 
-    private void inputCondition(String[] texts) {
+    private void inputCondition(String[] queries) {
         for(int i = 0;i < fieldIDs.length;i++) {
-            if(!texts[i].equals("")) {
+            if(!queries[i].equals("")) {
                 onView(withId(fieldIDs[i])).perform(clearText());
-                onView(withId(fieldIDs[i])).perform(typeText(texts[i]));
+                onView(withId(fieldIDs[i])).perform(typeText(queries[i]));
             }
         }
     }
