@@ -81,6 +81,8 @@ public class HTTPClient extends AsyncTaskLoader<HashMap<String, Object> >{
             StringBuilder query_string = new StringBuilder();
             if(!query.isEmpty()) {
                 query_string = new StringBuilder("?");
+                query.put("sort", "date");
+                query.put("order", "desc");
             }
             for (Map.Entry<String, String> entry : query.entrySet()) {
                 query_string.append(entry.getKey()).append("=").append(entry.getValue()).append("&");
