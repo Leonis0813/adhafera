@@ -58,16 +58,13 @@ public class IndexActivityTest extends ActivityInstrumentationTestCase2<IndexAct
 
     @Test
     public void testSearchPayments() {
-        for (int fieldID : fieldIDs) {
-            onView(withId(fieldID)).check(matches(withText("")));
-        }
-
-        onView(withId(R.id.index_field_content_type)).check(matches(withSpinnerText("を含む")));
-        onView(withId(R.id.index_payment_type)).check(matches(withSpinnerText("全て")));
-
+        String[] queries= {"", "", "", "", ""};
+        assertEditText(queries);
+        assertSpinner("を含む", "全て");
         assertErrorChecker(TextView.INVISIBLE, TextView.INVISIBLE);
 
-        String[] queries= {"invalid", "", "", "", "invalid"};
+        queries[0] = "invalid";
+        queries[4] = "invalid";
         inputCondition(queries);
         onView(withId(R.id.index_field_content_type)).perform(click());
         onData(allOf(is(instanceOf(String.class)), is("と一致する"))).perform(click());
@@ -92,6 +89,21 @@ public class IndexActivityTest extends ActivityInstrumentationTestCase2<IndexAct
         inputCondition(queries);
         onView(withId(R.id.index_submit)).perform(click());
         assertErrorChecker(TextView.INVISIBLE, TextView.INVISIBLE);
+
+        onView(withId(R.id.index_next_page)).perform(click());
+        assertEditText(queries);
+        assertSpinner("と一致する", "収入");
+    }
+
+    private void assertEditText(String[] queries) {
+        for(int i = 0;i < fieldIDs.length;i++) {
+            onView(withId(fieldIDs[i])).check(matches(withText(queries[i])));
+        }
+    }
+
+    private void assertSpinner(String expectedContentType, String expectedPaymentType) {
+        onView(withId(R.id.index_field_content_type)).check(matches(withSpinnerText(expectedContentType)));
+        onView(withId(R.id.index_payment_type)).check(matches(withSpinnerText(expectedPaymentType)));
     }
 
     private void assertErrorChecker(int periodVisibility, int priceVisibility) {

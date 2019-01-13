@@ -92,7 +92,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
         visibilities[3] = TextView.INVISIBLE;
         assertRegistration(new String[]{today, "", "", ""}, "収入", visibilities);
 
-        int settleAfter = Integer.parseInt(settleBefore) + 100;
+        int settleAfter = Integer.parseInt(settleBefore.isEmpty() ? "0" : settleBefore) + 100;
         assertSettleView(String.valueOf(settleAfter));
 
     }
@@ -135,7 +135,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
 
         assertRegistration(new String[]{today, "", "", ""}, "支出", visibilities);
 
-        int settleAfter = Integer.parseInt(settleBefore) - 100;
+        int settleAfter = Integer.parseInt(settleBefore.isEmpty() ? "0" : settleBefore) - 100;
         assertSettleView(String.valueOf(settleAfter));
     }
 
@@ -143,7 +143,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
         assertTextInField(new String[]{today, "", "", ""});
         assertTableButton("支出");
         assertErrorChecker(new int[]{TextView.INVISIBLE, TextView.INVISIBLE, TextView.INVISIBLE, TextView.INVISIBLE});
-        assertSettleView("円");
+        assertSettleView("");
         settleBefore = ((TextView) mainActivity.findViewById(R.id.result_settle)).getText().toString().replaceAll(" 円", "");
     }
 
