@@ -17,6 +17,13 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    sourceSets {
+        main {
+            res.srcDirs += [
+                    'src/main/res-index',
+            ]
+        }
+    }
     sourceCompatibility = 1.7
     targetCompatibility = 1.7
 }

@@ -1,4 +1,4 @@
-package com.leonis.android.adhafera.view;
+package com.leonis.android.adhafera.views.create;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -23,10 +23,10 @@ public class DateView extends InputView {
     public DateView(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
 
-        View layout = View.inflate(context, R.layout.date_view, this);
+        View layout = View.inflate(context, R.layout.create_date_view, this);
 
-        fieldView = layout.findViewById(R.id.field_date);
-        errorChecker = layout.findViewById(R.id.check_date);
+        fieldView = layout.findViewById(R.id.create_field_date);
+        errorChecker = layout.findViewById(R.id.create_check_date);
 
         setInputText(simpleDateFormat.format(new Date()));
     }

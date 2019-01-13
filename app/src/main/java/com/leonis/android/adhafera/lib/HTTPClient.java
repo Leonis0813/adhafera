@@ -18,6 +18,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 /**
@@ -61,6 +62,36 @@ public class HTTPClient extends AsyncTaskLoader<HashMap<String, Object> >{
             payment.put("payments", param);
         } catch (JSONException e) {
             e.printStackTrace();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public HTTPClient(Context context, HashMap<String, String> query) {
+        super(context);
+        InputStream inputStream = context.getClassLoader().getResourceAsStream("web-api.properties");
+
+        try {
+            webApiProp = new Properties();
+            webApiProp.load(inputStream);
+            host = webApiProp.getProperty("host");
+
+            StringBuilder query_string = new StringBuilder();
+            if(!query.isEmpty()) {
+                query_string = new StringBuilder("?");
+                query.put("sort", "date");
+                query.put("order", "desc");
+            }
+            for (Map.Entry<String, String> entry : query.entrySet()) {
+                query_string.append(entry.getKey()).append("=").append(entry.getValue()).append("&");
+            }
+            query_string = new StringBuilder(query_string.substring(0, query_string.length() - 1));
+
+            con = (HttpURLConnection) new URL("http://" + host + ":" + PORT + BASE_PATH + "/payments" + query_string).openConnection();
+            con.setRequestMethod("GET");
+            con.setRequestProperty("Authorization", "Basic " + credential());
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {

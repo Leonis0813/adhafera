@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <TextView
-        android:labelFor="@id/field_category"
+        android:labelFor="@id/create_field_category"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="5dip"
@@ -12,7 +12,7 @@
         android:textSize="20sp" />
 
     <EditText
-        android:id="@+id/field_category"
+        android:id="@+id/create_field_category"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="20sp"
@@ -20,14 +20,14 @@
         android:inputType="text" />
 
     <Button
-        android:id="@+id/select_category"
+        android:id="@+id/create_select_category"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:text="@string/select_category" >
     </Button>
 
     <TextView
-        android:id="@+id/check_category"
+        android:id="@+id/create_check_category"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="end"

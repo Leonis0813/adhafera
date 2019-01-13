@@ -4,9 +4,15 @@
     tools:context="com.leonis.android.adhafera.MainActivity">
 
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/create"
         android:orderInCategory="100"
-        android:title="@string/action_settings"
+        android:title="登録"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/index"
+        android:orderInCategory="100"
+        android:title="検索"
         app:showAsAction="never"/>
 
 </menu>
