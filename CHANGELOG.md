@@ -1,3 +1,6 @@
+# 3.0.0 (2019/01/13)
+- [ADD] feature to search payments
+
 # 2.1.6 (2018/07/21)
 - [UPDATE] icon and input keyboard for price
 
