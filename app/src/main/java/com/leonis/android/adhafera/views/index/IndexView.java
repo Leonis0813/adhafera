@@ -55,6 +55,7 @@ public class IndexView extends RelativeLayout implements OnClickListener {
         submit.setOnClickListener(this);
         nextPage = layout.findViewById(R.id.index_next_page);
         nextPage.setOnClickListener(this);
+        nextPage.setVisibility(INVISIBLE);
 
         payments = new ArrayList<>();
         paymentListAdapter = new PaymentListAdapter(context, payments);
@@ -85,6 +86,7 @@ public class IndexView extends RelativeLayout implements OnClickListener {
         }
         paymentListView.setAdapter(paymentListAdapter);
         fixListViewHeight(paymentListView);
+        nextPage.setVisibility(payments.isEmpty() ? INVISIBLE : VISIBLE);
     }
 
     private void fixListViewHeight(ListView listView) {
