@@ -148,7 +148,7 @@ public class IndexView extends RelativeLayout implements OnClickListener {
             payments.clear();
             ((IndexActivity) context).searchPayments(query);
         } else if(v == nextPage) {
-            query.put("page", String.valueOf(currentPage++));
+            query.put("page", String.valueOf(++currentPage));
             ((IndexActivity) context).searchPayments(query);
         }
     }
