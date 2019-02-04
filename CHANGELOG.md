@@ -1,4 +1,4 @@
-# 3.0.1 (2019/02/03)
+# 3.0.1 (2019/02/04)
 - [FIX] index view not to display next page button first
 - [FIX] paging error(first page was displayed twice)
 
