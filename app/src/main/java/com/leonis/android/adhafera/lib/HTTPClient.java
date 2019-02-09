@@ -35,8 +35,9 @@ public class HTTPClient extends AsyncTaskLoader<HashMap<String, Object> >{
 
     private static final String BASE_PATH = "/algieba/api";
     private static final String PORT = "80";
+    private String baseUrl;
 
-    public HTTPClient(Context context, String[] inputs) {
+    public HTTPClient(Context context) {
         super(context);
         InputStream inputStream = context.getClassLoader().getResourceAsStream("web-api.properties");
 
@@ -44,7 +45,14 @@ public class HTTPClient extends AsyncTaskLoader<HashMap<String, Object> >{
             webApiProp = new Properties();
             webApiProp.load(inputStream);
             host = webApiProp.getProperty("host");
+            baseUrl = "http://" + host + ":" + PORT + BASE_PATH;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
+    public void createPayment(String[] inputs) {
+        try {
             JSONObject param = new JSONObject();
             param.put("payment_type", inputs[4]);
             param.put("date", inputs[0]);
@@ -52,7 +60,7 @@ public class HTTPClient extends AsyncTaskLoader<HashMap<String, Object> >{
             param.put("category", inputs[2]);
             param.put("price", inputs[3]);
 
-            con = (HttpURLConnection) new URL("http://" + host + ":" + PORT + BASE_PATH + "/payments").openConnection();
+            con = (HttpURLConnection) new URL(baseUrl + "/payments").openConnection();
             con.setRequestMethod("POST");
             con.setRequestProperty("Content-Type", "application/json");
             con.setRequestProperty("Authorization", "Basic " + credential());
@@ -60,6 +68,11 @@ public class HTTPClient extends AsyncTaskLoader<HashMap<String, Object> >{
             con.setDoOutput(true);
 
             payment.put("payments", param);
+
+            OutputStreamWriter out = new OutputStreamWriter(con.getOutputStream());
+            out.write(payment.toString());
+            out.flush();
+            out.close();
         } catch (JSONException e) {
             e.printStackTrace();
         } catch (MalformedURLException e) {
@@ -69,15 +82,8 @@ public class HTTPClient extends AsyncTaskLoader<HashMap<String, Object> >{
         }
     }
 
-    public HTTPClient(Context context, HashMap<String, String> query) {
-        super(context);
-        InputStream inputStream = context.getClassLoader().getResourceAsStream("web-api.properties");
-
+    public void getPayments(HashMap<String, String> query) {
         try {
-            webApiProp = new Properties();
-            webApiProp.load(inputStream);
-            host = webApiProp.getProperty("host");
-
             StringBuilder query_string = new StringBuilder();
             if(!query.isEmpty()) {
                 query_string = new StringBuilder("?");
@@ -89,7 +95,7 @@ public class HTTPClient extends AsyncTaskLoader<HashMap<String, Object> >{
             }
             query_string = new StringBuilder(query_string.substring(0, query_string.length() - 1));
 
-            con = (HttpURLConnection) new URL("http://" + host + ":" + PORT + BASE_PATH + "/payments" + query_string).openConnection();
+            con = (HttpURLConnection) new URL(baseUrl + "/payments" + query_string).openConnection();
             con.setRequestMethod("GET");
             con.setRequestProperty("Authorization", "Basic " + credential());
         } catch (MalformedURLException e) {
@@ -99,16 +105,9 @@ public class HTTPClient extends AsyncTaskLoader<HashMap<String, Object> >{
         }
     }
 
-    public HTTPClient(Context context, String keyword) {
-        super(context);
-        InputStream inputStream = context.getClassLoader().getResourceAsStream("web-api.properties");
-
+    public void getCategories(String keyword) {
         try {
-            webApiProp = new Properties();
-            webApiProp.load(inputStream);
-            host = webApiProp.getProperty("host");
-
-            con = (HttpURLConnection) new URL("http://" + host + ":" + PORT + BASE_PATH + "/categories" + keyword).openConnection();
+            con = (HttpURLConnection) new URL(baseUrl + "/categories" + keyword).openConnection();
             con.setRequestMethod("GET");
             con.setRequestProperty("Authorization", "Basic " + credential());
         } catch (MalformedURLException e) {
@@ -118,16 +117,9 @@ public class HTTPClient extends AsyncTaskLoader<HashMap<String, Object> >{
         }
     }
 
-    public HTTPClient(Context context) {
-        super(context);
-        InputStream inputStream = context.getClassLoader().getResourceAsStream("web-api.properties");
-
+    public void getSettlements() {
         try {
-            webApiProp = new Properties();
-            webApiProp.load(inputStream);
-            host = webApiProp.getProperty("host");
-
-            con = (HttpURLConnection) new URL("http://" + host + ":" + PORT + BASE_PATH + "/settlement?interval=monthly").openConnection();
+            con = (HttpURLConnection) new URL(baseUrl + "/settlement?interval=monthly").openConnection();
             con.setRequestMethod("GET");
             con.setRequestProperty("Authorization", "Basic " + credential());
         } catch (MalformedURLException e) {
@@ -139,12 +131,6 @@ public class HTTPClient extends AsyncTaskLoader<HashMap<String, Object> >{
 
     private HashMap<String, Object> sendRequest() {
         try {
-            if(con.getRequestMethod().equals("POST")) {
-                OutputStreamWriter out = new OutputStreamWriter(con.getOutputStream());
-                out.write(payment.toString());
-                out.flush();
-                out.close();
-            }
             con.connect();
 
             StringBuilder sb = new StringBuilder();

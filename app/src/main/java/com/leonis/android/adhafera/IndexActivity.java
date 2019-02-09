@@ -34,6 +34,7 @@ public class IndexActivity extends AppCompatActivity {
     private Context activity;
     private IndexView indexView;
     private InputChecker inputChecker;
+    private HTTPClient httpClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +44,7 @@ public class IndexActivity extends AppCompatActivity {
         activity = this;
         indexView = findViewById(R.id.index);
         inputChecker = new InputChecker();
+        httpClient = new HTTPClient(activity);
         getCategories();
     }
 
@@ -67,7 +69,8 @@ public class IndexActivity extends AppCompatActivity {
         getLoaderManager().initLoader(LOADER_ID + 2, new Bundle(), new LoaderManager.LoaderCallbacks<HashMap<String, Object>>() {
             @Override
             public Loader<HashMap<String, Object>> onCreateLoader(int id, Bundle args) {
-                return new HTTPClient(activity, "");
+                httpClient.getCategories("");
+                return httpClient;
             }
 
             @Override
@@ -121,7 +124,8 @@ public class IndexActivity extends AppCompatActivity {
             @Override
             @SuppressWarnings("unchecked")
             public Loader<HashMap<String, Object>> onCreateLoader(int id, Bundle args) {
-                return new HTTPClient(activity, ((HashMap<String, String>) args.getSerializable("query")));
+                httpClient.getPayments(((HashMap<String, String>) args.getSerializable("query")));
+                return httpClient;
             }
 
             @Override

@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     private Context activity;
     private CreateView createView;
     private InputChecker inputChecker;
+    private HTTPClient httpClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
         activity = this;
         createView = findViewById(R.id.create);
         inputChecker = new InputChecker();
+        httpClient = new HTTPClient(activity);
         settle();
         getCategories();
     }
@@ -89,7 +91,8 @@ public class MainActivity extends AppCompatActivity {
         getLoaderManager().initLoader(LOADER_ID, args, new LoaderManager.LoaderCallbacks<HashMap<String, Object>>() {
             @Override
             public Loader<HashMap<String, Object>> onCreateLoader(int id, Bundle args) {
-                return new HTTPClient(activity, args.getStringArray("inputs"));
+                httpClient.createPayment(args.getStringArray("inputs"));
+                return httpClient;
             }
 
             @Override
@@ -121,7 +124,8 @@ public class MainActivity extends AppCompatActivity {
         getLoaderManager().initLoader(LOADER_ID + 1, new Bundle(), new LoaderManager.LoaderCallbacks<HashMap<String, Object>>() {
             @Override
             public Loader<HashMap<String, Object>> onCreateLoader(int id, Bundle args) {
-                return new HTTPClient(activity);
+                httpClient.getSettlements();
+                return httpClient;
             }
 
             @Override
@@ -160,7 +164,8 @@ public class MainActivity extends AppCompatActivity {
         getLoaderManager().initLoader(LOADER_ID + 2, new Bundle(), new LoaderManager.LoaderCallbacks<HashMap<String, Object>>() {
             @Override
             public Loader<HashMap<String, Object>> onCreateLoader(int id, Bundle args) {
-                return new HTTPClient(activity, "");
+                httpClient.getCategories("");
+                return httpClient;
             }
 
             @Override
