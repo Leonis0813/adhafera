@@ -67,7 +67,9 @@ public class IndexActivity extends AppCompatActivity {
         getLoaderManager().initLoader(LOADER_ID + 2, new Bundle(), new LoaderManager.LoaderCallbacks<HashMap<String, Object>>() {
             @Override
             public Loader<HashMap<String, Object>> onCreateLoader(int id, Bundle args) {
-                return new HTTPClient(activity, "");
+                HTTPClient httpClient = new HTTPClient(activity);
+                httpClient.getCategories("");
+                return httpClient;
             }
 
             @Override
@@ -121,7 +123,9 @@ public class IndexActivity extends AppCompatActivity {
             @Override
             @SuppressWarnings("unchecked")
             public Loader<HashMap<String, Object>> onCreateLoader(int id, Bundle args) {
-                return new HTTPClient(activity, ((HashMap<String, String>) args.getSerializable("query")));
+                HTTPClient httpClient = new HTTPClient(activity);
+                httpClient.getPayments(((HashMap<String, String>) args.getSerializable("query")));
+                return httpClient;
             }
 
             @Override
