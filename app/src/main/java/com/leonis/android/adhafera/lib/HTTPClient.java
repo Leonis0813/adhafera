@@ -3,7 +3,6 @@ package com.leonis.android.adhafera.lib;
 import android.content.AsyncTaskLoader;
 import android.content.Context;
 import android.util.Base64;
-import android.util.Log;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -140,7 +139,6 @@ public class HTTPClient extends AsyncTaskLoader<HashMap<String, Object> >{
                 br = new BufferedReader(new InputStreamReader(con.getErrorStream(), "UTF-8"));
             }
             while((st = br.readLine()) != null){
-                Log.d("settle", st);
                 sb.append(st);
             }
 
