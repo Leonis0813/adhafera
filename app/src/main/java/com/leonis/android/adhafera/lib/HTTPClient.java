@@ -3,6 +3,7 @@ package com.leonis.android.adhafera.lib;
 import android.content.AsyncTaskLoader;
 import android.content.Context;
 import android.util.Base64;
+import android.util.Log;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -63,7 +64,6 @@ public class HTTPClient extends AsyncTaskLoader<HashMap<String, Object> >{
             con = (HttpURLConnection) new URL(baseUrl + "/payments").openConnection();
             con.setRequestMethod("POST");
             con.setRequestProperty("Content-Type", "application/json");
-            con.setRequestProperty("Authorization", "Basic " + credential());
             con.setDoInput(true);
             con.setDoOutput(true);
 
@@ -97,7 +97,6 @@ public class HTTPClient extends AsyncTaskLoader<HashMap<String, Object> >{
 
             con = (HttpURLConnection) new URL(baseUrl + "/payments" + query_string).openConnection();
             con.setRequestMethod("GET");
-            con.setRequestProperty("Authorization", "Basic " + credential());
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -109,7 +108,6 @@ public class HTTPClient extends AsyncTaskLoader<HashMap<String, Object> >{
         try {
             con = (HttpURLConnection) new URL(baseUrl + "/categories" + keyword).openConnection();
             con.setRequestMethod("GET");
-            con.setRequestProperty("Authorization", "Basic " + credential());
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -121,7 +119,6 @@ public class HTTPClient extends AsyncTaskLoader<HashMap<String, Object> >{
         try {
             con = (HttpURLConnection) new URL(baseUrl + "/settlement?interval=monthly").openConnection();
             con.setRequestMethod("GET");
-            con.setRequestProperty("Authorization", "Basic " + credential());
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -131,6 +128,7 @@ public class HTTPClient extends AsyncTaskLoader<HashMap<String, Object> >{
 
     private HashMap<String, Object> sendRequest() {
         try {
+            con.setRequestProperty("Authorization", "Basic " + credential());
             con.connect();
 
             StringBuilder sb = new StringBuilder();
@@ -142,6 +140,7 @@ public class HTTPClient extends AsyncTaskLoader<HashMap<String, Object> >{
                 br = new BufferedReader(new InputStreamReader(con.getErrorStream(), "UTF-8"));
             }
             while((st = br.readLine()) != null){
+                Log.d("settle", st);
                 sb.append(st);
             }
 
