@@ -44,8 +44,20 @@ public class HTTPClientTest {
     @Test
     public void testRegisterPayment_OK() {
         String[] inputs = {"2015-01-01", "for http client test", "test", "100", "expense"};
-        HTTPClient httpClient = new HTTPClient(getContext(), inputs);
-        setupMock(httpClient, 201, "{\"date\":\"2015-01-01\",\"content\":\"for http client test\",\"category\":\"test\",\"price\":\"100\",\"payment_type\":\"expense\"}");
+        HTTPClient httpClient = new HTTPClient(getContext());
+        httpClient.createPayment(inputs);
+        JSONObject payment = new JSONObject();
+        try {
+            payment.put("date", inputs[0]);
+            payment.put("content", inputs[1]);
+            payment.put("category", inputs[2]);
+            payment.put("price", inputs[3]);
+            payment.put("payment_type", inputs[4]);
+        } catch (JSONException e) {
+            e.printStackTrace();
+            fail();
+        }
+        setupMock(httpClient, 201, payment.toString());
 
         ret = httpClient.loadInBackground();
 
@@ -72,8 +84,18 @@ public class HTTPClientTest {
     public void testRegisterPayment_NG_categoryIsAbsent() {
         String[] inputs = {"2015-01-01", "for http client test", null, "100", "expense"};
 
-        HTTPClient httpClient = new HTTPClient(getContext(), inputs);
-        setupMock(httpClient, 400, "[{\"error_code\":\"absent_param_category\"}]");
+        HTTPClient httpClient = new HTTPClient(getContext());
+        httpClient.createPayment(inputs);
+        JSONArray errors = new JSONArray();
+        try {
+            JSONObject error = new JSONObject();
+            error.put("error_code", "absent_param_category");
+            errors.put(error);
+        } catch (JSONException e) {
+            e.printStackTrace();
+            fail();
+        }
+        setupMock(httpClient, 400, errors.toString());
 
         ret = httpClient.loadInBackground();
 
@@ -85,8 +107,18 @@ public class HTTPClientTest {
     public void testRegisterPayment_NG_dateIsInvalid() {
         String[] inputs = {"invalid_date", "テスト用データ", "テスト", "100", "expense"};
 
-        HTTPClient httpClient = new HTTPClient(getContext(), inputs);
-        setupMock(httpClient, 400, "[{\"error_code\":\"invalid_param_date\"}]");
+        HTTPClient httpClient = new HTTPClient(getContext());
+        httpClient.createPayment(inputs);
+        JSONArray errors = new JSONArray();
+        try {
+            JSONObject error = new JSONObject();
+            error.put("error_code", "invalid_param_date");
+            errors.put(error);
+        } catch (JSONException e) {
+            e.printStackTrace();
+            fail();
+        }
+        setupMock(httpClient, 400, errors.toString());
 
         ret = httpClient.loadInBackground();
 
@@ -98,8 +130,21 @@ public class HTTPClientTest {
     public void testRegisterPayment_NG_multipleInputsIsAbsent() {
         String[] inputs = {"2015-01-01", null, "テスト", null, "expense"};
 
-        HTTPClient httpClient = new HTTPClient(getContext(), inputs);
-        setupMock(httpClient, 400, "[{\"error_code\":\"absent_param_content\"}, {\"error_code\":\"absent_param_price\"}]");
+        HTTPClient httpClient = new HTTPClient(getContext());
+        httpClient.createPayment(inputs);
+        JSONArray errors = new JSONArray();
+        try {
+            JSONObject error = new JSONObject();
+            error.put("error_code", "absent_param_content");
+            errors.put(error);
+            error = new JSONObject();
+            error.put("error_code", "absent_param_price");
+            errors.put(error);
+        } catch (JSONException e) {
+            e.printStackTrace();
+            fail();
+        }
+        setupMock(httpClient, 400, errors.toString());
 
         ret = httpClient.loadInBackground();
 
@@ -111,8 +156,21 @@ public class HTTPClientTest {
     public void testRegisterPayment_NG_multipleInputsIsInvalid() {
         String[] inputs = {"invalid_date", "テスト用データ", "テスト", "-100", "expense"};
 
-        HTTPClient httpClient = new HTTPClient(getContext(), inputs);
-        setupMock(httpClient, 400, "[{\"error_code\":\"invalid_param_date\"}, {\"error_code\":\"invalid_param_price\"}]");
+        HTTPClient httpClient = new HTTPClient(getContext());
+        httpClient.createPayment(inputs);
+        JSONArray errors = new JSONArray();
+        try {
+            JSONObject error = new JSONObject();
+            error.put("error_code", "invalid_param_date");
+            errors.put(error);
+            error = new JSONObject();
+            error.put("error_code", "invalid_param_price");
+            errors.put(error);
+        } catch (JSONException e) {
+            e.printStackTrace();
+            fail();
+        }
+        setupMock(httpClient, 400, errors.toString());
 
         ret = httpClient.loadInBackground();
 
@@ -123,8 +181,22 @@ public class HTTPClientTest {
     @Test
     public void testGetSettlement_OK() {
         HTTPClient httpClient = new HTTPClient(getContext());
-        String settlement = "[{\"date\":\"2000-01\", \"price\":\"1000\"}, {\"date\":\"2000-02\", \"price\":\"-100\"}]";
-        setupMock(httpClient, 200, settlement);
+        httpClient.getSettlements();
+        JSONArray settlements = new JSONArray();
+        try {
+            JSONObject settlement = new JSONObject();
+            settlement.put("date", "2000-01");
+            settlement.put("price", "1000");
+            settlements.put(settlement);
+            settlement = new JSONObject();
+            settlement.put("date", "2000-02");
+            settlement.put("price", "-100");
+            settlements.put(settlement);
+        } catch (JSONException e) {
+            e.printStackTrace();
+            fail();
+        }
+        setupMock(httpClient, 200, settlements.toString());
 
         ret = httpClient.loadInBackground();
 
@@ -144,8 +216,25 @@ public class HTTPClientTest {
 
     @Test
     public void testGetCategories_OK() {
-        HTTPClient httpClient = new HTTPClient(getContext(), "");
-        setupMock(httpClient, 200, "[{\"id\":\"1\", \"name\":\"test\", \"description\":\"test category\"}, {\"id\":\"2\", \"name\":\"test2\", \"description\":\"test category\"}]");
+        HTTPClient httpClient = new HTTPClient(getContext());
+        httpClient.getCategories("");
+        JSONArray categories = new JSONArray();
+        try {
+            JSONObject category = new JSONObject();
+            category.put("id", "1");
+            category.put("name", "test");
+            category.put("description", "test category");
+            categories.put(category);
+            category = new JSONObject();
+            category.put("id", "2");
+            category.put("name", "test2");
+            category.put("description", "test category");
+            categories.put(category);
+        } catch (JSONException e) {
+            e.printStackTrace();
+            fail();
+        }
+        setupMock(httpClient, 200, categories.toString());
 
         ret = httpClient.loadInBackground();
 
@@ -167,16 +256,29 @@ public class HTTPClientTest {
 
     @Test
     public void testGetPayments_OK() {
-        HTTPClient httpClient = new HTTPClient(getContext(), "");
-        String payments = "[{" +
-                "\"id\":\"1\"," +
-                "\"payment_type\":\"income\"," +
-                "\"date\":\"1000-01-01\"," +
-                "\"content\":\"test\"," +
-                "\"categories\": [{\"id\":\"1\", \"name\":\"test\", \"description\":\"test category\"}]," +
-                "\"price\":1000" +
-                "}]";
-        setupMock(httpClient, 200, payments);
+        HTTPClient httpClient = new HTTPClient(getContext());
+        httpClient.getPayments(new HashMap<String, String>());
+        JSONArray payments = new JSONArray();
+        try {
+            JSONObject payment = new JSONObject();
+            payment.put("id", "1");
+            payment.put("payment_type", "income");
+            payment.put("date", "1000-01-01");
+            payment.put("content", "test");
+            JSONArray categories = new JSONArray();
+            JSONObject category = new JSONObject();
+            category.put("id", "1");
+            category.put("name", "test");
+            category.put("description", "test category");
+            categories.put(category);
+            payment.put("categories", categories);
+            payment.put("price", "1000");
+            payments.put(payment);
+        } catch (JSONException e) {
+            e.printStackTrace();
+            fail();
+        }
+        setupMock(httpClient, 200, payments.toString());
 
         ret = httpClient.loadInBackground();
 

@@ -83,12 +83,9 @@ public class HTTPClient extends AsyncTaskLoader<HashMap<String, Object> >{
 
     public void getPayments(HashMap<String, String> query) {
         try {
-            StringBuilder query_string = new StringBuilder();
-            if(!query.isEmpty()) {
-                query_string = new StringBuilder("?");
-                query.put("sort", "date");
-                query.put("order", "desc");
-            }
+            StringBuilder query_string = new StringBuilder("?");
+            query.put("sort", "date");
+            query.put("order", "desc");
             for (Map.Entry<String, String> entry : query.entrySet()) {
                 query_string.append(entry.getKey()).append("=").append(entry.getValue()).append("&");
             }
