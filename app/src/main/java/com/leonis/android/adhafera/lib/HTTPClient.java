@@ -31,7 +31,7 @@ public class HTTPClient extends AsyncTaskLoader<HashMap<String, Object> >{
     private static String host;
     private HttpURLConnection con;
     private HashMap<String, Object> response;
-    private JSONObject payment = new JSONObject();
+    private JSONObject body = new JSONObject();
 
     private static final String BASE_PATH = "/algieba/api";
     private static final String PORT = "80";
@@ -63,15 +63,10 @@ public class HTTPClient extends AsyncTaskLoader<HashMap<String, Object> >{
             con = (HttpURLConnection) new URL(baseUrl + "/payments").openConnection();
             con.setRequestMethod("POST");
             con.setRequestProperty("Content-Type", "application/json");
-            con.setDoInput(true);
             con.setDoOutput(true);
 
-            payment.put("payments", param);
+            body.put("payments", param);
 
-            OutputStreamWriter out = new OutputStreamWriter(con.getOutputStream());
-            out.write(payment.toString());
-            out.flush();
-            out.close();
         } catch (JSONException e) {
             e.printStackTrace();
         } catch (MalformedURLException e) {
@@ -125,6 +120,14 @@ public class HTTPClient extends AsyncTaskLoader<HashMap<String, Object> >{
     private HashMap<String, Object> sendRequest() {
         try {
             con.setRequestProperty("Authorization", "Basic " + credential());
+
+            if(con.getDoOutput()) {
+                OutputStreamWriter out = new OutputStreamWriter(con.getOutputStream());
+                out.write(body.toString());
+                out.flush();
+                out.close();
+            }
+
             con.connect();
 
             StringBuilder sb = new StringBuilder();
