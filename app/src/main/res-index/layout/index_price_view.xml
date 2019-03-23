@@ -14,19 +14,19 @@
         android:id="@+id/index_field_price_upper"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:inputType="text" />
+        android:inputType="phone" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text=" 〜 "
-        android:textSize="20sp" />
+        android:textSize="18sp" />
 
     <EditText
         android:id="@+id/index_field_price_lower"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:inputType="text" />
+        android:inputType="phone" />
 
     <TextView
         android:id="@+id/index_check_price"
