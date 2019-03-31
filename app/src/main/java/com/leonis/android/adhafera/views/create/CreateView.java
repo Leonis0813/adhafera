@@ -1,4 +1,4 @@
-package com.leonis.android.adhafera.view;
+package com.leonis.android.adhafera.views.create;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -24,13 +24,14 @@ import java.util.Locale;
  *
  */
 
-public class RegistrationView extends RelativeLayout implements OnClickListener {
+public class CreateView extends RelativeLayout implements OnClickListener {
     public static final int INPUT_VIEW_DATE = 0;
     private static final int INPUT_VIEW_CONTENT = 1;
     private static final int INPUT_VIEW_CATEGORY = 2;
     public static final int INPUT_VIEW_PRICE = 3;
     private static final int INPUT_VIEW_SIZE = 4;
-    private static final int INPUTS_PAYMENT_TYPE = 4;
+    private static final int INPUT_PAYMENT_TYPE = 4;
+    private static final int INPUT_SIZE = 5;
     private final InputView[] inputViews;
     private final RadioGroup radioGroup;
     private final Button OK;
@@ -39,27 +40,27 @@ public class RegistrationView extends RelativeLayout implements OnClickListener 
 
     private final Context context;
 
-    public RegistrationView(Context context, AttributeSet attributeSet) {
+    public CreateView(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
         this.context = context;
 
-        View layout = View.inflate(context, R.layout.registration_view, this);
+        View layout = View.inflate(context, R.layout.create_view, this);
 
         inputViews = new InputView[INPUT_VIEW_SIZE];
-        inputViews[INPUT_VIEW_DATE] = layout.findViewById(R.id.date);
-        inputViews[INPUT_VIEW_CONTENT] = layout.findViewById(R.id.content);
-        inputViews[INPUT_VIEW_CATEGORY] = layout.findViewById(R.id.category);
-        inputViews[INPUT_VIEW_PRICE] = layout.findViewById(R.id.price);
+        inputViews[INPUT_VIEW_DATE] = layout.findViewById(R.id.create_date);
+        inputViews[INPUT_VIEW_CONTENT] = layout.findViewById(R.id.create_content);
+        inputViews[INPUT_VIEW_CATEGORY] = layout.findViewById(R.id.create_category);
+        inputViews[INPUT_VIEW_PRICE] = layout.findViewById(R.id.create_price);
 
-        radioGroup = findViewById(R.id.radio_group);
+        radioGroup = layout.findViewById(R.id.radio_group);
 
-        OK = findViewById(R.id.OK);
+        OK = layout.findViewById(R.id.OK);
         OK.setOnClickListener(this);
 
-        cancel = findViewById(R.id.cancel);
+        cancel = layout.findViewById(R.id.cancel);
         cancel.setOnClickListener(this);
 
-        settleView = findViewById(R.id.result_settle);
+        settleView = layout.findViewById(R.id.result_settle);
     }
 
     public void setToday() {
@@ -115,16 +116,16 @@ public class RegistrationView extends RelativeLayout implements OnClickListener 
     @Override
     public void onClick(View v) {
         if(v == OK) {
-            String[] inputs = new String[MainActivity.INPUT_SIZE];
+            String[] inputs = new String[INPUT_SIZE];
             for(int i=0;i<inputViews.length;i++) {
                 String input = inputViews[i].getInputText();
                 inputs[i] = input.equals("") ? null : input;
             }
             int id = radioGroup.getCheckedRadioButtonId();
             RadioButton radioButton = findViewById(id);
-            inputs[INPUTS_PAYMENT_TYPE] = radioButton.getText().toString().equals(getResources().getString(R.string.income)) ? "income" : "expense";
+            inputs[INPUT_PAYMENT_TYPE] = radioButton.getText().toString().equals(getResources().getString(R.string.income)) ? "income" : "expense";
             resetErrorCheckers();
-            ((MainActivity)context).registerPayment(inputs);
+            ((MainActivity)context).createPayment(inputs);
         } else if(v == cancel) {
             resetFields();
             resetErrorCheckers();

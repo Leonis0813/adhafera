@@ -18,6 +18,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 /**
@@ -30,62 +31,11 @@ public class HTTPClient extends AsyncTaskLoader<HashMap<String, Object> >{
     private static String host;
     private HttpURLConnection con;
     private HashMap<String, Object> response;
-    private JSONObject payment = new JSONObject();
+    private JSONObject body = new JSONObject();
 
     private static final String BASE_PATH = "/algieba/api";
     private static final String PORT = "80";
-
-    public HTTPClient(Context context, String[] inputs) {
-        super(context);
-        InputStream inputStream = context.getClassLoader().getResourceAsStream("web-api.properties");
-
-        try {
-            webApiProp = new Properties();
-            webApiProp.load(inputStream);
-            host = webApiProp.getProperty("host");
-
-            JSONObject param = new JSONObject();
-            param.put("payment_type", inputs[4]);
-            param.put("date", inputs[0]);
-            param.put("content", inputs[1]);
-            param.put("category", inputs[2]);
-            param.put("price", inputs[3]);
-
-            con = (HttpURLConnection) new URL("http://" + host + ":" + PORT + BASE_PATH + "/payments").openConnection();
-            con.setRequestMethod("POST");
-            con.setRequestProperty("Content-Type", "application/json");
-            con.setRequestProperty("Authorization", "Basic " + credential());
-            con.setDoInput(true);
-            con.setDoOutput(true);
-
-            payment.put("payments", param);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public HTTPClient(Context context, String keyword) {
-        super(context);
-        InputStream inputStream = context.getClassLoader().getResourceAsStream("web-api.properties");
-
-        try {
-            webApiProp = new Properties();
-            webApiProp.load(inputStream);
-            host = webApiProp.getProperty("host");
-
-            con = (HttpURLConnection) new URL("http://" + host + ":" + PORT + BASE_PATH + "/categories" + keyword).openConnection();
-            con.setRequestMethod("GET");
-            con.setRequestProperty("Authorization", "Basic " + credential());
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+    private String baseUrl;
 
     public HTTPClient(Context context) {
         super(context);
@@ -95,10 +45,71 @@ public class HTTPClient extends AsyncTaskLoader<HashMap<String, Object> >{
             webApiProp = new Properties();
             webApiProp.load(inputStream);
             host = webApiProp.getProperty("host");
+            baseUrl = "http://" + host + ":" + PORT + BASE_PATH;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
-            con = (HttpURLConnection) new URL("http://" + host + ":" + PORT + BASE_PATH + "/settlement?interval=monthly").openConnection();
+    public void createPayment(String[] inputs) {
+        try {
+            JSONObject param = new JSONObject();
+            param.put("payment_type", inputs[4]);
+            param.put("date", inputs[0]);
+            param.put("content", inputs[1]);
+            param.put("category", inputs[2]);
+            param.put("price", inputs[3]);
+
+            con = (HttpURLConnection) new URL(baseUrl + "/payments").openConnection();
+            con.setRequestMethod("POST");
+            con.setRequestProperty("Content-Type", "application/json");
+            con.setDoOutput(true);
+
+            body.put("payments", param);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void getPayments(HashMap<String, String> query) {
+        try {
+            StringBuilder query_string = new StringBuilder("?");
+            query.put("sort", "date");
+            query.put("order", "desc");
+            for (Map.Entry<String, String> entry : query.entrySet()) {
+                query_string.append(entry.getKey()).append("=").append(entry.getValue()).append("&");
+            }
+            query_string = new StringBuilder(query_string.substring(0, query_string.length() - 1));
+
+            con = (HttpURLConnection) new URL(baseUrl + "/payments" + query_string).openConnection();
             con.setRequestMethod("GET");
-            con.setRequestProperty("Authorization", "Basic " + credential());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void getCategories(String keyword) {
+        try {
+            con = (HttpURLConnection) new URL(baseUrl + "/categories" + keyword).openConnection();
+            con.setRequestMethod("GET");
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void getSettlements() {
+        try {
+            con = (HttpURLConnection) new URL(baseUrl + "/settlement?interval=monthly").openConnection();
+            con.setRequestMethod("GET");
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -108,12 +119,15 @@ public class HTTPClient extends AsyncTaskLoader<HashMap<String, Object> >{
 
     private HashMap<String, Object> sendRequest() {
         try {
-            if(con.getRequestMethod().equals("POST")) {
+            con.setRequestProperty("Authorization", "Basic " + credential());
+
+            if(con.getDoOutput()) {
                 OutputStreamWriter out = new OutputStreamWriter(con.getOutputStream());
-                out.write(payment.toString());
+                out.write(body.toString());
                 out.flush();
                 out.close();
             }
+
             con.connect();
 
             StringBuilder sb = new StringBuilder();

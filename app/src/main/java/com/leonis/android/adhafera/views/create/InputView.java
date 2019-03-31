@@ -1,4 +1,4 @@
-package com.leonis.android.adhafera.view;
+package com.leonis.android.adhafera.views.create;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -11,8 +11,8 @@ import android.widget.TextView;
  */
 
 public abstract class InputView extends LinearLayout {
-    final Context context;
-    TextView errorChecker;
+    protected final Context context;
+    public TextView errorChecker;
 
     public InputView(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);

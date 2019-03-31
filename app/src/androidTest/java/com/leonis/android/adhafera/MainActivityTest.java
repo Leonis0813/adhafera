@@ -42,8 +42,18 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
         injectInstrumentation(InstrumentationRegistry.getInstrumentation());
         mainActivity = getActivity();
 
-        fieldIDs = new int[]{R.id.field_date, R.id.field_content, R.id.field_category, R.id.field_price};
-        checkIDs = new int[]{R.id.check_date, R.id.check_content, R.id.check_category, R.id.check_price};
+        fieldIDs = new int[]{
+                R.id.create_field_date,
+                R.id.create_field_content,
+                R.id.create_field_category,
+                R.id.create_field_price
+        };
+        checkIDs = new int[]{
+                R.id.create_check_date,
+                R.id.create_check_content,
+                R.id.create_check_category,
+                R.id.create_check_price
+        };
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         today = simpleDateFormat.format(new Date());
@@ -82,7 +92,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
         visibilities[3] = TextView.INVISIBLE;
         assertRegistration(new String[]{today, "", "", ""}, "収入", visibilities);
 
-        int settleAfter = Integer.parseInt(settleBefore) + 100;
+        int settleAfter = Integer.parseInt(settleBefore.isEmpty() ? "0" : settleBefore) + 100;
         assertSettleView(String.valueOf(settleAfter));
 
     }
@@ -103,7 +113,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
         String[] texts = {"invalid_date", "data for system test", "", "100"};
         inputPaymentInfo(texts);
 
-        onView(withId(R.id.select_category)).perform(click());
+        onView(withId(R.id.create_select_category)).perform(click());
         onView(withText("test")).perform(click());
         onView(withText("OK")).perform(click());
 
@@ -125,7 +135,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
 
         assertRegistration(new String[]{today, "", "", ""}, "支出", visibilities);
 
-        int settleAfter = Integer.parseInt(settleBefore) - 100;
+        int settleAfter = Integer.parseInt(settleBefore.isEmpty() ? "0" : settleBefore) - 100;
         assertSettleView(String.valueOf(settleAfter));
     }
 
@@ -133,7 +143,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
         assertTextInField(new String[]{today, "", "", ""});
         assertTableButton("支出");
         assertErrorChecker(new int[]{TextView.INVISIBLE, TextView.INVISIBLE, TextView.INVISIBLE, TextView.INVISIBLE});
-        assertSettleView("円");
+        assertSettleView("");
         settleBefore = ((TextView) mainActivity.findViewById(R.id.result_settle)).getText().toString().replaceAll(" 円", "");
     }
 

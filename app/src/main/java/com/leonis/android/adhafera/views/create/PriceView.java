@@ -1,4 +1,4 @@
-package com.leonis.android.adhafera.view;
+package com.leonis.android.adhafera.views.create;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -18,10 +18,10 @@ public class PriceView extends InputView {
     public PriceView(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
 
-        View.inflate(context, R.layout.price_view, this);
+        View.inflate(context, R.layout.create_price_view, this);
 
-        fieldView = findViewById(R.id.field_price);
-        errorChecker = findViewById(R.id.check_price);
+        fieldView = findViewById(R.id.create_field_price);
+        errorChecker = findViewById(R.id.create_check_price);
     }
 
     public void setInputText(String text) {

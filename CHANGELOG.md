@@ -1,3 +1,21 @@
+# 3.0.4 (2019/03/23)
+- [FIX] label size of index view
+- [FIX] keyboard type of price view of index view
+
+# 3.0.3 (2019/02/11)
+- [FIX] http client when creating payment
+
+# 3.0.2 (2019/02/09)
+- [REFACTOR] HTTPClient
+- [FIX] searching payments without query
+
+# 3.0.1 (2019/02/04)
+- [FIX] index view not to display next page button first
+- [FIX] paging error(first page was displayed twice)
+
+# 3.0.0 (2019/01/13)
+- [ADD] feature to search payments
+
 # 2.1.6 (2018/07/21)
 - [UPDATE] icon and input keyboard for price
 

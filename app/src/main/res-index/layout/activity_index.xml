@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.leonis.android.adhafera.MainActivity">
+    tools:context="com.leonis.android.adhafera.IndexActivity">
 
-    <com.leonis.android.adhafera.views.create.CreateView
-        android:id="@+id/create"
+    <com.leonis.android.adhafera.views.index.IndexView
+        android:id="@+id/index"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
-</RelativeLayout>
+
+</ScrollView>
