@@ -13,6 +13,7 @@ import org.junit.runner.RunWith;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import static android.support.test.espresso.Espresso.closeSoftKeyboard;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.clearText;
 import static android.support.test.espresso.action.ViewActions.click;
@@ -184,6 +185,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
             if(!texts[i].equals("")) {
                 onView(withId(fieldIDs[i])).perform(clearText());
                 onView(withId(fieldIDs[i])).perform(typeText(texts[i]));
+                closeSoftKeyboard();
             }
         }
     }
