@@ -14,7 +14,8 @@
         android:id="@+id/index_field_date_after"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:inputType="text" />
+        android:inputType="text"
+        android:focusable="false" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -26,7 +27,8 @@
         android:id="@+id/index_field_date_before"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:inputType="text" />
+        android:inputType="text"
+        android:focusable="false" />
 
     <TextView
         android:id="@+id/index_check_period"
