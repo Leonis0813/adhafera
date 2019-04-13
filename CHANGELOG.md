@@ -1,3 +1,6 @@
+# 3.1.0 (2019/04/13)
+- [UPDATE] period view of index activity to show date dialog
+
 # 3.0.4 (2019/03/23)
 - [FIX] label size of index view
 - [FIX] keyboard type of price view of index view
