@@ -10,8 +10,10 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static android.support.test.espresso.Espresso.onView;
+import java.util.Calendar;
+
 import static android.support.test.espresso.Espresso.onData;
+import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.clearText;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.typeText;
@@ -63,34 +65,23 @@ public class IndexActivityTest extends ActivityInstrumentationTestCase2<IndexAct
         assertSpinner("を含む", "全て");
         assertErrorChecker(TextView.INVISIBLE, TextView.INVISIBLE);
 
-        queries[0] = "invalid";
-        queries[4] = "invalid";
-        inputCondition(queries);
+        onView(withId(fieldIDs[0])).perform(click());
+        onView(withText("OK")).perform(click());
+
         onView(withId(R.id.index_field_content_type)).perform(click());
         onData(allOf(is(instanceOf(String.class)), is("と一致する"))).perform(click());
+
         onView(withId(R.id.index_payment_type)).perform(click());
         onData(allOf(is(instanceOf(String.class)), is("収入"))).perform(click());
-        onView(withId(R.id.index_submit)).perform(click());
-        assertErrorChecker(TextView.VISIBLE, TextView.VISIBLE);
-
-        queries[4] = "100";
-        inputCondition(queries);
-        onView(withId(R.id.index_submit)).perform(click());
-        assertErrorChecker(TextView.VISIBLE, TextView.INVISIBLE);
-
-        queries[0] = "1000-01-01";
-        queries[3] = "invalid";
-        inputCondition(queries);
-        onView(withId(R.id.index_submit)).perform(click());
-        assertErrorChecker(TextView.INVISIBLE, TextView.VISIBLE);
 
         queries[3] = "100";
         queries[4] = "10000";
         inputCondition(queries);
         onView(withId(R.id.index_submit)).perform(click());
-        assertErrorChecker(TextView.INVISIBLE, TextView.INVISIBLE);
 
-        onView(withId(R.id.index_next_page)).perform(click());
+        Calendar date = Calendar.getInstance();
+        queries[0] = String.format("%d-%02d-%02d", date.get(Calendar.YEAR), date.get(Calendar.MONTH) + 1, date.get(Calendar.DATE));
+        assertErrorChecker(TextView.INVISIBLE, TextView.INVISIBLE);
         assertEditText(queries);
         assertSpinner("と一致する", "収入");
     }
