@@ -62,11 +62,13 @@ public class HTTPClient extends AsyncTaskLoader<HashMap<String, Object> >{
             body.put("payment_type", inputs[4]);
             body.put("date", inputs[0]);
             body.put("content", inputs[1]);
-            JSONArray categories = new JSONArray();
-            for (String category : inputs[2].split(",")) {
-                categories.put(category);
+            if(inputs[2] != null) {
+                JSONArray categories = new JSONArray();
+                for (String category : inputs[2].split(",")) {
+                    categories.put(category);
+                }
+                body.put("categories", categories);
             }
-            body.put("categories", categories);
             body.put("price", inputs[3]);
         } catch (JSONException e) {
             e.printStackTrace();
