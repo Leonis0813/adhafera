@@ -77,10 +77,11 @@ public class IndexActivity extends AppCompatActivity {
                 int code = Integer.parseInt(data.get("statusCode").toString());
                 if(code == 200) {
                     try {
-                        JSONArray body = new JSONArray(data.get("body").toString());
-                        String[] names = new String[body.length()];
-                        for(int i=0;i<body.length();i++) {
-                            names[i] = body.getJSONObject(i).getString("name");
+                        JSONObject body = new JSONObject(data.get("body").toString());
+                        JSONArray categories = body.getJSONArray("categories");
+                        String[] names = new String[categories.length()];
+                        for(int i=0;i<categories.length();i++) {
+                            names[i] = categories.getJSONObject(i).getString("name");
                         }
                         indexView.setCategories(names);
                     } catch (JSONException e) {
@@ -133,10 +134,11 @@ public class IndexActivity extends AppCompatActivity {
                 int code = Integer.parseInt(data.get("statusCode").toString());
                 if(code == 200) {
                     try {
-                        JSONArray body = new JSONArray(data.get("body").toString());
+                        JSONObject body = new JSONObject(data.get("body").toString());
+                        JSONArray jsonPayments = body.getJSONArray("payments");
                         ArrayList<Payment> payments = new ArrayList<>();
-                        for(int i = 0;i < body.length();i++) {
-                            JSONObject payment = body.getJSONObject(i);
+                        for(int i = 0;i < jsonPayments.length();i++) {
+                            JSONObject payment = jsonPayments.getJSONObject(i);
                             JSONArray categories = payment.getJSONArray("categories");
                             String[] category_names = new String[categories.length()];
                             for(int j = 0;j < categories.length();j++) {
