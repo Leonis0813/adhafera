@@ -4,6 +4,7 @@ import android.content.AsyncTaskLoader;
 import android.content.Context;
 import android.util.Base64;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -53,20 +54,20 @@ public class HTTPClient extends AsyncTaskLoader<HashMap<String, Object> >{
 
     public void createPayment(String[] inputs) {
         try {
-            JSONObject param = new JSONObject();
-            param.put("payment_type", inputs[4]);
-            param.put("date", inputs[0]);
-            param.put("content", inputs[1]);
-            param.put("category", inputs[2]);
-            param.put("price", inputs[3]);
-
             con = (HttpURLConnection) new URL(baseUrl + "/payments").openConnection();
             con.setRequestMethod("POST");
             con.setRequestProperty("Content-Type", "application/json");
             con.setDoOutput(true);
 
-            body.put("payments", param);
-
+            body.put("payment_type", inputs[4]);
+            body.put("date", inputs[0]);
+            body.put("content", inputs[1]);
+            JSONArray categories = new JSONArray();
+            for (String category : inputs[2].split(",")) {
+                categories.put(category);
+            }
+            body.put("categories", categories);
+            body.put("price", inputs[3]);
         } catch (JSONException e) {
             e.printStackTrace();
         } catch (MalformedURLException e) {
