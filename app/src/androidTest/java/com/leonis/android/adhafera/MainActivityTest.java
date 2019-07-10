@@ -86,6 +86,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
         assertRegistration(new String[]{today, "data for system test", "test", ""}, "収入", visibilities);
 
         texts[1] = "";
+        texts[2] = "test,test2";
         texts[3] = "100";
         inputPaymentInfo(texts);
         onView(withId(R.id.OK)).perform(click());
@@ -116,6 +117,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
 
         onView(withId(R.id.create_select_category)).perform(click());
         onView(withText("test")).perform(click());
+        onView(withText("test2")).perform(click());
         onView(withText("OK")).perform(click());
 
         onView(withId(R.id.OK)).perform(click());
@@ -124,7 +126,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
         visibilities[1] = TextView.INVISIBLE;
         visibilities[2] = TextView.INVISIBLE;
         visibilities[3] = TextView.INVISIBLE;
-        assertRegistration(new String[]{"invalid_date", "data for system test", "test", "100"}, "支出", visibilities);
+        assertRegistration(new String[]{"invalid_date", "data for system test", "test,test2", "100"}, "支出", visibilities);
 
         texts[0] = today;
         texts[1] = "";

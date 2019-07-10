@@ -15,6 +15,7 @@ import com.leonis.android.adhafera.views.create.CreateView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -133,15 +134,16 @@ public class MainActivity extends AppCompatActivity {
                 int code = Integer.parseInt(data.get("statusCode").toString());
                 if (code == 200) {
                     try {
-                        JSONArray body = new JSONArray(data.get("body").toString());
+                        JSONObject body = new JSONObject(data.get("body").toString());
+                        JSONArray settlements = body.getJSONArray("settlements");
                         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM", Locale.JAPAN);
                         String year_month = sdf.format(Calendar.getInstance().getTime());
-                        if (body.length() == 0) {
+                        if (settlements.length() == 0) {
                             createView.showSettlement("0");
                         } else {
-                            for (int i = 0; i < body.length(); i++) {
-                                if (year_month.equals(body.getJSONObject(i).getString("date"))) {
-                                    createView.showSettlement(body.getJSONObject(i).getString("price"));
+                            for (int i = 0; i < settlements.length(); i++) {
+                                if (year_month.equals(settlements.getJSONObject(i).getString("date"))) {
+                                    createView.showSettlement(settlements.getJSONObject(i).getString("price"));
                                     break;
                                 }
                             }
@@ -174,10 +176,11 @@ public class MainActivity extends AppCompatActivity {
                 int code = Integer.parseInt(data.get("statusCode").toString());
                 if(code == 200) {
                     try {
-                        JSONArray body = new JSONArray(data.get("body").toString());
-                        String[] names = new String[body.length()];
-                        for(int i=0;i<body.length();i++) {
-                            names[i] = body.getJSONObject(i).getString("name");
+                        JSONObject body = new JSONObject(data.get("body").toString());
+                        JSONArray categories = body.getJSONArray("categories");
+                        String[] names = new String[categories.length()];
+                        for(int i=0;i<categories.length();i++) {
+                            names[i] = categories.getJSONObject(i).getString("name");
                         }
                         createView.setCategories(names);
                     } catch (JSONException e) {
