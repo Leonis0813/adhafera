@@ -29,7 +29,7 @@ import static org.mockito.Mockito.when;
  */
 @RunWith(AndroidJUnit4.class)
 public class HTTPClientTest {
-    private static final String[] attributes = {"date", "content", "category", "price", "payment_type"};
+    private static final String[] attributes = {"date", "content", "categories", "price", "payment_type"};
     private HashMap<String, Object> ret;
     private HttpURLConnection con;
 
@@ -48,9 +48,65 @@ public class HTTPClientTest {
         httpClient.createPayment(inputs);
         JSONObject payment = new JSONObject();
         try {
+            payment.put("id", 1);
             payment.put("date", inputs[0]);
             payment.put("content", inputs[1]);
-            payment.put("category", inputs[2]);
+            JSONArray categories = new JSONArray();
+            for (String category_name : inputs[2].split(",")) {
+                JSONObject category = new JSONObject();
+                category.put("id", 1);
+                category.put("name", category_name);
+                category.put("description", null);
+                categories.put(category);
+            }
+            payment.put("categories", categories);
+            payment.put("price", Integer.parseInt(inputs[3]));
+            payment.put("payment_type", inputs[4]);
+        } catch (JSONException e) {
+            e.printStackTrace();
+            fail();
+        }
+        setupMock(httpClient, 201, payment.toString());
+
+        ret = httpClient.loadInBackground();
+
+        assertStatusCode(201);
+
+        try {
+            JSONObject responseBody = new JSONObject(ret.get("body").toString());
+
+            assertEquals(inputs[0], responseBody.getString(attributes[0]));
+            assertEquals(inputs[1], responseBody.getString(attributes[1]));
+            JSONArray categories = responseBody.getJSONArray("categories");
+            for(int i=0;i<categories.length();i++) {
+                assertEquals(inputs[2].split(",")[i], categories.getJSONObject(i).getString("name"));
+            }
+            assertEquals(Integer.parseInt(inputs[3]), responseBody.getInt(attributes[3]));
+            assertEquals(inputs[4], responseBody.getString(attributes[4]));
+        } catch (JSONException e) {
+            e.printStackTrace();
+            fail();
+        }
+    }
+
+    public void testRegisterPayment_OK_multipleCategories() {
+        String[] inputs = {"2015-01-01", "for http client test", "test,test2", "100", "expense"};
+        HTTPClient httpClient = new HTTPClient(getContext());
+        httpClient.createPayment(inputs);
+        JSONObject payment = new JSONObject();
+        try {
+            payment.put("date", inputs[0]);
+            payment.put("content", inputs[1]);
+            JSONArray categories = new JSONArray();
+            String[] category_names = inputs[2].split(",");
+            for (int i=0;i<category_names.length;i++) {
+                JSONObject category = new JSONObject();
+                category.put("id", i+1);
+                category.put("name", category_names[i]);
+                category.put("description", null);
+                categories.put(category);
+            }
+            payment.put("categories", categories);
             payment.put("price", inputs[3]);
             payment.put("payment_type", inputs[4]);
         } catch (JSONException e) {
@@ -64,16 +120,16 @@ public class HTTPClientTest {
         assertStatusCode(201);
 
         try {
-            HashMap<String, String> expectedPayment = new HashMap<>();
             JSONObject responseBody = new JSONObject(ret.get("body").toString());
-            HashMap<String, String> actualPayment = new HashMap<>();
 
-            for (int i = 0; i < attributes.length; i++) {
-                expectedPayment.put(attributes[i], inputs[i]);
-                actualPayment.put(attributes[i], responseBody.getString(attributes[i]));
+            assertEquals(inputs[0], responseBody.getString(attributes[0]));
+            assertEquals(inputs[1], responseBody.getString(attributes[1]));
+            JSONArray categories = responseBody.getJSONArray("categories");
+            for(int i=0;i<categories.length();i++) {
+                assertEquals(inputs[2].split(",")[i], categories.getJSONObject(i).getString("name"));
             }
-
-            assertEquals(expectedPayment, actualPayment);
+            assertEquals(Integer.parseInt(inputs[3]), responseBody.getInt(attributes[3]));
+            assertEquals(inputs[4], responseBody.getString(attributes[4]));
         } catch (JSONException e) {
             e.printStackTrace();
             fail();
@@ -86,21 +142,23 @@ public class HTTPClientTest {
 
         HTTPClient httpClient = new HTTPClient(getContext());
         httpClient.createPayment(inputs);
-        JSONArray errors = new JSONArray();
+        JSONObject responseBody = new JSONObject();
         try {
+            JSONArray errors = new JSONArray();
             JSONObject error = new JSONObject();
-            error.put("error_code", "absent_param_category");
+            error.put("error_code", "absent_param_categories");
             errors.put(error);
+            responseBody.put("errors", errors);
         } catch (JSONException e) {
             e.printStackTrace();
             fail();
         }
-        setupMock(httpClient, 400, errors.toString());
+        setupMock(httpClient, 400, responseBody.toString());
 
         ret = httpClient.loadInBackground();
 
         assertStatusCode(400);
-        assertErrorCode(new String[]{"absent_param_category"});
+        assertErrorCode(new String[]{"absent_param_categories"});
     }
 
     @Test
@@ -109,16 +167,18 @@ public class HTTPClientTest {
 
         HTTPClient httpClient = new HTTPClient(getContext());
         httpClient.createPayment(inputs);
-        JSONArray errors = new JSONArray();
+        JSONObject responseBody = new JSONObject();
         try {
+            JSONArray errors = new JSONArray();
             JSONObject error = new JSONObject();
             error.put("error_code", "invalid_param_date");
             errors.put(error);
+            responseBody.put("errors", errors);
         } catch (JSONException e) {
             e.printStackTrace();
             fail();
         }
-        setupMock(httpClient, 400, errors.toString());
+        setupMock(httpClient, 400, responseBody.toString());
 
         ret = httpClient.loadInBackground();
 
@@ -132,19 +192,21 @@ public class HTTPClientTest {
 
         HTTPClient httpClient = new HTTPClient(getContext());
         httpClient.createPayment(inputs);
-        JSONArray errors = new JSONArray();
+        JSONObject responseBody = new JSONObject();
         try {
+            JSONArray errors = new JSONArray();
             JSONObject error = new JSONObject();
             error.put("error_code", "absent_param_content");
             errors.put(error);
             error = new JSONObject();
             error.put("error_code", "absent_param_price");
             errors.put(error);
+            responseBody.put("errors", errors);
         } catch (JSONException e) {
             e.printStackTrace();
             fail();
         }
-        setupMock(httpClient, 400, errors.toString());
+        setupMock(httpClient, 400, responseBody.toString());
 
         ret = httpClient.loadInBackground();
 
@@ -158,19 +220,21 @@ public class HTTPClientTest {
 
         HTTPClient httpClient = new HTTPClient(getContext());
         httpClient.createPayment(inputs);
-        JSONArray errors = new JSONArray();
+        JSONObject responseBody = new JSONObject();
         try {
+            JSONArray errors = new JSONArray();
             JSONObject error = new JSONObject();
             error.put("error_code", "invalid_param_date");
             errors.put(error);
             error = new JSONObject();
             error.put("error_code", "invalid_param_price");
             errors.put(error);
+            responseBody.put("errors", errors);
         } catch (JSONException e) {
             e.printStackTrace();
             fail();
         }
-        setupMock(httpClient, 400, errors.toString());
+        setupMock(httpClient, 400, responseBody.toString());
 
         ret = httpClient.loadInBackground();
 
@@ -182,8 +246,9 @@ public class HTTPClientTest {
     public void testGetSettlement_OK() {
         HTTPClient httpClient = new HTTPClient(getContext());
         httpClient.getSettlements();
-        JSONArray settlements = new JSONArray();
+        JSONObject responseBody = new JSONObject();
         try {
+            JSONArray settlements = new JSONArray();
             JSONObject settlement = new JSONObject();
             settlement.put("date", "2000-01");
             settlement.put("price", "1000");
@@ -192,22 +257,24 @@ public class HTTPClientTest {
             settlement.put("date", "2000-02");
             settlement.put("price", "-100");
             settlements.put(settlement);
+            responseBody.put("settlements", settlements);
         } catch (JSONException e) {
             e.printStackTrace();
             fail();
         }
-        setupMock(httpClient, 200, settlements.toString());
+        setupMock(httpClient, 200, responseBody.toString());
 
         ret = httpClient.loadInBackground();
 
         assertStatusCode(200);
 
         try {
-            JSONArray body = new JSONArray(ret.get("body").toString());
-            assertEquals("2000-01", body.getJSONObject(0).get("date"));
-            assertEquals("1000", body.getJSONObject(0).get("price"));
-            assertEquals("2000-02", body.getJSONObject(1).get("date"));
-            assertEquals("-100", body.getJSONObject(1).get("price"));
+            JSONObject body = new JSONObject(ret.get("body").toString());
+            JSONArray settlements = body.getJSONArray("settlements");
+            assertEquals("2000-01", settlements.getJSONObject(0).get("date"));
+            assertEquals("1000", settlements.getJSONObject(0).get("price"));
+            assertEquals("2000-02", settlements.getJSONObject(1).get("date"));
+            assertEquals("-100", settlements.getJSONObject(1).get("price"));
         } catch (JSONException e) {
             e.printStackTrace();
             fail();
@@ -218,8 +285,9 @@ public class HTTPClientTest {
     public void testGetCategories_OK() {
         HTTPClient httpClient = new HTTPClient(getContext());
         httpClient.getCategories("");
-        JSONArray categories = new JSONArray();
+        JSONObject responseBody = new JSONObject();
         try {
+            JSONArray categories = new JSONArray();
             JSONObject category = new JSONObject();
             category.put("id", "1");
             category.put("name", "test");
@@ -230,24 +298,26 @@ public class HTTPClientTest {
             category.put("name", "test2");
             category.put("description", "test category");
             categories.put(category);
+            responseBody.put("categories", categories);
         } catch (JSONException e) {
             e.printStackTrace();
             fail();
         }
-        setupMock(httpClient, 200, categories.toString());
+        setupMock(httpClient, 200, responseBody.toString());
 
         ret = httpClient.loadInBackground();
 
         assertStatusCode(200);
 
         try {
-            JSONArray body = new JSONArray(ret.get("body").toString());
-            assertEquals("1", body.getJSONObject(0).getString("id"));
-            assertEquals("test", body.getJSONObject(0).getString("name"));
-            assertEquals("test category", body.getJSONObject(0).getString("description"));
-            assertEquals("2", body.getJSONObject(1).getString("id"));
-            assertEquals("test2", body.getJSONObject(1).getString("name"));
-            assertEquals("test category", body.getJSONObject(1).getString("description"));
+            JSONObject body = new JSONObject(ret.get("body").toString());
+            JSONArray categories = body.getJSONArray("categories");
+            assertEquals("1", categories.getJSONObject(0).getString("id"));
+            assertEquals("test", categories.getJSONObject(0).getString("name"));
+            assertEquals("test category", categories.getJSONObject(0).getString("description"));
+            assertEquals("2", categories.getJSONObject(1).getString("id"));
+            assertEquals("test2", categories.getJSONObject(1).getString("name"));
+            assertEquals("test category", categories.getJSONObject(1).getString("description"));
         } catch (JSONException e) {
             e.printStackTrace();
             fail();
@@ -258,8 +328,9 @@ public class HTTPClientTest {
     public void testGetPayments_OK() {
         HTTPClient httpClient = new HTTPClient(getContext());
         httpClient.getPayments(new HashMap<String, String>());
-        JSONArray payments = new JSONArray();
+        JSONObject responseBody = new JSONObject();
         try {
+            JSONArray payments = new JSONArray();
             JSONObject payment = new JSONObject();
             payment.put("id", "1");
             payment.put("payment_type", "income");
@@ -274,25 +345,27 @@ public class HTTPClientTest {
             payment.put("categories", categories);
             payment.put("price", "1000");
             payments.put(payment);
+            responseBody.put("payments", payments);
         } catch (JSONException e) {
             e.printStackTrace();
             fail();
         }
-        setupMock(httpClient, 200, payments.toString());
+        setupMock(httpClient, 200, responseBody.toString());
 
         ret = httpClient.loadInBackground();
 
         assertStatusCode(200);
 
         try {
-            JSONArray body = new JSONArray(ret.get("body").toString());
-            assertEquals("1", body.getJSONObject(0).getString("id"));
-            assertEquals("income", body.getJSONObject(0).getString("payment_type"));
-            assertEquals("1000-01-01", body.getJSONObject(0).getString("date"));
-            assertEquals("test", body.getJSONObject(0).getString("content"));
-            assertEquals("1000", body.getJSONObject(0).getString("price"));
+            JSONObject body = new JSONObject(ret.get("body").toString());
+            JSONArray payments = body.getJSONArray("payments");
+            assertEquals("1", payments.getJSONObject(0).getString("id"));
+            assertEquals("income", payments.getJSONObject(0).getString("payment_type"));
+            assertEquals("1000-01-01", payments.getJSONObject(0).getString("date"));
+            assertEquals("test", payments.getJSONObject(0).getString("content"));
+            assertEquals("1000", payments.getJSONObject(0).getString("price"));
 
-            JSONArray categories = body.getJSONObject(0).getJSONArray("categories");
+            JSONArray categories = payments.getJSONObject(0).getJSONArray("categories");
             assertEquals("1", categories.getJSONObject(0).getString("id"));
             assertEquals("test", categories.getJSONObject(0).getString("name"));
             assertEquals("test category", categories.getJSONObject(0).getString("description"));
@@ -318,11 +391,12 @@ public class HTTPClientTest {
                 expectedErrors.add(error);
             }
 
-            JSONArray jsonArray = new JSONArray(ret.get("body").toString());
+            JSONObject body = new JSONObject(ret.get("body").toString());
+            JSONArray errors = body.getJSONArray("errors");
             ArrayList<HashMap<String, String> > actualErrors = new ArrayList<>();
-            for(int i=0;i<jsonArray.length();i++) {
+            for(int i=0;i<errors.length();i++) {
                 error = new HashMap<>();
-                error.put("errorCode", jsonArray.getJSONObject(i).getString("error_code"));
+                error.put("errorCode", errors.getJSONObject(i).getString("error_code"));
                 actualErrors.add(error);
             }
 

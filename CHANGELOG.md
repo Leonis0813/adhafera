@@ -1,3 +1,6 @@
+# 3.1.1 (2019/07/11)
+- [FIX] WebAPI request and response body
+
 # 3.1.0 (2019/04/13)
 - [UPDATE] period view of index activity to show date dialog
 
