@@ -111,7 +111,7 @@ public class HTTPClient extends AsyncTaskLoader<HashMap<String, Object> >{
 
     public void getSettlements() {
         try {
-            con = (HttpURLConnection) new URL(baseUrl + "/settlement?interval=monthly").openConnection();
+            con = (HttpURLConnection) new URL(baseUrl + "/settlements/period?interval=monthly").openConnection();
             con.setRequestMethod("GET");
         } catch (MalformedURLException e) {
             e.printStackTrace();
