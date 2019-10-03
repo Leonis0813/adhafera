@@ -1,3 +1,6 @@
+# 3.1.2 (2019/10/03)
+- [FIX] path for settlements WebAPI
+
 # 3.1.1 (2019/07/11)
 - [FIX] WebAPI request and response body
 
