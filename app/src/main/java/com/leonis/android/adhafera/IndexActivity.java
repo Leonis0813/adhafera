@@ -68,7 +68,7 @@ public class IndexActivity extends AppCompatActivity {
             @Override
             public Loader<HashMap<String, Object>> onCreateLoader(int id, Bundle args) {
                 HTTPClient httpClient = new HTTPClient(activity);
-                httpClient.getCategories("");
+                httpClient.getCategories();
                 return httpClient;
             }
 
