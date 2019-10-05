@@ -23,6 +23,7 @@ public class ContentView extends InputView implements OnFocusChangeListener {
         View.inflate(context, R.layout.create_content_view, this);
 
         fieldView = findViewById(R.id.create_field_content);
+        fieldView.setOnFocusChangeListener(this);
         errorChecker = findViewById(R.id.create_check_content);
     }
 
