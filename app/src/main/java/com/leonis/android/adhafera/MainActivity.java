@@ -196,7 +196,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void getDictionaries(String content) {
+    public void getDictionaries(String content) {
         Bundle args = new Bundle();
         args.putString("content", content);
 

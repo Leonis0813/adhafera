@@ -3,8 +3,10 @@ package com.leonis.android.adhafera.views.create;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.View.OnFocusChangeListener;
 import android.widget.EditText;
 
+import com.leonis.android.adhafera.MainActivity;
 import com.leonis.android.adhafera.R;
 
 /**
@@ -12,7 +14,7 @@ import com.leonis.android.adhafera.R;
  *
  */
 
-public class ContentView extends InputView {
+public class ContentView extends InputView implements OnFocusChangeListener {
     private final EditText fieldView;
 
     public ContentView(Context context, AttributeSet attributeSet) {
@@ -30,5 +32,12 @@ public class ContentView extends InputView {
 
     public String getInputText() {
         return fieldView.getText().toString();
+    }
+
+    @Override
+    public void onFocusChange(View view, boolean hasFocus) {
+        if(!hasFocus) {
+            ((MainActivity) context).getDictionaries(fieldView.getText().toString());
+        }
     }
 }
