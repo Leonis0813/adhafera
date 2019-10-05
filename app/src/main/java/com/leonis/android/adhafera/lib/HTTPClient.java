@@ -113,6 +113,18 @@ public class HTTPClient extends AsyncTaskLoader<HashMap<String, Object> >{
         }
     }
 
+    public void getDictionaries(String content) {
+        try {
+            String query = content.isEmpty() ? "" : "?content=" + content;
+            con = (HttpURLConnection) new URL(baseUrl + "/dictionaries" + query).openConnection();
+            con.setRequestMethod("GET");
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void getSettlements() {
         try {
             con = (HttpURLConnection) new URL(baseUrl + "/settlements/period?interval=monthly").openConnection();
