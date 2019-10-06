@@ -83,7 +83,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="25dip" >
+        android:layout_marginBottom="25dip"
+        style="?android:attr/buttonBarStyle" >
 
         <Button
             android:id="@+id/OK"
@@ -92,7 +93,8 @@
             android:layout_marginLeft="25dip"
             android:layout_marginRight="25dip"
             android:layout_weight="1"
-            android:text="@string/OK" />
+            android:text="@string/OK"
+            style="?android:attr/buttonBarButtonStyle" />
 
         <Button
             android:id="@+id/cancel"
@@ -101,7 +103,8 @@
             android:layout_marginLeft="25dip"
             android:layout_marginRight="25dip"
             android:layout_weight="1"
-            android:text="@string/cancel" >
+            android:text="@string/cancel"
+            style="?android:attr/buttonBarButtonStyle" >
         </Button>
     </LinearLayout>
 </RelativeLayout>

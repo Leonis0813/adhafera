@@ -14,7 +14,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -28,25 +27,30 @@ import java.util.Properties;
  */
 
 public class HTTPClient extends AsyncTaskLoader<HashMap<String, Object> >{
-    private Properties webApiProp;
-    private static String host;
-    private HttpURLConnection con;
-    private HashMap<String, Object> response;
-    private JSONObject body = new JSONObject();
-
     private static final String BASE_PATH = "/algieba/api";
     private static final String PORT = "80";
+
+    private HttpURLConnection con;
+    private HashMap<String, Object> response;
+    private JSONObject requestBody;
     private String baseUrl;
+    private String credential;
 
     public HTTPClient(Context context) {
         super(context);
         InputStream inputStream = context.getClassLoader().getResourceAsStream("web-api.properties");
 
         try {
-            webApiProp = new Properties();
+            Properties webApiProp = new Properties();
             webApiProp.load(inputStream);
-            host = webApiProp.getProperty("host");
-            baseUrl = "http://" + host + ":" + PORT + BASE_PATH;
+            baseUrl = "http://" + webApiProp.getProperty("host") + ":" + PORT + BASE_PATH;
+
+            String application_id = webApiProp.getProperty("application_id");
+            String application_key = webApiProp.getProperty("application_key");
+            byte[] credential = Base64.encode((application_id + ":" + application_key).getBytes(), Base64.DEFAULT);
+            this.credential = new String(credential, "UTF-8");
+
+            requestBody = new JSONObject();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -59,17 +63,17 @@ public class HTTPClient extends AsyncTaskLoader<HashMap<String, Object> >{
             con.setRequestProperty("Content-Type", "application/json");
             con.setDoOutput(true);
 
-            body.put("payment_type", inputs[4]);
-            body.put("date", inputs[0]);
-            body.put("content", inputs[1]);
+            requestBody.put("payment_type", inputs[4]);
+            requestBody.put("date", inputs[0]);
+            requestBody.put("content", inputs[1]);
             if(inputs[2] != null) {
                 JSONArray categories = new JSONArray();
                 for (String category : inputs[2].split(",")) {
                     categories.put(category);
                 }
-                body.put("categories", categories);
+                requestBody.put("categories", categories);
             }
-            body.put("price", inputs[3]);
+            requestBody.put("price", inputs[3]);
         } catch (JSONException e) {
             e.printStackTrace();
         } catch (MalformedURLException e) {
@@ -98,9 +102,21 @@ public class HTTPClient extends AsyncTaskLoader<HashMap<String, Object> >{
         }
     }
 
-    public void getCategories(String keyword) {
+    public void getCategories() {
         try {
-            con = (HttpURLConnection) new URL(baseUrl + "/categories" + keyword).openConnection();
+            con = (HttpURLConnection) new URL(baseUrl + "/categories").openConnection();
+            con.setRequestMethod("GET");
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void getDictionaries(String content) {
+        try {
+            String query = content.isEmpty() ? "" : "?content=" + content;
+            con = (HttpURLConnection) new URL(baseUrl + "/dictionaries" + query).openConnection();
             con.setRequestMethod("GET");
         } catch (MalformedURLException e) {
             e.printStackTrace();
@@ -122,11 +138,11 @@ public class HTTPClient extends AsyncTaskLoader<HashMap<String, Object> >{
 
     private HashMap<String, Object> sendRequest() {
         try {
-            con.setRequestProperty("Authorization", "Basic " + credential());
+            con.setRequestProperty("Authorization", "Basic " + credential);
 
             if(con.getDoOutput()) {
                 OutputStreamWriter out = new OutputStreamWriter(con.getOutputStream());
-                out.write(body.toString());
+                out.write(requestBody.toString());
                 out.flush();
                 out.close();
             }
@@ -164,18 +180,5 @@ public class HTTPClient extends AsyncTaskLoader<HashMap<String, Object> >{
     @Override
     protected void onStartLoading() {
         forceLoad();
-    }
-
-    private String credential() {
-        String application_id = webApiProp.getProperty("application_id");
-        String application_key = webApiProp.getProperty("application_key");
-
-        byte[] credential = Base64.encode((application_id + ":" + application_key).getBytes(), Base64.DEFAULT);
-        try {
-            return new String(credential, "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-            return null;
-        }
     }
 }

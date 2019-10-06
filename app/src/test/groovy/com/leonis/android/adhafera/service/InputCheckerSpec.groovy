@@ -39,7 +39,7 @@ class InputCheckerSpec extends Specification {
     @Unroll
     def "checkDate(#date) return #expect"() {
         when:
-        def result = inputChecker.checkDate(date)
+        def result = inputChecker.isValidDate(date)
 
         then:
         result == expect
@@ -56,7 +56,7 @@ class InputCheckerSpec extends Specification {
     @Unroll
     def "checkPrice(#price) return #expect"() {
         when:
-        def result = inputChecker.checkPrice(price)
+        def result = inputChecker.isValidPrice(price)
 
         then:
         result == expect
