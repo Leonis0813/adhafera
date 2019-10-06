@@ -27,11 +27,11 @@ public class InputChecker {
         return ids;
     }
 
-    public boolean checkDate(String date) {
+    public boolean isValidDate(String date) {
         return datePattern.matcher(date).find();
     }
 
-    public boolean checkPrice(String price) {
+    public boolean isValidPrice(String price) {
         return pricePattern.matcher(price).find();
     }
 }

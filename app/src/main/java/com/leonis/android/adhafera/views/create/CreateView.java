@@ -100,8 +100,8 @@ public class CreateView extends RelativeLayout implements OnClickListener {
 
     public void setCategoriesToForm(String[] names) {
         StringBuilder text = new StringBuilder();
-        for(int i = 0;i < names.length;i++) {
-            text.append(text.toString().equals("") ? names[i] : "," + names[i]);
+        for (String name : names) {
+            text.append(text.toString().equals("") ? name : "," + name);
         }
         inputViews[INPUT_VIEW_CATEGORY].setInputText(text.toString());
     }

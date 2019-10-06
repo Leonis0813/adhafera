@@ -34,10 +34,10 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/index_price"
         android:layout_marginTop="10dp"
-        android:layout_marginRight="50dp" >
+        android:layout_marginEnd="50dp" >
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1" >
 
@@ -65,7 +65,7 @@
             android:id="@+id/index_submit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="right"
+            android:layout_gravity="end"
             android:text="@string/submit" />
 
     </LinearLayout>
@@ -85,5 +85,5 @@
         android:layout_centerHorizontal="true"
         android:layout_below="@id/index_payment_list"
         android:layout_marginTop="10dp"
-        android:text="さらに読み込む" />
+        android:text="@string/read_more" />
 </RelativeLayout>

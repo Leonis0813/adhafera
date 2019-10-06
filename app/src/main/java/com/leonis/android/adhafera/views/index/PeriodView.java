@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.leonis.android.adhafera.R;
 
 import java.util.Calendar;
+import java.util.Locale;
 
 /**
  * Created by leonis on 2018/12/30.
@@ -66,7 +67,8 @@ public class PeriodView extends LinearLayout implements OnTouchListener {
                     new DatePickerDialog.OnDateSetListener() {
                         @Override
                         public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                            ((EditText) v).setText(String.format("%d-%02d-%02d", year, month + 1, dayOfMonth));
+                            String text = String.format(Locale.JAPAN, "%d-%02d-%02d", year, month + 1, dayOfMonth);
+                            ((EditText) v).setText(text);
                         }
                     },
                     date.get(Calendar.YEAR),

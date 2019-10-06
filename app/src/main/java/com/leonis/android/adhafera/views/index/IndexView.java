@@ -31,9 +31,9 @@ public class IndexView extends RelativeLayout implements OnClickListener {
     private final Spinner paymentType;
     private final static String[] PAYMENT_TYPE_VALUES = {"income", "expense"};
     private final Button submit;
-    private PaymentListAdapter paymentListAdapter;
-    private ListView paymentListView;
-    private ArrayList<Payment> payments;
+    private final PaymentListAdapter paymentListAdapter;
+    private final ListView paymentListView;
+    private final ArrayList<Payment> payments;
     private final Button nextPage;
     private HashMap<String, String> query;
     private int currentPage;
@@ -81,9 +81,7 @@ public class IndexView extends RelativeLayout implements OnClickListener {
     }
 
     public void addPayments(ArrayList<Payment> payments) {
-        for(Payment payment : payments) {
-            this.payments.add(payment);
-        }
+        this.payments.addAll(payments);
         paymentListView.setAdapter(paymentListAdapter);
         fixListViewHeight(paymentListView);
         nextPage.setVisibility(payments.isEmpty() ? INVISIBLE : VISIBLE);

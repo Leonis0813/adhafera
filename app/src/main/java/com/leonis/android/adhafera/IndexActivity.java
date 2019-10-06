@@ -23,6 +23,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 
 /**
  * Created by leonis on 2018/12/30.
@@ -99,20 +100,20 @@ public class IndexActivity extends AppCompatActivity {
 
     public void searchPayments(HashMap<String, String> query) {
         ArrayList<String> fields = new ArrayList<>();
-        if((query.containsKey("date_before") && !inputChecker.checkDate(query.get("date_before"))) ||
-                (query.containsKey("date_after") && !inputChecker.checkDate(query.get("date_after")))) {
+        if((query.containsKey("date_before") && inputChecker.isValidDate(query.get("date_before"))) ||
+                (query.containsKey("date_after") && inputChecker.isValidDate(query.get("date_after")))) {
             fields.add("期間");
             indexView.showWrongInput("期間");
         }
-        if((query.containsKey("price_upper") && !inputChecker.checkPrice(query.get("price_upper"))) ||
-                (query.containsKey("price_lower") && !inputChecker.checkPrice(query.get("price_lower")))) {
+        if((query.containsKey("price_upper") && inputChecker.isValidPrice(query.get("price_upper"))) ||
+                (query.containsKey("price_lower") && inputChecker.isValidPrice(query.get("price_lower")))) {
             fields.add("金額");
             indexView.showWrongInput("金額");
         }
         if(!fields.isEmpty()) {
-            String message = "";
+            StringBuilder message = new StringBuilder();
             for(String field : fields) {
-                message += field + ",";
+                message.append(field).append(",");
             }
             indexView.showMessage(message.substring(0, message.length() - 1) + "が不正です");
             return;
@@ -145,7 +146,7 @@ public class IndexActivity extends AppCompatActivity {
                                 category_names[j] = categories.getJSONObject(j).getString("name");
                             }
                             try {
-                                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+                                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.JAPAN);
                                 Date date = format.parse(payment.getString("date"));
                                 String content = payment.getString("content");
                                 int price = payment.getInt("price");

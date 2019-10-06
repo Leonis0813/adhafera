@@ -39,7 +39,7 @@ class InputCheckerSpec extends Specification {
     @Unroll
     def "checkDate(#date) return #expect"() {
         when:
-        def result = inputChecker.checkDate(date)
+        def result = inputChecker.isValidDate(date)
 
         then:
         result == expect
@@ -47,16 +47,16 @@ class InputCheckerSpec extends Specification {
         where:
         date                  || expect
         "2015-01-01"          || true
-        "invalid_date"        || false
-        "2015/01/01"          || false
-        "01-01-2015"          || false
-        "2015-01-01 00:00:00" || false
+        "invalid_date"
+        "2015/01/01"
+        "01-01-2015"
+        "2015-01-01 00:00:00"
     }
 
     @Unroll
     def "checkPrice(#price) return #expect"() {
         when:
-        def result = inputChecker.checkPrice(price)
+        def result = inputChecker.isValidPrice(price)
 
         then:
         result == expect
@@ -64,8 +64,8 @@ class InputCheckerSpec extends Specification {
         where:
         price           || expect
         "1"             || true
-        "invalid_price" || false
-        "1.0"           || false
-        "-1"            || false
+        "invalid_price"
+        "1.0"
+        "-1"
     }
 }
