@@ -42,7 +42,7 @@ public class HTTPClientTest {
     }
 
     @Test
-    public void testRegisterPayment_OK() {
+    public void createPayment_OK() {
         String[] inputs = {"2015-01-01", "for http client test", "test", "100", "expense"};
         HTTPClient httpClient = new HTTPClient(getContext());
         httpClient.createPayment(inputs);
@@ -89,7 +89,7 @@ public class HTTPClientTest {
         }
     }
 
-    public void testRegisterPayment_OK_multipleCategories() {
+    public void createPayment_OK_multipleCategories() {
         String[] inputs = {"2015-01-01", "for http client test", "test,test2", "100", "expense"};
         HTTPClient httpClient = new HTTPClient(getContext());
         httpClient.createPayment(inputs);
@@ -137,7 +137,7 @@ public class HTTPClientTest {
     }
 
     @Test
-    public void testRegisterPayment_NG_categoryIsAbsent() {
+    public void createPayment_NG_categoryIsAbsent() {
         String[] inputs = {"2015-01-01", "for http client test", null, "100", "expense"};
 
         HTTPClient httpClient = new HTTPClient(getContext());
@@ -162,7 +162,7 @@ public class HTTPClientTest {
     }
 
     @Test
-    public void testRegisterPayment_NG_dateIsInvalid() {
+    public void createPayment_NG_dateIsInvalid() {
         String[] inputs = {"invalid_date", "テスト用データ", "テスト", "100", "expense"};
 
         HTTPClient httpClient = new HTTPClient(getContext());
@@ -187,7 +187,7 @@ public class HTTPClientTest {
     }
 
     @Test
-    public void testRegisterPayment_NG_multipleInputsIsAbsent() {
+    public void createPayment_NG_multipleInputsIsAbsent() {
         String[] inputs = {"2015-01-01", null, "テスト", null, "expense"};
 
         HTTPClient httpClient = new HTTPClient(getContext());
@@ -215,7 +215,7 @@ public class HTTPClientTest {
     }
 
     @Test
-    public void testRegisterPayment_NG_multipleInputsIsInvalid() {
+    public void createPayment_NG_multipleInputsIsInvalid() {
         String[] inputs = {"invalid_date", "テスト用データ", "テスト", "-100", "expense"};
 
         HTTPClient httpClient = new HTTPClient(getContext());
@@ -243,7 +243,7 @@ public class HTTPClientTest {
     }
 
     @Test
-    public void testGetSettlement_OK() {
+    public void getSettlements_OK() {
         HTTPClient httpClient = new HTTPClient(getContext());
         httpClient.getSettlements();
         JSONObject responseBody = new JSONObject();
@@ -282,9 +282,9 @@ public class HTTPClientTest {
     }
 
     @Test
-    public void testGetCategories_OK() {
+    public void getCategories_OK() {
         HTTPClient httpClient = new HTTPClient(getContext());
-        httpClient.getCategories("");
+        httpClient.getCategories();
         JSONObject responseBody = new JSONObject();
         try {
             JSONArray categories = new JSONArray();
@@ -325,7 +325,7 @@ public class HTTPClientTest {
     }
 
     @Test
-    public void testGetPayments_OK() {
+    public void getPayments_OK() {
         HTTPClient httpClient = new HTTPClient(getContext());
         httpClient.getPayments(new HashMap<String, String>());
         JSONObject responseBody = new JSONObject();
@@ -366,6 +366,53 @@ public class HTTPClientTest {
             assertEquals("1000", payments.getJSONObject(0).getString("price"));
 
             JSONArray categories = payments.getJSONObject(0).getJSONArray("categories");
+            assertEquals("1", categories.getJSONObject(0).getString("id"));
+            assertEquals("test", categories.getJSONObject(0).getString("name"));
+            assertEquals("test category", categories.getJSONObject(0).getString("description"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+            fail();
+        }
+    }
+
+    @Test
+    public void getDictionaries_OK() {
+        HTTPClient httpClient = new HTTPClient(getContext());
+        httpClient.getDictionaries("test");
+        JSONObject responseBody = new JSONObject();
+        try {
+            JSONArray dictionaries = new JSONArray();
+            JSONObject dictionary = new JSONObject();
+            dictionary.put("id", "1");
+            dictionary.put("phrase", "test");
+            dictionary.put("condition", "equal");
+            JSONArray categories = new JSONArray();
+            JSONObject category = new JSONObject();
+            category.put("id", "1");
+            category.put("name", "test");
+            category.put("description", "test category");
+            categories.put(category);
+            dictionary.put("categories", categories);
+            dictionaries.put(dictionary);
+            responseBody.put("dictionaries", dictionaries);
+        } catch (JSONException e) {
+            e.printStackTrace();
+            fail();
+        }
+        setupMock(httpClient, 200, responseBody.toString());
+
+        ret = httpClient.loadInBackground();
+
+        assertStatusCode(200);
+
+        try {
+            JSONObject body = new JSONObject(ret.get("body").toString());
+            JSONArray dictionaries = body.getJSONArray("dictionaries");
+            assertEquals("1", dictionaries.getJSONObject(0).getString("id"));
+            assertEquals("test", dictionaries.getJSONObject(0).getString("phrase"));
+            assertEquals("equal", dictionaries.getJSONObject(0).getString("condition"));
+
+            JSONArray categories = dictionaries.getJSONObject(0).getJSONArray("categories");
             assertEquals("1", categories.getJSONObject(0).getString("id"));
             assertEquals("test", categories.getJSONObject(0).getString("name"));
             assertEquals("test category", categories.getJSONObject(0).getString("description"));
