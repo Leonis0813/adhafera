@@ -47,10 +47,10 @@ class InputCheckerSpec extends Specification {
         where:
         date                  || expect
         "2015-01-01"          || true
-        "invalid_date"
-        "2015/01/01"
-        "01-01-2015"
-        "2015-01-01 00:00:00"
+        "invalid_date"        || false
+        "2015/01/01"          || false
+        "01-01-2015"          || false
+        "2015-01-01 00:00:00" || false
     }
 
     @Unroll
@@ -64,8 +64,8 @@ class InputCheckerSpec extends Specification {
         where:
         price           || expect
         "1"             || true
-        "invalid_price"
-        "1.0"
-        "-1"
+        "invalid_price" || false
+        "1.0"           || false
+        "-1"            || false
     }
 }

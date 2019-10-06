@@ -72,8 +72,8 @@ public class MainActivity extends AppCompatActivity {
             noticeError(errorMessage.toString(), ids);
             return;
         }
-        if(inputChecker.isValidDate(inputs[CreateView.INPUT_VIEW_DATE])) { ids.add(CreateView.INPUT_VIEW_DATE); }
-        if(inputChecker.isValidPrice(inputs[CreateView.INPUT_VIEW_PRICE])) { ids.add(CreateView.INPUT_VIEW_PRICE); }
+        if(!inputChecker.isValidDate(inputs[CreateView.INPUT_VIEW_DATE])) { ids.add(CreateView.INPUT_VIEW_DATE); }
+        if(!inputChecker.isValidPrice(inputs[CreateView.INPUT_VIEW_PRICE])) { ids.add(CreateView.INPUT_VIEW_PRICE); }
         if(!ids.isEmpty()) {
             Iterator<Integer> it = ids.iterator();
             StringBuilder errorMessage = new StringBuilder(createView.getLabel(it.next()));

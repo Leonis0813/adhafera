@@ -100,13 +100,13 @@ public class IndexActivity extends AppCompatActivity {
 
     public void searchPayments(HashMap<String, String> query) {
         ArrayList<String> fields = new ArrayList<>();
-        if((query.containsKey("date_before") && inputChecker.isValidDate(query.get("date_before"))) ||
-                (query.containsKey("date_after") && inputChecker.isValidDate(query.get("date_after")))) {
+        if((query.containsKey("date_before") && !inputChecker.isValidDate(query.get("date_before"))) ||
+                (query.containsKey("date_after") && !inputChecker.isValidDate(query.get("date_after")))) {
             fields.add("期間");
             indexView.showWrongInput("期間");
         }
-        if((query.containsKey("price_upper") && inputChecker.isValidPrice(query.get("price_upper"))) ||
-                (query.containsKey("price_lower") && inputChecker.isValidPrice(query.get("price_lower")))) {
+        if((query.containsKey("price_upper") && !inputChecker.isValidPrice(query.get("price_upper"))) ||
+                (query.containsKey("price_lower") && !inputChecker.isValidPrice(query.get("price_lower")))) {
             fields.add("金額");
             indexView.showWrongInput("金額");
         }
