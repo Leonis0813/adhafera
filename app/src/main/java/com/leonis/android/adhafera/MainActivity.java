@@ -182,7 +182,7 @@ public class MainActivity extends AppCompatActivity {
                         for(int i=0;i<categories.length();i++) {
                             names[i] = categories.getJSONObject(i).getString("name");
                         }
-                        createView.setCategories(names);
+                        createView.setCategoriesToDialog(names);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -220,7 +220,7 @@ public class MainActivity extends AppCompatActivity {
                         for(int i = 0;i < categories.length();i++) {
                             names[i] = categories.getJSONObject(i).getString("name");
                         }
-                        createView.setCategories(names);
+                        createView.setCategoriesToForm(names);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
