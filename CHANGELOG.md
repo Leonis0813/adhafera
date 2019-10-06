@@ -1,3 +1,6 @@
+# 3.2.0 (2019/10/06)
+- [UPDATE] create view to set categories automatically by dictionaries
+
 # 3.1.2 (2019/10/03)
 - [FIX] path for settlements WebAPI
 
