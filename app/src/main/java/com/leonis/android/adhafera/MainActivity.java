@@ -72,8 +72,8 @@ public class MainActivity extends AppCompatActivity {
             noticeError(errorMessage.toString(), ids);
             return;
         }
-        if(!inputChecker.checkDate(inputs[CreateView.INPUT_VIEW_DATE])) { ids.add(CreateView.INPUT_VIEW_DATE); }
-        if(!inputChecker.checkPrice(inputs[CreateView.INPUT_VIEW_PRICE])) { ids.add(CreateView.INPUT_VIEW_PRICE); }
+        if(!inputChecker.isValidDate(inputs[CreateView.INPUT_VIEW_DATE])) { ids.add(CreateView.INPUT_VIEW_DATE); }
+        if(!inputChecker.isValidPrice(inputs[CreateView.INPUT_VIEW_PRICE])) { ids.add(CreateView.INPUT_VIEW_PRICE); }
         if(!ids.isEmpty()) {
             Iterator<Integer> it = ids.iterator();
             StringBuilder errorMessage = new StringBuilder(createView.getLabel(it.next()));
@@ -167,7 +167,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public Loader<HashMap<String, Object>> onCreateLoader(int id, Bundle args) {
                 HTTPClient httpClient = new HTTPClient(activity);
-                httpClient.getCategories("");
+                httpClient.getCategories();
                 return httpClient;
             }
 
@@ -182,7 +182,7 @@ public class MainActivity extends AppCompatActivity {
                         for(int i=0;i<categories.length();i++) {
                             names[i] = categories.getJSONObject(i).getString("name");
                         }
-                        createView.setCategories(names);
+                        createView.setCategoriesToDialog(names);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -190,6 +190,44 @@ public class MainActivity extends AppCompatActivity {
                     createView.showMessage("カテゴリの取得に失敗しました");
                 }
                 getLoaderManager().destroyLoader(LOADER_ID + 2);
+            }
+
+            public void onLoaderReset(Loader<HashMap<String, Object>> loader) {}
+        });
+    }
+
+    public void getDictionaries(String content) {
+        Bundle args = new Bundle();
+        args.putString("content", content);
+
+        getLoaderManager().initLoader(LOADER_ID + 3, args, new LoaderManager.LoaderCallbacks<HashMap<String, Object>>() {
+            @Override
+            public Loader<HashMap<String, Object>> onCreateLoader(int id, Bundle args) {
+                HTTPClient httpClient = new HTTPClient(activity);
+                httpClient.getDictionaries(args.getString("content"));
+                return httpClient;
+            }
+
+            @Override
+            public void onLoadFinished(Loader<HashMap<String, Object>> loader, HashMap<String, Object> data) {
+                int code = Integer.parseInt(data.get("statusCode").toString());
+                if(code == 200) {
+                    try {
+                        JSONObject body = new JSONObject(data.get("body").toString());
+                        JSONArray dictionaries = body.getJSONArray("dictionaries");
+                        JSONArray categories = dictionaries.getJSONObject(0).getJSONArray("categories");
+                        String[] names = new String[categories.length()];
+                        for(int i = 0;i < categories.length();i++) {
+                            names[i] = categories.getJSONObject(i).getString("name");
+                        }
+                        createView.setCategoriesToForm(names);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    createView.showMessage("辞書情報の取得に失敗しました");
+                }
+                getLoaderManager().destroyLoader(LOADER_ID + 3);
             }
 
             public void onLoaderReset(Loader<HashMap<String, Object>> loader) {}

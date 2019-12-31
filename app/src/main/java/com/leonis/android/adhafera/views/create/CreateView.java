@@ -94,8 +94,16 @@ public class CreateView extends RelativeLayout implements OnClickListener {
         }
     }
 
-    public void setCategories(String[] names) {
+    public void setCategoriesToDialog(String[] names) {
         ((CategoryView) inputViews[INPUT_VIEW_CATEGORY]).setCategories(names);
+    }
+
+    public void setCategoriesToForm(String[] names) {
+        StringBuilder text = new StringBuilder();
+        for (String name : names) {
+            text.append(text.toString().equals("") ? name : "," + name);
+        }
+        inputViews[INPUT_VIEW_CATEGORY].setInputText(text.toString());
     }
 
     public String getLabel(int id) {

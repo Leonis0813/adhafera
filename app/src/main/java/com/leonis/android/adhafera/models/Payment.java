@@ -7,10 +7,10 @@ import java.util.Date;
  */
 
 public class Payment {
-    private Date date;
-    private String content;
-    private String[] categories;
-    private int price;
+    private final Date date;
+    private final String content;
+    private final String[] categories;
+    private final int price;
 
     public Payment(Date date, String content, String[] categories, int price, String paymentType) {
         this.date = date;
@@ -19,32 +19,16 @@ public class Payment {
         this.price = paymentType.equals("income") ? price : -1 * price;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
     public Date getDate() {
         return date;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
     }
 
     public String getContent() {
         return content;
     }
 
-    public void setCategories(String[] categories) {
-        this.categories = categories;
-    }
-
     public String[] getCategories() {
         return categories;
-    }
-
-    public void setPrice(int price) {
-        this.price = price;
     }
 
     public int getPrice() {

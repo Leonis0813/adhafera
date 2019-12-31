@@ -11,7 +11,7 @@ import android.widget.TextView;
  */
 
 public abstract class InputView extends LinearLayout {
-    protected final Context context;
+    final Context context;
     public TextView errorChecker;
 
     public InputView(Context context, AttributeSet attributeSet) {
